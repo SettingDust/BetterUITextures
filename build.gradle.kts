@@ -24,6 +24,9 @@ subprojects {
         maven("https://maven.wispforest.io") {
             content { includeGroupAndSubgroups("io.wispforest") }
         }
+        maven("https://maven.lukebemish.dev/releases/") {
+            content { includeGroupAndSubgroups("dev.lukebemish") }
+        }
         maven("https://api.modrinth.com/maven") {
             name = "Modrinth"
             content { includeGroup("maven.modrinth") }

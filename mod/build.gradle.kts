@@ -13,6 +13,8 @@ val description: String by rootProject.properties
 loom {
     splitEnvironmentSourceSets()
 
+    accessWidenerPath = file("src/main/resources/$id.accesswidener")
+
     mods {
         register(id) {
             sourceSet(sourceSets["main"])
@@ -40,6 +42,8 @@ dependencies {
 
     modImplementation(catalog.fabric.waystones)
     modImplementation(catalog.owo)
+
+    modImplementation(catalog.brrp)
 }
 
 kotlin { jvmToolchain(17) }
@@ -64,6 +68,8 @@ val metadata =
         "fabric_loader" to ">=0.12",
         "fabric_kotlin" to ">=1.10",
         "modmenu" to "*",
+        "owo" to "*",
+        "brrp" to ">=1.0"
     )
 
 tasks {
