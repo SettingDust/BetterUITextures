@@ -1,0 +1,77 @@
+name: Rename the project from template
+
+on:
+  push:
+    branches-ignore:
+      - dependabot/**
+
+permissions: write-all
+
+jobs:
+  rename-project:
+    if: ${{ !contains (github.repository, '/FabricKotlinTemplate') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # by default, it uses a depth of 1
+          # this fetches all history so that we can read each commit
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/github-script@v4
+        id: fetch-repo-and-user-details
+        with:
+          script: |
+            const query = `query($owner:String!, $name:String!) {
+              repository(owner:$owner, name:$name) {
+                name
+                description
+                owner {
+                  login
+                  ... on User {
+                    name
+                  }
+                  ... on Organization {
+                    name
+                  }
+                }
+              }
+            }`;
+            const variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo
+            }
+            const result = await github.graphql(query, variables)
+            console.log(result)
+            return result
+
+      - name: Is this still a template
+        id: is_template
+        run: echo "::set-output name=is_template::$(ls .github/template.yml &> /dev/null && echo true || echo false)"
+
+      - env:
+          INFO: ${{ steps.fetch-repo-and-user-details.outputs.result }}
+        run: |
+          echo "REPOSITORY_NAME=$(echo $INFO | jq -r .repository.name)" >> $GITHUB_ENV
+          echo "REPOSITORY_OWNER=$(echo $INFO | jq -r .repository.owner.login)" >> $GITHUB_ENV
+          echo "REPOSITORY_DESCRIPTION=$(echo $INFO | jq -r .repository.description)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Rename the project
+        continue-on-error: true
+        if: steps.is_template.outputs.is_template == 'true'
+        run: |
+          echo "Renaming the project with "
+          echo " -a(author) ${{ env.REPOSITORY_OWNER }}" 
+          echo " -n(name) ${{ env.REPOSITORY_NAME }}"
+          echo " -d ${{ env.REPOSITORY_DESCRIPTION }}" 
+          .github/rename_project.sh \
+            -a '${{ env.REPOSITORY_OWNER }}' \
+            -n '${{ env.REPOSITORY_NAME }}' \
+            -d '${{ env.REPOSITORY_DESCRIPTION }}'
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: init the repository"
+          push_options: --force
