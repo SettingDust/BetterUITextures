@@ -21,6 +21,10 @@ subprojects {
     version = rootProject.version
 
     repositories {
+        maven("https://api.modrinth.com/maven") {
+            name = "Modrinth"
+            content { includeGroup("maven.modrinth") }
+        }
         maven("https://maven.terraformersmc.com/releases") {
             content { includeGroup("com.terraformersmc") }
         }

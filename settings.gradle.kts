@@ -105,6 +105,9 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
         .version("$fabricApi+1.10.3+$minecraft")
     // https://modrinth.com/mod/connector-extras/versions
     library("connector-extras", "maven.modrinth", "connector-extras").version("1.8.0+$minecraft")
+
+    // https://modrinth.com/mod/fwaystones/versions
+    library("fabric-waystones", "maven.modrinth", "fwaystones").version("3.3.2+mc$minecraft")
 }
 
 plugins {
