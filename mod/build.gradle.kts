@@ -39,6 +39,7 @@ dependencies {
     modClientImplementation(catalog.modmenu)
 
     modImplementation(catalog.fabric.waystones)
+    modImplementation(catalog.owo)
 }
 
 kotlin { jvmToolchain(17) }

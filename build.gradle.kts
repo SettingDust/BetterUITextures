@@ -21,6 +21,9 @@ subprojects {
     version = rootProject.version
 
     repositories {
+        maven("https://maven.wispforest.io") {
+            content { includeGroupAndSubgroups("io.wispforest") }
+        }
         maven("https://api.modrinth.com/maven") {
             name = "Modrinth"
             content { includeGroup("maven.modrinth") }
