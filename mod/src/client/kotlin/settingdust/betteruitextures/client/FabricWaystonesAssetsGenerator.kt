@@ -13,11 +13,12 @@ import wraith.fwaystones.FabricWaystones
 object FabricWaystonesAssetsGenerator :
     DynClientResourcesGenerator(
         DynamicTexturePack(
-            BetterUITextures.identifier(FabricWaystones.MOD_ID),
-            ResourcePackProfile.InsertionPosition.BOTTOM,
-            false,
-            false,
-        )
+                BetterUITextures.identifier(FabricWaystones.MOD_ID),
+                ResourcePackProfile.InsertionPosition.BOTTOM,
+                false,
+                false,
+            )
+            .also { it.addNamespaces(FabricWaystones.MOD_ID) },
     ) {
 
     private const val TEXTURE_SIZE = 256

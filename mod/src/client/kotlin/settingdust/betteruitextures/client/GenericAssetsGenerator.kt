@@ -23,6 +23,10 @@ object GenericAssetsGenerator :
 
     override fun dependsOnLoadedPacks() = true
 
+    override fun onNormalReload(manager: ResourceManager) {
+        reloadResources(manager)
+    }
+
     override fun regenerateDynamicAssets(manager: ResourceManager) {
         GenericTextures.guiBackground = null
         dynamicPack.addAndCloseTexture(
