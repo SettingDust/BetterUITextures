@@ -32,8 +32,21 @@ subprojects {
             content { includeGroup("maven.modrinth") }
         }
         maven("https://maven.terraformersmc.com/releases") {
-            content { includeGroup("com.terraformersmc") }
+            content {
+                includeGroup("com.terraformersmc")
+                includeGroup("dev.emi")
+            }
         }
+        maven("https://maven.shedaniel.me/") { content { includeGroup("me.shedaniel.cloth") } }
+        maven("https://maven.kosmx.dev/") { content { includeGroup("dev.kosmx.player-anim") } }
+        maven("https://maven.blamejared.com") { content { includeGroup("vazkii.patchouli") } }
+        maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") {
+            content { includeGroupAndSubgroups("fuzs") }
+        }
+        maven("https://maven.ladysnake.org/releases") {
+            content { includeGroup("dev.onyxstudios.cardinal-components-api") }
+        }
+        mavenCentral()
     }
 }
 

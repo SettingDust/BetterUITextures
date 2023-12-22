@@ -44,6 +44,28 @@ dependencies {
     modImplementation(catalog.owo)
 
     modImplementation(catalog.moonlight)
+
+    modImplementation(catalog.spell.engine)
+    modRuntimeOnly(catalog.trinkets)
+    modRuntimeOnly(catalog.spell.power)
+    modRuntimeOnly(catalog.cloth.config.fabric)
+    modRuntimeOnly(catalog.playeranimator.fabric)
+    modRuntimeOnly(catalog.bendylib)
+
+    modImplementation(catalog.runes)
+
+    modImplementation(catalog.amethyst.imbuement)
+    modImplementation(catalog.amethyst.core)
+    modRuntimeOnly(catalog.fzzy.core)
+    modRuntimeOnly(catalog.patchouli)
+
+    modImplementation(catalog.farmers.delight.fabric)
+
+    modImplementation(catalog.illager.invasion)
+    modRuntimeOnly(catalog.puzzleslib.fabric)
+    modRuntimeOnly(catalog.forgeconfigapiport.fabric)
+
+    modImplementation(catalog.pack.it.up)
 }
 
 kotlin { jvmToolchain(17) }
