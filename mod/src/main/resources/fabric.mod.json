@@ -35,6 +35,7 @@
       }
     ]
   },
+  "accessWidener": "${id}.accesswidener",
   "mixins": [
     "${id}.mixins.json",
     {
@@ -46,8 +47,7 @@
     "fabricloader": "${fabric_loader}",
     "minecraft": "${minecraft}",
     "fabric-language-kotlin": "${fabric_kotlin}",
-    "owo-lib": "${owo}",
-    "brrp": "${brrp}"
+    "moonlight": "${moonlight}"
   },
   "recommends": {
     "modmenu": "${modmenu}"

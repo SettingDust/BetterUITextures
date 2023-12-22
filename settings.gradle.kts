@@ -110,8 +110,8 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     library("fabric-waystones", "maven.modrinth", "fwaystones").version("3.3.2+mc$minecraft")
     // https://github.com/wisp-forest/owo-lib/releases/
     library("owo", "io.wispforest", "owo-lib").version("0.11.2+1.20")
-    // https://modrinth.com/mod/brrp/versions
-    library("brrp", "maven.modrinth", "brrp").version("1.0.1-mc$minecraft-fabric")
+    // https://modrinth.com/mod/moonlight/versions
+    library("moonlight", "maven.modrinth", "moonlight").version("fabric_1.20-2.8.70")
 }
 
 plugins {

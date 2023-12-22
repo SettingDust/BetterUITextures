@@ -43,7 +43,7 @@ dependencies {
     modImplementation(catalog.fabric.waystones)
     modImplementation(catalog.owo)
 
-    modImplementation(catalog.brrp)
+    modImplementation(catalog.moonlight)
 }
 
 kotlin { jvmToolchain(17) }
@@ -69,7 +69,7 @@ val metadata =
         "fabric_kotlin" to ">=1.10",
         "modmenu" to "*",
         "owo" to "*",
-        "brrp" to ">=1.0"
+        "moonlight" to "*"
     )
 
 tasks {
