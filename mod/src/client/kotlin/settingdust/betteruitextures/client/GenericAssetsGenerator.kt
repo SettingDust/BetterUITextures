@@ -8,7 +8,6 @@ import net.minecraft.resource.ResourceManager
 import net.minecraft.resource.ResourcePackProfile
 import net.minecraft.util.Identifier
 import settingdust.betteruitextures.BetterUITextures
-import wraith.fwaystones.FabricWaystones
 
 object GenericAssetsGenerator :
     DynClientResourcesGenerator(
@@ -20,8 +19,6 @@ object GenericAssetsGenerator :
         ),
     ) {
 
-    init {}
-
     override fun getLogger() = BetterUITextures.logger
 
     override fun dependsOnLoadedPacks() = true
@@ -29,7 +26,7 @@ object GenericAssetsGenerator :
     override fun regenerateDynamicAssets(manager: ResourceManager) {
         GenericTextures.guiBackground = null
         dynamicPack.addAndCloseTexture(
-            Identifier(FabricWaystones.MOD_ID, "gui/backround"),
+            Identifier(BetterUITextures.NAMESPACE, "gui/backround"),
             GenericTextures.getGuiBackground(manager).makeCopy()
         )
     }
