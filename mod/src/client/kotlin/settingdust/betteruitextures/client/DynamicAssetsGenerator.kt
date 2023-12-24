@@ -4,7 +4,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.minecraft.resource.ResourceManager
 
 sealed class DynamicAssetsGenerator {
-    abstract val modId: String
+    open val modId: String? = null
 
     abstract fun regenerateDynamicAssets(manager: ResourceManager, dynamicPack: DynamicTexturePack)
 }

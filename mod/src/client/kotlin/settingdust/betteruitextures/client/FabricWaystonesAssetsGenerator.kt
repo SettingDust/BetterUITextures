@@ -4,7 +4,7 @@ import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
-import settingdust.betteruitextures.client.GenericTextures.removeWindowBackground
+import settingdust.betteruitextures.client.GenericAssetsGenerator.removeElementBackground
 
 data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
 
@@ -34,13 +34,17 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
             val image = original.makeCopy()
 
             // Background
-            image.removeWindowBackground(WINDOW_WIDTH, WINDOW_HEIGHT)
+            image.removeElementBackground(
+                WINDOW_WIDTH,
+                WINDOW_HEIGHT,
+                GenericAssetsGenerator.StandaloneWindow.NINE_PATCH
+            )
 
             val transformed =
                 manager.let {
-                    GenericTextures.generateWindowBackground(
+                    GenericAssetsGenerator.StandaloneWindow.applyBackground(
                         it,
-                        WINDOW_WIDTH to WINDOW_HEIGHT,
+                        Size(WINDOW_WIDTH, WINDOW_HEIGHT),
                         TEXTURE_SIZE
                     )
                 }
@@ -60,14 +64,17 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
             val original = TextureImage.open(manager, Identifier(modId, "gui/waystone_config"))
             val image = original.makeCopy()
 
-            // Background
-            image.removeWindowBackground(WINDOW_WIDTH, WINDOW_HEIGHT)
+            image.removeElementBackground(
+                WINDOW_WIDTH,
+                WINDOW_HEIGHT,
+                GenericAssetsGenerator.StandaloneWindow.NINE_PATCH
+            )
 
             val transformed =
                 manager.let {
-                    GenericTextures.generateWindowBackground(
+                    GenericAssetsGenerator.StandaloneWindow.applyBackground(
                         it,
-                        WINDOW_WIDTH to WINDOW_HEIGHT,
+                        Size(WINDOW_WIDTH, WINDOW_HEIGHT),
                         TEXTURE_SIZE
                     )
                 }

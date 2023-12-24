@@ -10,6 +10,12 @@ import net.minecraft.resource.ResourcePackProfile
 import net.minecraft.util.Identifier
 import settingdust.betteruitextures.BetterUITextures
 
+data class Point(val x: Int, val y: Int)
+
+data class Size(val width: Int, val height: Int)
+
+data class NinePatch(val first: Point, val second: Point)
+
 object GenericAssetsGenerator :
     DynClientResourcesGenerator(
         DynamicTexturePack(
@@ -25,111 +31,139 @@ object GenericAssetsGenerator :
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
-        GenericTextures.guiBackground = null
-        dynamicPack.addAndCloseTexture(
-            Identifier(BetterUITextures.NAMESPACE, "gui/backround"),
-            GenericTextures.getGuiBackground(manager).makeCopy()
-        )
-
         for (generator in
             DynamicAssetsGenerator::class
                 .sealedSubclasses
                 .map {
                     it.objectInstance ?: throw IllegalStateException("Generators have to be object")
                 }
-                .filter { FabricLoader.getInstance().isModLoaded(it.modId) }) {
+                .sortedBy { it.modId }
+                .filter { it.modId == null || FabricLoader.getInstance().isModLoaded(it.modId) }) {
             generator.regenerateDynamicAssets(manager, dynamicPack)
         }
     }
-}
 
-object GenericTextures {
-
-    internal var guiBackground: TextureImage? = null
-
-    val UNIT = 5
-    val SIZE = UNIT * 3
-
-    fun getGuiBackground(manager: ResourceManager): TextureImage {
-        if (guiBackground != null) return guiBackground!!
-        val inventoryTexture =
-            TextureImage.open(
-                manager,
-                Identifier("gui/container/inventory") // HandledScreen.BACKGROUND_TEXTURE
-            )
-        val result = TextureImage.createNew(SIZE, SIZE, null)
-        val backgroundColor = inventoryTexture.getFramePixel(0, 5, 5)
-
-        for (x in 0 until UNIT) {
-            for (y in 0 until UNIT) {
-                result.setFramePixel(0, UNIT + x, UNIT + y, backgroundColor)
-            }
-        }
-
-        ImageTransformer.builder(256, 256, SIZE, SIZE)
-            .apply {
-                // Corners
-                copyRect(0, 0, UNIT, UNIT, 0, 0)
-                copyRect(176 - UNIT, 0, UNIT, UNIT, SIZE - UNIT, 0)
-                copyRect(0, 166 - UNIT, UNIT, UNIT, 0, SIZE - UNIT)
-                copyRect(176 - UNIT, 166 - UNIT, UNIT, UNIT, SIZE - UNIT, SIZE - UNIT)
-
-                // Edges
-                copyRect(UNIT, 0, UNIT, UNIT, UNIT, 0)
-                copyRect(0, UNIT, UNIT, UNIT, 0, UNIT)
-                copyRect(176 - UNIT, 166 - UNIT * 2, UNIT, UNIT, SIZE - UNIT, SIZE - UNIT * 2)
-                copyRect(176 - UNIT * 2, 166 - UNIT, UNIT, UNIT, SIZE - UNIT * 2, SIZE - UNIT)
-            }
-            .build()
-            .apply(inventoryTexture, result)
-        guiBackground = result
-        return result
-    }
-
-    fun getGuiBackgroundColor(manager: ResourceManager) =
-        getGuiBackground(manager).getFramePixel(0, UNIT, UNIT)
-
-    fun generateWindowBackground(
-        manager: ResourceManager,
-        windowSize: Size,
-        textureSize: Int
-    ): TextureImage {
-        val background = getGuiBackground(manager)
-
-        val scaledBackground = background.resizeNinePatch(UNIT to UNIT, UNIT to UNIT, windowSize)
-
-        val alignedBackground =
-            TextureImage.createNew(textureSize, textureSize, scaledBackground.metadata).also {
-                ImageTransformer.builder(
-                        windowSize.first,
-                        windowSize.second,
-                        textureSize,
-                        textureSize
-                    )
-                    .apply { copyRect(0, 0, windowSize.first, windowSize.second, 0, 0) }
-                    .build()
-                    .apply(scaledBackground, it)
-            }
-
-        return alignedBackground
-    }
-
-    fun TextureImage.removeWindowBackground(
-        windowWidth: Int,
-        windowHeight: Int,
+    fun TextureImage.removeElementBackground(
+        width: Int,
+        height: Int,
+        ninePatch: NinePatch,
+        offsetX: Int = 0,
+        offsetY: Int = 0,
         color: Int = -0x39393A,
     ) {
-        for (x in 0 until windowWidth) {
-            for (y in 0 until windowHeight) {
-                if (x < UNIT || x > windowWidth - UNIT) {
-                    setFramePixel(0, x, y, 0)
-                } else if (y < UNIT || y > windowHeight - UNIT) {
-                    setFramePixel(0, x, y, 0)
+        val rightX = width - ninePatch.second.x
+        val bottomY = height - ninePatch.second.y
+        for (x in 0 until width) {
+            for (y in 0 until height) {
+                if (x < ninePatch.first.x || x > rightX) {
+                    setFramePixel(0, x + offsetX, y + offsetY, 0)
                 } else {
-                    val originalColor = getFramePixel(0, x, y)
-                    if (originalColor == color) setFramePixel(0, x, y, 0)
+                    if (y < ninePatch.first.y || y > bottomY) {
+                        setFramePixel(0, x + offsetX, y + offsetY, 0)
+                    } else {
+                        val originalColor = getFramePixel(0, x + offsetX, y + offsetY)
+                        if (originalColor == color) setFramePixel(0, x + offsetX, y + offsetY, 0)
+                    }
                 }
             }
+        }
+    }
+
+    data object StandaloneWindow : DynamicAssetsGenerator() {
+        private val SIZE = Size(176, 166)
+        private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_backround")
+        val NINE_PATCH = NinePatch(Point(8, 7), Point(6, 7))
+
+        private fun generateBackground(manager: ResourceManager) =
+            TextureImage.open(
+                    manager,
+                    Identifier("gui/container/inventory") // HandledScreen.BACKGROUND_TEXTURE
+                )
+                .generateBackgroundNinePatch(NINE_PATCH, SIZE)
+
+        fun applyBackground(
+            manager: ResourceManager,
+            windowSize: Size,
+            textureSize: Int
+        ): TextureImage {
+            val background = TextureImage.open(manager, BACKGROUND)
+            if (windowSize == SIZE) return background
+
+            val scaledBackground = background.resizeNinePatch(NINE_PATCH, windowSize)
+
+            val alignedBackground =
+                TextureImage.createNew(textureSize, textureSize, scaledBackground.metadata).also {
+                    ImageTransformer.builder(
+                            windowSize.width,
+                            windowSize.height,
+                            textureSize,
+                            textureSize
+                        )
+                        .apply { copyRect(0, 0, windowSize.width, windowSize.height, 0, 0) }
+                        .build()
+                        .apply(scaledBackground, it)
+                }
+
+            return alignedBackground
+        }
+
+        override fun regenerateDynamicAssets(
+            manager: ResourceManager,
+            dynamicPack: DynamicTexturePack
+        ) {
+            dynamicPack.addAndCloseTexture(BACKGROUND, generateBackground(manager), false)
+        }
+    }
+
+    data object InventoryWindow : DynamicAssetsGenerator() {
+        val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_top")
+        val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_bottom")
+
+        private const val BOTTOM_WIDTH = 176
+        private const val BOTTOM_HEIGHT = 83
+        private const val TOP_WIDTH = BOTTOM_WIDTH
+        private const val TOP_HEIGHT = 139
+
+        private fun generateBottom(manager: ResourceManager): TextureImage {
+            val inventoryTexture =
+                TextureImage.open(manager, Identifier("gui/container/generic_54"))
+            val result = TextureImage.createNew(BOTTOM_WIDTH, BOTTOM_HEIGHT, null)
+
+            inventoryTexture.image.copyRect(
+                result.image,
+                0,
+                TOP_HEIGHT,
+                0,
+                0,
+                BOTTOM_WIDTH,
+                BOTTOM_HEIGHT,
+                false,
+                false
+            )
+
+            //            ImageTransformer.builder(256, 256, BOTTOM_WIDTH, BOTTOM_HEIGHT)
+            //                .apply { copyRect(0, TOP_HEIGHT, BOTTOM_WIDTH, BOTTOM_HEIGHT, 0, 0) }
+            //                .build()
+            //                .apply(inventoryTexture, result)
+
+            return result
+        }
+
+        private object Top {
+            private val NINE_PATCH = NinePatch(Point(8, 18), Point(7, 14))
+            private val SIZE = Size(176, 139)
+
+            fun generate(manager: ResourceManager) =
+                TextureImage.open(manager, Identifier("gui/container/generic_54"))
+                    .generateBackgroundNinePatch(NINE_PATCH, SIZE)
+        }
+
+        override fun regenerateDynamicAssets(
+            manager: ResourceManager,
+            dynamicPack: DynamicTexturePack
+        ) {
+            dynamicPack.addAndCloseTexture(BOTTOM, generateBottom(manager), false)
+            dynamicPack.addAndCloseTexture(TOP, Top.generate(manager), false)
         }
     }
 }
