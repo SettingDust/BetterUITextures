@@ -113,4 +113,23 @@ object GenericTextures {
 
         return alignedBackground
     }
+
+    fun TextureImage.removeWindowBackground(
+        windowWidth: Int,
+        windowHeight: Int,
+        color: Int = -0x39393A,
+    ) {
+        for (x in 0 until windowWidth) {
+            for (y in 0 until windowHeight) {
+                if (x < UNIT || x > windowWidth - UNIT) {
+                    setFramePixel(0, x, y, 0)
+                } else if (y < UNIT || y > windowHeight - UNIT) {
+                    setFramePixel(0, x, y, 0)
+                } else {
+                    val originalColor = getFramePixel(0, x, y)
+                    if (originalColor == color) setFramePixel(0, x, y, 0)
+                }
+            }
+        }
+    }
 }
