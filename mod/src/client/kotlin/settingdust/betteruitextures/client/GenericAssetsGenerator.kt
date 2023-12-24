@@ -138,22 +138,10 @@ object GenericAssetsGenerator :
                 TextureImage.open(manager, Identifier("gui/container/generic_54"))
             val result = TextureImage.createNew(BOTTOM_WIDTH, BOTTOM_HEIGHT, null)
 
-            inventoryTexture.image.copyRect(
-                result.image,
-                0,
-                TOP_HEIGHT,
-                0,
-                0,
-                BOTTOM_WIDTH,
-                BOTTOM_HEIGHT,
-                false,
-                false
-            )
-
-            //            ImageTransformer.builder(256, 256, BOTTOM_WIDTH, BOTTOM_HEIGHT)
-            //                .apply { copyRect(0, TOP_HEIGHT, BOTTOM_WIDTH, BOTTOM_HEIGHT, 0, 0) }
-            //                .build()
-            //                .apply(inventoryTexture, result)
+            ImageTransformer.builder(256, 256, BOTTOM_WIDTH, BOTTOM_HEIGHT)
+                .apply { copyRect(0, TOP_HEIGHT, BOTTOM_WIDTH, BOTTOM_HEIGHT, 0, 0) }
+                .build()
+                .apply(inventoryTexture, result)
 
             return result
         }

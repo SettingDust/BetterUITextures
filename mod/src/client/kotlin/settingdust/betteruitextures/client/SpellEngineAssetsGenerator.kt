@@ -5,7 +5,6 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import settingdust.betteruitextures.client.GenericAssetsGenerator.removeElementBackground
-import settingdust.betteruitextures.mixin.DynamicResourcePackAccessor
 
 data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
 
@@ -16,7 +15,7 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
         manager: ResourceManager,
         dynamicPack: DynamicTexturePack
     ) {
-        (dynamicPack as DynamicResourcePackAccessor).resources.remove(SPELL_BINDING)
+        dynamicPack.removeResource(SPELL_BINDING)
         dynamicPack.addAndCloseTexture(SPELL_BINDING, SpellBinding.generate(manager), false)
     }
 
