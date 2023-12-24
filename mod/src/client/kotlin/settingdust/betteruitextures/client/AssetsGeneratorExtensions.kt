@@ -7,7 +7,8 @@ fun TextureImage.generateBackgroundNinePatch(
     ninePatch: NinePatch,
     originalSize: Size,
     targetSize: Size = originalSize,
-    offset: Point = Point(0, 0)
+    offset: Point = Point(0, 0),
+    backgroundColorPoint: Point = Point(7, 7)
 ): TextureImage {
     val centerSize =
         Size(
@@ -21,7 +22,8 @@ fun TextureImage.generateBackgroundNinePatch(
     val originalRightX = originalSize.width - ninePatch.second.x + offset.x
     val originalBottomY = originalSize.height - ninePatch.second.y + offset.y
 
-    val backgroundColor = getFramePixel(0, 7 + offset.x, 7 + offset.y)
+    val backgroundColor =
+        getFramePixel(0, offset.x + backgroundColorPoint.x, offset.y + backgroundColorPoint.y)
 
     for (x in ninePatch.first.x + offset.x until targetRightX) {
         for (y in ninePatch.first.y + offset.y until targetBottomY) {

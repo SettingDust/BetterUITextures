@@ -79,16 +79,18 @@ object GenericAssetsGenerator :
     }
 
     data object StandaloneWindow : DynamicAssetsGenerator() {
-        private val SIZE = Size(176, 166)
         private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_background")
-        val NINE_PATCH = NinePatch(Point(8, 7), Point(6, 7))
+        val NINE_PATCH = NinePatch(Point(4, 17), Point(7, 6))
+        private val SIZE = Size(195, 136)
 
         private fun generateBackground(manager: ResourceManager) =
             TextureImage.open(
                     manager,
-                    Identifier("gui/container/inventory") // HandledScreen.BACKGROUND_TEXTURE
+                    Identifier(
+                        "gui/container/creative_inventory/tab_items"
+                    ) // HandledScreen.BACKGROUND_TEXTURE
                 )
-                .generateBackgroundNinePatch(NINE_PATCH, SIZE, Size(48, 48))
+                .generateBackgroundNinePatch(NINE_PATCH, SIZE, backgroundColorPoint = Point(6, 18))
 
         fun applyBackground(
             manager: ResourceManager,
@@ -147,7 +149,7 @@ object GenericAssetsGenerator :
         }
 
         private object Top {
-            private val NINE_PATCH = NinePatch(Point(8, 17), Point(7, 14))
+            val NINE_PATCH = NinePatch(Point(8, 17), Point(7, 14))
             private val SIZE = Size(176, 139)
 
             fun generate(manager: ResourceManager) =
