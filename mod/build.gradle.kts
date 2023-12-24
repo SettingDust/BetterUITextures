@@ -29,6 +29,16 @@ loom {
     }
 }
 
+val modNeedCopy by configurations.creating { isTransitive = false }
+
+val modClientNeedCopy by
+    configurations.creating {
+        extendsFrom(modNeedCopy)
+        isTransitive = false
+    }
+
+configurations { create("mod") }
+
 dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
@@ -40,32 +50,31 @@ dependencies {
     val modClientImplementation by configurations
     modClientImplementation(catalog.modmenu)
 
+    modImplementation(catalog.moonlight)
+
     modImplementation(catalog.fabric.waystones)
     modImplementation(catalog.owo)
 
-    modImplementation(catalog.moonlight)
+    modNeedCopy(catalog.spell.engine)
+    modNeedCopy(catalog.trinkets)
+    modNeedCopy(catalog.spell.power)
+    modClientNeedCopy(catalog.cloth.config.fabric)
+    modNeedCopy(catalog.playeranimator.fabric)
 
-    modImplementation(catalog.spell.engine)
-    modRuntimeOnly(catalog.trinkets)
-    modRuntimeOnly(catalog.spell.power)
-    modRuntimeOnly(catalog.cloth.config.fabric)
-    modRuntimeOnly(catalog.playeranimator.fabric)
-    modRuntimeOnly(catalog.bendylib)
+    modNeedCopy(catalog.runes)
 
-    modImplementation(catalog.runes)
+    //    modNeedCopy(catalog.amethyst.imbuement)
+    //    modNeedCopy(catalog.amethyst.core)
+    //    modNeedCopy(catalog.fzzy.core)
+    //    modNeedCopy(catalog.patchouli)
 
-    modImplementation(catalog.amethyst.imbuement)
-    modImplementation(catalog.amethyst.core)
-    modRuntimeOnly(catalog.fzzy.core)
-    modRuntimeOnly(catalog.patchouli)
+    modNeedCopy(catalog.farmers.delight.fabric)
 
-    modImplementation(catalog.farmers.delight.fabric)
+    modNeedCopy(catalog.illager.invasion)
+    modNeedCopy(catalog.puzzleslib.fabric)
+    modNeedCopy(catalog.forgeconfigapiport.fabric)
 
-    modImplementation(catalog.illager.invasion)
-    modRuntimeOnly(catalog.puzzleslib.fabric)
-    modRuntimeOnly(catalog.forgeconfigapiport.fabric)
-
-    modImplementation(catalog.pack.it.up)
+    modNeedCopy(catalog.pack.it.up)
 }
 
 kotlin { jvmToolchain(17) }
@@ -103,4 +112,12 @@ tasks {
     jar { from("LICENSE") }
 
     ideaSyncTask { enabled = true }
+
+    val copyClientMods by
+        creating(Copy::class) {
+            destinationDir = file("${loom.runs.getByName("client").runDir}/mods")
+            from(modClientNeedCopy)
+        }
+
+    classes { dependsOn(copyClientMods) }
 }

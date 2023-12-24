@@ -123,8 +123,6 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     // https://maven.kosmx.dev/dev/kosmx/player-anim/player-animation-lib-fabric/?C=M&O=D
     library("playeranimator-fabric", "dev.kosmx.player-anim", "player-animation-lib-fabric")
         .version("1.0.2-rc1+1.20")
-    // https://modrinth.com/mod/bendy-lib/versions
-    library("bendylib", "maven.modrinth", "bendy-lib").version("4.0.0-fabric")
     // https://modrinth.com/mod/runes/versions
     library("runes", "maven.modrinth", "runes").version("0.9.10+$minecraft-fabric")
 
@@ -134,7 +132,7 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     library("fzzy-core", "maven.modrinth", "fzzy-core").version("0.3.4+$minecraft")
     // https://modrinth.com/mod/patchouli/versions
     library("patchouli", "vazkii.patchouli", "Patchouli").version("$minecraft-84-FABRIC")
-    // https://modrinth.com/mod/amethyst-imbuement/versions
+    // https://modrinth.com/mod/amethyst-core/versions
     library("amethyst-core", "maven.modrinth", "amethyst-core").version("1.4.5+$minecraft")
 
     // https://modrinth.com/mod/farmers-delight-fabric/versions
