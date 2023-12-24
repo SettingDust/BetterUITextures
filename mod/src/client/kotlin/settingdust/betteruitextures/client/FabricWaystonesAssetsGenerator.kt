@@ -1,5 +1,6 @@
 package settingdust.betteruitextures.client
 
+import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
@@ -9,21 +10,17 @@ import settingdust.betteruitextures.client.GenericAssetsGenerator.removeElementB
 data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
 
     override val modId = "fwaystones"
+    private val WAYSTONE = Identifier(modId, "gui/waystone")
+    private val WAYSTONE_CONFIG = Identifier(modId, "gui/waystone_config")
 
     override fun regenerateDynamicAssets(
         manager: ResourceManager,
         dynamicPack: DynamicTexturePack
     ) {
-        dynamicPack.addAndCloseTexture(
-            Identifier(modId, "gui/waystone"),
-            Waystone.generate(manager),
-            false
-        )
-        dynamicPack.addAndCloseTexture(
-            Identifier(modId, "gui/waystone_config"),
-            Config.generate(manager),
-            false
-        )
+        dynamicPack.removeResource(ResType.TEXTURES.getPath(WAYSTONE))
+        dynamicPack.removeResource(ResType.TEXTURES.getPath(WAYSTONE_CONFIG))
+        dynamicPack.addAndCloseTexture(WAYSTONE, Waystone.generate(manager), false)
+        dynamicPack.addAndCloseTexture(WAYSTONE_CONFIG, Config.generate(manager), false)
     }
 
     private object Waystone {

@@ -5,19 +5,19 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import settingdust.betteruitextures.client.GenericAssetsGenerator.removeElementBackground
+import settingdust.betteruitextures.mixin.DynamicResourcePackAccessor
 
 data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
 
     override val modId = "spell_engine"
+    private val SPELL_BINDING = Identifier(modId, "gui/spell_binding")
 
     override fun regenerateDynamicAssets(
         manager: ResourceManager,
         dynamicPack: DynamicTexturePack
     ) {
-        dynamicPack.addAndCloseTexture(
-            Identifier(modId, "gui/spell_binding"),
-            SpellBinding.generate(manager)
-        )
+        (dynamicPack as DynamicResourcePackAccessor).resources.remove(SPELL_BINDING)
+        dynamicPack.addAndCloseTexture(SPELL_BINDING, SpellBinding.generate(manager), false)
     }
 
     private object SpellBinding {

@@ -26,6 +26,19 @@ object GenericAssetsGenerator :
         ),
     ) {
 
+    private val generators =
+        DynamicAssetsGenerator::class
+            .sealedSubclasses
+            .map {
+                it.objectInstance ?: throw IllegalStateException("Generators have to be object")
+            }
+            .sortedBy { it.modId }
+            .filter { it.modId != null && FabricLoader.getInstance().isModLoaded(it.modId) }
+
+    init {
+        generators.map { it.modId }.forEach(dynamicPack::addNamespaces)
+    }
+
     override fun getLogger() = BetterUITextures.logger
 
     override fun dependsOnLoadedPacks() = true
@@ -34,14 +47,7 @@ object GenericAssetsGenerator :
         StandaloneWindow.regenerateDynamicAssets(manager, dynamicPack)
         InventoryWindow.regenerateDynamicAssets(manager, dynamicPack)
 
-        for (generator in
-            DynamicAssetsGenerator::class
-                .sealedSubclasses
-                .map {
-                    it.objectInstance ?: throw IllegalStateException("Generators have to be object")
-                }
-                .sortedBy { it.modId }
-                .filter { it.modId != null && FabricLoader.getInstance().isModLoaded(it.modId) }) {
+        for (generator in generators) {
             generator.regenerateDynamicAssets(manager, dynamicPack)
         }
     }
