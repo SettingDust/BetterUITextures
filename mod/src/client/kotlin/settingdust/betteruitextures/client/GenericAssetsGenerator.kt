@@ -1,5 +1,6 @@
 package settingdust.betteruitextures.client
 
+import net.fabricmc.loader.api.FabricLoader
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynClientResourcesGenerator
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
@@ -23,22 +24,28 @@ object GenericAssetsGenerator :
 
     override fun dependsOnLoadedPacks() = true
 
-    override fun onNormalReload(manager: ResourceManager) {
-        reloadResources(manager)
-    }
-
     override fun regenerateDynamicAssets(manager: ResourceManager) {
         GenericTextures.guiBackground = null
         dynamicPack.addAndCloseTexture(
             Identifier(BetterUITextures.NAMESPACE, "gui/backround"),
             GenericTextures.getGuiBackground(manager).makeCopy()
         )
+
+        for (generator in
+            DynamicAssetsGenerator::class
+                .sealedSubclasses
+                .map {
+                    it.objectInstance ?: throw IllegalStateException("Generators have to be object")
+                }
+                .filter { FabricLoader.getInstance().isModLoaded(it.modId) }) {
+            generator.regenerateDynamicAssets(manager, dynamicPack)
+        }
     }
 }
 
 object GenericTextures {
 
-    var guiBackground: TextureImage? = null
+    internal var guiBackground: TextureImage? = null
 
     val UNIT = 5
     val SIZE = UNIT * 3

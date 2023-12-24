@@ -7,7 +7,6 @@
   "mixins": [
   ],
   "client": [
-    "fwaystones.WaystoneBlockScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
