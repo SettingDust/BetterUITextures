@@ -31,6 +31,9 @@ object GenericAssetsGenerator :
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
+        StandaloneWindow.regenerateDynamicAssets(manager, dynamicPack)
+        InventoryWindow.regenerateDynamicAssets(manager, dynamicPack)
+
         for (generator in
             DynamicAssetsGenerator::class
                 .sealedSubclasses
@@ -38,7 +41,7 @@ object GenericAssetsGenerator :
                     it.objectInstance ?: throw IllegalStateException("Generators have to be object")
                 }
                 .sortedBy { it.modId }
-                .filter { it.modId == null || FabricLoader.getInstance().isModLoaded(it.modId) }) {
+                .filter { it.modId != null && FabricLoader.getInstance().isModLoaded(it.modId) }) {
             generator.regenerateDynamicAssets(manager, dynamicPack)
         }
     }
@@ -71,7 +74,7 @@ object GenericAssetsGenerator :
 
     data object StandaloneWindow : DynamicAssetsGenerator() {
         private val SIZE = Size(176, 166)
-        private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_backround")
+        private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_background")
         val NINE_PATCH = NinePatch(Point(8, 7), Point(6, 7))
 
         private fun generateBackground(manager: ResourceManager) =
@@ -79,7 +82,7 @@ object GenericAssetsGenerator :
                     manager,
                     Identifier("gui/container/inventory") // HandledScreen.BACKGROUND_TEXTURE
                 )
-                .generateBackgroundNinePatch(NINE_PATCH, SIZE)
+                .generateBackgroundNinePatch(NINE_PATCH, SIZE, Size(48, 48))
 
         fun applyBackground(
             manager: ResourceManager,
@@ -150,7 +153,7 @@ object GenericAssetsGenerator :
         }
 
         private object Top {
-            private val NINE_PATCH = NinePatch(Point(8, 18), Point(7, 14))
+            private val NINE_PATCH = NinePatch(Point(8, 17), Point(7, 14))
             private val SIZE = Size(176, 139)
 
             fun generate(manager: ResourceManager) =

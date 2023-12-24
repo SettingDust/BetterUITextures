@@ -16,11 +16,13 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
     ) {
         dynamicPack.addAndCloseTexture(
             Identifier(modId, "gui/waystone"),
-            Waystone.generate(manager)
+            Waystone.generate(manager),
+            false
         )
         dynamicPack.addAndCloseTexture(
             Identifier(modId, "gui/waystone_config"),
-            Config.generate(manager)
+            Config.generate(manager),
+            false
         )
     }
 
