@@ -88,4 +88,29 @@ object GenericTextures {
 
     fun getGuiBackgroundColor(manager: ResourceManager) =
         getGuiBackground(manager).getFramePixel(0, UNIT, UNIT)
+
+    fun generateWindowBackground(
+        manager: ResourceManager,
+        windowSize: Size,
+        textureSize: Int
+    ): TextureImage {
+        val background = getGuiBackground(manager)
+
+        val scaledBackground = background.resizeNinePatch(UNIT to UNIT, UNIT to UNIT, windowSize)
+
+        val alignedBackground =
+            TextureImage.createNew(textureSize, textureSize, scaledBackground.metadata).also {
+                ImageTransformer.builder(
+                        windowSize.first,
+                        windowSize.second,
+                        textureSize,
+                        textureSize
+                    )
+                    .apply { copyRect(0, 0, windowSize.first, windowSize.second, 0, 0) }
+                    .build()
+                    .apply(scaledBackground, it)
+            }
+
+        return alignedBackground
+    }
 }
