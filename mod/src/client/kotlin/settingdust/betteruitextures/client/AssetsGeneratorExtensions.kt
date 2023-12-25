@@ -8,9 +8,14 @@ fun TextureImage.generateBackgroundNinePatch(
     originalSize: Size,
     targetSize: Size = originalSize,
     offset: Point = Point(0, 0),
-    backgroundColorPoint: Point = Point(7, 7)
+    centerColorPoint: Point? = Point(7, 7)
 ): TextureImage {
-    val centerSize =
+    val originalCenterSize =
+        Size(
+            originalSize.width - ninePatch.first.x - ninePatch.second.x,
+            originalSize.height - ninePatch.first.y - ninePatch.second.y
+        )
+    val targetCenterSize =
         Size(
             targetSize.width - ninePatch.first.x - ninePatch.second.x,
             targetSize.height - ninePatch.first.y - ninePatch.second.y
@@ -22,12 +27,14 @@ fun TextureImage.generateBackgroundNinePatch(
     val originalRightX = originalSize.width - ninePatch.second.x + offset.x
     val originalBottomY = originalSize.height - ninePatch.second.y + offset.y
 
-    val backgroundColor =
-        getFramePixel(0, offset.x + backgroundColorPoint.x, offset.y + backgroundColorPoint.y)
+    if (centerColorPoint != null) {
+        val backgroundColor =
+            getFramePixel(0, offset.x + centerColorPoint.x, offset.y + centerColorPoint.y)
 
-    for (x in ninePatch.first.x + offset.x until targetRightX) {
-        for (y in ninePatch.first.y + offset.y until targetBottomY) {
-            result.setFramePixel(0, x, y, backgroundColor)
+        for (x in ninePatch.first.x + offset.x until targetRightX) {
+            for (y in ninePatch.first.y + offset.y until targetBottomY) {
+                result.setFramePixel(0, x, y, backgroundColor)
+            }
         }
     }
 
@@ -69,7 +76,7 @@ fun TextureImage.generateBackgroundNinePatch(
             copyRect(
                 ninePatch.first.x + offset.x,
                 offset.y,
-                centerSize.width,
+                targetCenterSize.width,
                 ninePatch.first.y,
                 ninePatch.first.x,
                 0
@@ -79,7 +86,7 @@ fun TextureImage.generateBackgroundNinePatch(
                 offset.x,
                 ninePatch.first.y + offset.y,
                 ninePatch.first.x,
-                centerSize.height,
+                targetCenterSize.height,
                 0,
                 ninePatch.first.y,
             )
@@ -88,7 +95,7 @@ fun TextureImage.generateBackgroundNinePatch(
                 originalRightX,
                 ninePatch.first.y + offset.y,
                 ninePatch.second.x,
-                centerSize.height,
+                targetCenterSize.height,
                 targetRightX,
                 ninePatch.first.y,
             )
@@ -96,7 +103,7 @@ fun TextureImage.generateBackgroundNinePatch(
             copyRect(
                 ninePatch.first.x + offset.x,
                 originalBottomY,
-                centerSize.width,
+                targetCenterSize.width,
                 ninePatch.second.y,
                 ninePatch.first.x,
                 targetBottomY
@@ -104,5 +111,20 @@ fun TextureImage.generateBackgroundNinePatch(
         }
         .build()
         .apply(this, result)
+
+    if (centerColorPoint == null) {
+        // Center
+        image.copyRect(
+            result.image,
+            ninePatch.first.x + offset.x,
+            ninePatch.first.y + offset.y,
+            ninePatch.first.x,
+            ninePatch.first.y,
+            originalCenterSize.width,
+            originalCenterSize.height,
+            false,
+            false
+        )
+    }
     return result
 }

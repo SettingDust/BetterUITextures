@@ -46,6 +46,7 @@ object GenericAssetsGenerator :
     override fun regenerateDynamicAssets(manager: ResourceManager) {
         StandaloneWindow.regenerateDynamicAssets(manager, dynamicPack)
         InventoryWindow.regenerateDynamicAssets(manager, dynamicPack)
+        EnchantingElements.regenerateDynamicAssets(manager, dynamicPack)
 
         for (generator in generators) {
             generator.regenerateDynamicAssets(manager, dynamicPack)
@@ -83,6 +84,13 @@ object GenericAssetsGenerator :
         val NINE_PATCH = NinePatch(Point(4, 17), Point(7, 6))
         private val SIZE = Size(195, 136)
 
+        override fun regenerateDynamicAssets(
+            manager: ResourceManager,
+            dynamicPack: DynamicTexturePack
+        ) {
+            dynamicPack.addAndCloseTexture(BACKGROUND, generateBackground(manager), false)
+        }
+
         private fun generateBackground(manager: ResourceManager) =
             TextureImage.open(
                     manager,
@@ -90,29 +98,30 @@ object GenericAssetsGenerator :
                         "gui/container/creative_inventory/tab_items"
                     ) // HandledScreen.BACKGROUND_TEXTURE
                 )
-                .generateBackgroundNinePatch(NINE_PATCH, SIZE, backgroundColorPoint = Point(6, 18))
+                .generateBackgroundNinePatch(NINE_PATCH, SIZE, centerColorPoint = Point(6, 18))
 
         fun generateBackground(manager: ResourceManager, windowSize: Size): TextureImage {
             val background = TextureImage.open(manager, BACKGROUND)
             if (windowSize == SIZE) return background
             return background.resizeNinePatch(NINE_PATCH, windowSize)
         }
+    }
+
+    data object InventoryWindow : DynamicAssetsGenerator() {
+        private val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory/top")
+        private val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory/bottom")
+
+        const val WIDTH = 176
+        const val BOTTOM_HEIGHT = 83
+        const val TOP_HEIGHT = 139
 
         override fun regenerateDynamicAssets(
             manager: ResourceManager,
             dynamicPack: DynamicTexturePack
         ) {
-            dynamicPack.addAndCloseTexture(BACKGROUND, generateBackground(manager), false)
+            dynamicPack.addAndCloseTexture(BOTTOM, generateBottom(manager), false)
+            dynamicPack.addAndCloseTexture(TOP, Top.generate(manager), false)
         }
-    }
-
-    data object InventoryWindow : DynamicAssetsGenerator() {
-        private val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_top")
-        private val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_bottom")
-
-        const val WIDTH = 176
-        const val BOTTOM_HEIGHT = 83
-        const val TOP_HEIGHT = 139
 
         private fun generateBottom(manager: ResourceManager): TextureImage {
             val inventoryTexture =
@@ -162,20 +171,60 @@ object GenericAssetsGenerator :
         }
 
         private object Top {
-            val NINE_PATCH = NinePatch(Point(8, 17), Point(7, 14))
+            val NINE_PATCH = NinePatch(Point(7, 17), Point(7, 14))
             private val SIZE = Size(176, 139)
 
             fun generate(manager: ResourceManager) =
                 TextureImage.open(manager, Identifier("gui/container/generic_54"))
-                    .generateBackgroundNinePatch(NINE_PATCH, SIZE)
+                    .generateBackgroundNinePatch(NINE_PATCH, SIZE, centerColorPoint = Point(5, 7))
         }
+    }
+
+    data object EnchantingElements : DynamicAssetsGenerator() {
+        val ENTRIES_BACKGROUND =
+            Identifier(BetterUITextures.NAMESPACE, "gui/enchanting/entries_background")
+        val ENTRY_STATUSES = Identifier(BetterUITextures.NAMESPACE, "gui/enchanting/entry_statuses")
 
         override fun regenerateDynamicAssets(
             manager: ResourceManager,
             dynamicPack: DynamicTexturePack
         ) {
-            dynamicPack.addAndCloseTexture(BOTTOM, generateBottom(manager), false)
-            dynamicPack.addAndCloseTexture(TOP, Top.generate(manager), false)
+            dynamicPack.addAndCloseTexture(
+                ENTRIES_BACKGROUND,
+                EntriesBackground.generate(manager),
+                false
+            )
+            dynamicPack.addAndCloseTexture(ENTRY_STATUSES, EntryStatuses.generate(manager), false)
+        }
+
+        object EntriesBackground {
+            const val WIDTH = 110
+            const val HEIGHT = 59
+            val NINE_PATCH = NinePatch(Point(1, 1), Point(1, 1))
+
+            internal fun generate(manager: ResourceManager) =
+                TextureImage.open(manager, Identifier("gui/container/enchanting_table"))
+                    .generateBackgroundNinePatch(
+                        NINE_PATCH,
+                        Size(WIDTH, HEIGHT),
+                        offset = Point(59, 13),
+                        centerColorPoint = null
+                    )
+        }
+
+        object EntryStatuses {
+            const val WIDTH = 108
+            const val HEIGHT = 57
+            val NINE_PATCH = NinePatch(Point(2, 2), Point(2, 2))
+
+            internal fun generate(manager: ResourceManager) =
+                TextureImage.open(manager, Identifier("gui/container/enchanting_table"))
+                    .generateBackgroundNinePatch(
+                        NINE_PATCH,
+                        Size(WIDTH, HEIGHT),
+                        offset = Point(0, 166),
+                        centerColorPoint = null
+                    )
         }
     }
 }

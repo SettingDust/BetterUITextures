@@ -6,5 +6,8 @@ import net.minecraft.resource.ResourceManager
 sealed class DynamicAssetsGenerator {
     open val modId: String? = null
 
-    abstract fun regenerateDynamicAssets(manager: ResourceManager, dynamicPack: DynamicTexturePack)
+    internal abstract fun regenerateDynamicAssets(
+        manager: ResourceManager,
+        dynamicPack: DynamicTexturePack
+    )
 }
