@@ -1,5 +1,6 @@
 package settingdust.betteruitextures.client
 
+import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.client.texture.NativeImage
 
@@ -38,7 +39,7 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
     val bottomEdge =
         NativeImage(targetCenterSize.width, ninePatch.second.y, true).also {
             image.resizeSubRectTo(
-                ninePatch.second.y,
+                ninePatch.first.x,
                 originalBottomY,
                 centerSize.width,
                 ninePatch.second.y,
@@ -153,3 +154,11 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
         metadata
     )
 }
+
+fun TextureImage.expandCanvas(targetSize: Size, offset: Point = Point(0, 0)) =
+    TextureImage.createNew(targetSize.width, targetSize.height, metadata).also {
+        ImageTransformer.builder(imageWidth(), imageHeight(), targetSize.width, targetSize.height)
+            .copyRect(0, 0, imageWidth(), imageHeight(), offset.x, offset.y)
+            .build()
+            .apply(this, it)
+    }

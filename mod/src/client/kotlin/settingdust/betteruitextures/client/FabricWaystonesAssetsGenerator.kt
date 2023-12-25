@@ -39,18 +39,16 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
                 GenericAssetsGenerator.StandaloneWindow.NINE_PATCH
             )
 
-            val transformed =
-                manager.let {
-                    GenericAssetsGenerator.StandaloneWindow.applyBackground(
-                        it,
-                        Size(WINDOW_WIDTH, WINDOW_HEIGHT),
-                        TEXTURE_SIZE
+            val background =
+                GenericAssetsGenerator.StandaloneWindow.generateBackground(
+                        manager,
+                        Size(WINDOW_WIDTH, WINDOW_HEIGHT)
                     )
-                }
+                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
 
-            transformed.applyOverlay(image)
+            background.applyOverlay(image)
 
-            return transformed
+            return background
         }
     }
 
@@ -70,13 +68,11 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
             )
 
             val transformed =
-                manager.let {
-                    GenericAssetsGenerator.StandaloneWindow.applyBackground(
-                        it,
-                        Size(WINDOW_WIDTH, WINDOW_HEIGHT),
-                        TEXTURE_SIZE
+                GenericAssetsGenerator.StandaloneWindow.generateBackground(
+                        manager,
+                        Size(WINDOW_WIDTH, WINDOW_HEIGHT)
                     )
-                }
+                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
 
             transformed.applyOverlay(image)
 

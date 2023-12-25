@@ -1,5 +1,6 @@
 package settingdust.betteruitextures.client
 
+import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
@@ -15,7 +16,7 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
         manager: ResourceManager,
         dynamicPack: DynamicTexturePack
     ) {
-        dynamicPack.removeResource(SPELL_BINDING)
+        dynamicPack.removeResource(ResType.TEXTURES.getPath(SPELL_BINDING))
         dynamicPack.addAndCloseTexture(SPELL_BINDING, SpellBinding.generate(manager), false)
     }
 
@@ -25,11 +26,7 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
         private const val TEXTURE_SIZE = 256
 
         fun generate(manager: ResourceManager): TextureImage {
-            val original =
-                TextureImage.open(
-                    manager,
-                    Identifier(FabricWaystonesAssetsGenerator.modId, "gui/waystone_config")
-                )
+            val original = TextureImage.open(manager, SPELL_BINDING)
             val image = original.makeCopy()
 
             // Background
@@ -38,15 +35,20 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
                 WINDOW_HEIGHT,
                 GenericAssetsGenerator.StandaloneWindow.NINE_PATCH
             )
+            GenericAssetsGenerator.InventoryWindow.removeBottom(
+                image,
+                Size(WINDOW_WIDTH, WINDOW_HEIGHT)
+            )
 
             val transformed =
-                manager.let {
-                    GenericAssetsGenerator.StandaloneWindow.applyBackground(
-                        it,
-                        Size(WINDOW_WIDTH, WINDOW_HEIGHT),
-                        TEXTURE_SIZE
+                GenericAssetsGenerator.InventoryWindow.generateBackground(
+                        manager,
+                        Size(
+                            GenericAssetsGenerator.InventoryWindow.WIDTH,
+                            WINDOW_HEIGHT - GenericAssetsGenerator.InventoryWindow.BOTTOM_HEIGHT
+                        )
                     )
-                }
+                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
 
             transformed.applyOverlay(image)
 

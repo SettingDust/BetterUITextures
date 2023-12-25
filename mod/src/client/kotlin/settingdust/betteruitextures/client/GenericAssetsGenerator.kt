@@ -92,30 +92,10 @@ object GenericAssetsGenerator :
                 )
                 .generateBackgroundNinePatch(NINE_PATCH, SIZE, backgroundColorPoint = Point(6, 18))
 
-        fun applyBackground(
-            manager: ResourceManager,
-            windowSize: Size,
-            textureSize: Int
-        ): TextureImage {
+        fun generateBackground(manager: ResourceManager, windowSize: Size): TextureImage {
             val background = TextureImage.open(manager, BACKGROUND)
             if (windowSize == SIZE) return background
-
-            val scaledBackground = background.resizeNinePatch(NINE_PATCH, windowSize)
-
-            val alignedBackground =
-                TextureImage.createNew(textureSize, textureSize, scaledBackground.metadata).also {
-                    ImageTransformer.builder(
-                            windowSize.width,
-                            windowSize.height,
-                            textureSize,
-                            textureSize
-                        )
-                        .apply { copyRect(0, 0, windowSize.width, windowSize.height, 0, 0) }
-                        .build()
-                        .apply(scaledBackground, it)
-                }
-
-            return alignedBackground
+            return background.resizeNinePatch(NINE_PATCH, windowSize)
         }
 
         override fun regenerateDynamicAssets(
@@ -127,25 +107,58 @@ object GenericAssetsGenerator :
     }
 
     data object InventoryWindow : DynamicAssetsGenerator() {
-        val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_top")
-        val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_bottom")
+        private val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_top")
+        private val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory_bottom")
 
-        private const val BOTTOM_WIDTH = 176
-        private const val BOTTOM_HEIGHT = 83
-        private const val TOP_WIDTH = BOTTOM_WIDTH
-        private const val TOP_HEIGHT = 139
+        const val WIDTH = 176
+        const val BOTTOM_HEIGHT = 83
+        const val TOP_HEIGHT = 139
 
         private fun generateBottom(manager: ResourceManager): TextureImage {
             val inventoryTexture =
                 TextureImage.open(manager, Identifier("gui/container/generic_54"))
-            val result = TextureImage.createNew(BOTTOM_WIDTH, BOTTOM_HEIGHT, null)
+            val result = TextureImage.createNew(WIDTH, BOTTOM_HEIGHT, null)
 
-            ImageTransformer.builder(256, 256, BOTTOM_WIDTH, BOTTOM_HEIGHT)
-                .apply { copyRect(0, TOP_HEIGHT, BOTTOM_WIDTH, BOTTOM_HEIGHT, 0, 0) }
+            ImageTransformer.builder(256, 256, WIDTH, BOTTOM_HEIGHT)
+                .apply { copyRect(0, TOP_HEIGHT, WIDTH, BOTTOM_HEIGHT, 0, 0) }
                 .build()
                 .apply(inventoryTexture, result)
 
             return result
+        }
+
+        fun removeBottom(image: TextureImage, windowSize: Size, offset: Point = Point(0, 0)) {
+            val windowBottomY = windowSize.height + offset.y
+            for (y in offset.y + 1..BOTTOM_HEIGHT + offset.y) {
+                for (x in offset.x until windowSize.width + offset.x) {
+                    image.setFramePixel(0, x, windowBottomY - y, 0)
+                }
+            }
+        }
+
+        fun generateBackground(manager: ResourceManager, topSize: Size): TextureImage {
+            val top = TextureImage.open(manager, TOP)
+            val bottom = TextureImage.open(manager, BOTTOM)
+            val image =
+                TextureImage.createNew(topSize.width, topSize.height + bottom.imageHeight(), null)
+
+            top.resizeNinePatch(Top.NINE_PATCH, Size(topSize.width, topSize.height))
+                .image
+                .copyRect(image.image, 0, 0, 0, 0, topSize.width, topSize.height, false, false)
+
+            bottom.image.copyRect(
+                image.image,
+                0,
+                0,
+                0,
+                topSize.height,
+                WIDTH,
+                BOTTOM_HEIGHT,
+                false,
+                false
+            )
+
+            return image
         }
 
         private object Top {
