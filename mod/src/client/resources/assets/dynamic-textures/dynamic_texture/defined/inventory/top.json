@@ -1,0 +1,28 @@
+{
+  "type": "dynamic-textures:nine_patch",
+  "source": "gui/container/generic_54",
+  "border": {
+    "first": {
+      "width": 7,
+      "height": 17
+    },
+    "second": {
+      "width": 7,
+      "height": 14
+    }
+  },
+  "sourceRect": {
+    "x": 0,
+    "y": 0,
+    "width": 176,
+    "height": 139
+  },
+  "targetSize": {
+    "width": 176,
+    "height": 83
+  },
+  "centerColorPoint": {
+    "x": 5,
+    "y": 7
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "targetTexture": "dynamic-textures:dynamic_texture/defined/slot/abreast",
+  "size": {
+    "width": 42,
+    "height": 23
+  },
+  "modifiers": [
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "fromRect": {
+        "x": 0,
+        "y": 0,
+        "width": 21,
+        "height": 23
+      },
+      "targetRect": {
+        "x": 0,
+        "y": 0,
+        "width": 21,
+        "height": 23
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "fromRect": {
+        "x": 1,
+        "y": 0,
+        "width": 21,
+        "height": 23
+      },
+      "targetRect": {
+        "x": 21,
+        "y": 0,
+        "width": 21,
+        "height": 23
+      }
+    }
+  ]
+}

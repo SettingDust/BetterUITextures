@@ -38,12 +38,12 @@ jobs:
           changelog: ${{ steps.changelog.outputs.changes }}
           # Only include this section if you wish to publish
           # your assets on Modrinth.
-          modrinth-id: b313lC4Y
+          modrinth-id: VnWNJcsw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-          curseforge-id: 890349
+          curseforge-id: 954722
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
@@ -63,6 +63,8 @@ jobs:
           dependencies: |
             fabric-language-kotlin
             connector{curseforge:890127}
+            moonlight{curseforge:499980}
+            
 
           java: |
             17

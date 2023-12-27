@@ -23,7 +23,7 @@ import net.minecraft.util.dynamic.ForwardingDynamicOps
 import org.quiltmc.qkl.library.serialization.ExtendedDynamicOps
 import org.quiltmc.qkl.library.serialization.internal.DefaultingExtendedOps
 import org.quiltmc.qkl.library.serialization.internal.ExtendedJsonOps
-import settingdust.betteruitextures.mixin.ForwardingDynamicOpsAccessor
+import settingdust.dynamictextures.mixin.ForwardingDynamicOpsAccessor
 
 @Suppress("UNCHECKED_CAST")
 internal tailrec fun <T : Any> DynamicOps<T>.getExtendedWithDefault(): ExtendedDynamicOps<T> {
