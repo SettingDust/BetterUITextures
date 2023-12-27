@@ -1,6 +1,8 @@
 package settingdust.betteruitextures.client
 
+import kotlin.math.min
 import kotlinx.serialization.Contextual
+import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
@@ -15,5 +17,29 @@ data class DynamicTexture(
 )
 
 fun DynamicTexture.targetTexture(manager: ResourceManager): TextureImage =
-    if (targetTexture != null) TextureImage.open(manager, targetTexture)
-    else TextureImage.createNew(size!!.width, size.height, null)
+    if (size != null) {
+        val image = TextureImage.createNew(size.width, size.height, null)
+        if (targetTexture != null) {
+            val targetImage = TextureImage.open(manager, targetTexture)
+            ImageTransformer.builder(
+                    targetImage.imageWidth(),
+                    targetImage.imageHeight(),
+                    image.imageWidth(),
+                    image.imageHeight()
+                )
+                .copyRect(
+                    0,
+                    0,
+                    min(targetImage.imageWidth(), image.imageWidth()),
+                    min(targetImage.imageHeight(), image.imageHeight()),
+                    0,
+                    0,
+                    min(targetImage.imageWidth(), image.imageWidth()),
+                    min(targetImage.imageHeight(), image.imageHeight()),
+                )
+                .build()
+                .apply(targetImage, image)
+        }
+        image
+    } else if (targetTexture == null) error("Either 'size' and 'targetTexture' are null")
+    else TextureImage.open(manager, targetTexture)

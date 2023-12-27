@@ -150,9 +150,7 @@ data class Blend(val sourceTextures: Set<DynamicTexture>) : TextureModifier {
         for (sourceTexture in
             sourceTextures.map {
                 var textureImage = it.targetTexture(manager)
-                for (modifier in it.modifiers) {
-                    textureImage = modifier.apply(manager, textureImage)
-                }
+                for (modifier in it.modifiers) textureImage = modifier.apply(manager, textureImage)
                 textureImage
             }) {
             sourceTexture.applyOverlay(finalTexture)

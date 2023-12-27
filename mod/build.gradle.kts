@@ -52,8 +52,8 @@ dependencies {
 
     modImplementation(catalog.moonlight)
 
-    modImplementation(catalog.fabric.waystones)
-    modImplementation(catalog.owo)
+    modNeedCopy(catalog.fabric.waystones)
+    modNeedCopy(catalog.owo)
 
     include(catalog.kasechange)
     implementation(catalog.kasechange)

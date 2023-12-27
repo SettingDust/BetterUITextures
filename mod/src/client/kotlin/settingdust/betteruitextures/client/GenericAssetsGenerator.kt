@@ -4,6 +4,7 @@ import com.google.gson.JsonParser
 import com.mojang.serialization.JsonOps
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.fabricmc.loader.api.FabricLoader
+import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynClientResourcesGenerator
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
@@ -31,11 +32,18 @@ object GenericAssetsGenerator :
             .forEach { dynamicPack.addNamespaces(it) }
     }
 
+    val textureIds = mutableSetOf<Identifier>()
+
     override fun getLogger() = BetterUITextures.logger
 
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
+        for (id in textureIds) {
+            dynamicPack.removeResource(ResType.TEXTURES.getPath(id))
+        }
+        textureIds.clear()
+
         val dynamicTextures = Object2ObjectOpenHashMap<Identifier, DynamicTexture>()
 
         val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
@@ -92,7 +100,7 @@ object GenericAssetsGenerator :
         dynamicPack.addAndCloseTexture(Identifier(BetterUITextures.ID, "icons/book"), book)
 
         for ((id, texture) in predefined) {
-            dynamicPack.addAndCloseTexture(id, texture.generate(manager))
+            dynamicPack.addAndCloseTexture(id, texture.generate(manager), false)
         }
 
         for ((_, texture) in dynamicTextures) {
@@ -104,8 +112,13 @@ object GenericAssetsGenerator :
                 textureImage = modifier.apply(manager, textureImage)
             }
 
-            dynamicPack.addAndCloseTexture(texture.targetTexture, textureImage)
+            addTexture(texture.targetTexture!!, textureImage)
         }
+    }
+
+    fun addTexture(identifier: Identifier, image: TextureImage) {
+        textureIds += identifier
+        dynamicPack.addAndCloseTexture(identifier, image, false)
     }
 
     fun TextureImage.removeElementBackground(
