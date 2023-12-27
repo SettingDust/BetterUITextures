@@ -1,0 +1,10 @@
+{
+  "type": "better-ui-textures:fixed",
+  "source": "gui/container/beacon",
+  "sourceRect": {
+    "x": 133,
+    "y": 106,
+    "width": 22,
+    "height": 23
+  }
+}

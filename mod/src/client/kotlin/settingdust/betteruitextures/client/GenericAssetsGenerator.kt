@@ -8,6 +8,7 @@ import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynClientResourcesGenerator
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.minecraft.resource.Resource
 import net.minecraft.resource.ResourceFinder
 import net.minecraft.resource.ResourceManager
 import net.minecraft.resource.ResourcePackProfile
@@ -43,11 +44,11 @@ object GenericAssetsGenerator :
         }
         textureIds.clear()
 
-        val dynamicTextures = Object2ObjectOpenHashMap<Identifier, DynamicTexture>()
+        val dynamicTextures = sortedMapOf<Identifier, DynamicTexture>()
 
         val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
-        for ((id, resource) in
-            ResourceFinder.json("dynamic_texture/modifier").findResources(manager)) {
+
+        fun loadModifiers(id: Identifier?, resource: Resource) {
             BetterUITextures.logger.debug("Loading {} from resource", id)
             val json = resource.reader.use { JsonParser.parseReader(it) }
             val texture = dynamicTexturesCodec.parse(JsonOps.INSTANCE, json)
@@ -55,10 +56,20 @@ object GenericAssetsGenerator :
                 BetterUITextures.logger.error(
                     "Loading {} from resource failed: {}",
                     id,
-                    it.message()
+                    it.message(),
                 )
             }
             texture.result().ifPresent { dynamicTextures[id] = it }
+        }
+
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/generic_modifier").findResources(manager)) {
+            loadModifiers(id, resource)
+        }
+
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/modifier").findResources(manager)) {
+            loadModifiers(id, resource)
         }
 
         val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()

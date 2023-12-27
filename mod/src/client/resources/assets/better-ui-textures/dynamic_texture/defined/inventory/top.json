@@ -17,6 +17,10 @@
     "width": 176,
     "height": 139
   },
+  "targetSize": {
+    "width": 176,
+    "height": 83
+  },
   "centerColorPoint": {
     "x": 5,
     "y": 7

@@ -1,0 +1,23 @@
+{
+  "container.inventory": " ",
+  "container.crafting": " ",
+  "container.enchant": " ",
+  "container.repair": " ",
+  "container.brewing": " ",
+  "container.loom": " ",
+  "container.grindstone_title": " ",
+  "container.cartography_table": " ",
+  "container.stonecutter":" ",
+  "container.upgrade": " ",
+  "container.dispenser": " ",
+  "container.shulkerBox": " ",
+  "container.hopper": " ",
+  "container.furnace": " ",
+  "container.smoker": " ",
+  "container.blast_furnace": " ",
+  "container.dropper": " ",
+  "container.chest": " ",
+  "container.chestDouble": " ",
+  "merchant.trades": " ",
+  "container.enderchest": " "
+}

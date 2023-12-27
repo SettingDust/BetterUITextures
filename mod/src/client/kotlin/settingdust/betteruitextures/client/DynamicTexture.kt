@@ -20,25 +20,27 @@ fun DynamicTexture.targetTexture(manager: ResourceManager): TextureImage =
     if (size != null) {
         val image = TextureImage.createNew(size.width, size.height, null)
         if (targetTexture != null) {
-            val targetImage = TextureImage.open(manager, targetTexture)
-            ImageTransformer.builder(
-                    targetImage.imageWidth(),
-                    targetImage.imageHeight(),
-                    image.imageWidth(),
-                    image.imageHeight()
-                )
-                .copyRect(
-                    0,
-                    0,
-                    min(targetImage.imageWidth(), image.imageWidth()),
-                    min(targetImage.imageHeight(), image.imageHeight()),
-                    0,
-                    0,
-                    min(targetImage.imageWidth(), image.imageWidth()),
-                    min(targetImage.imageHeight(), image.imageHeight()),
-                )
-                .build()
-                .apply(targetImage, image)
+            try {
+                val targetImage = TextureImage.open(manager, targetTexture)
+                ImageTransformer.builder(
+                        targetImage.imageWidth(),
+                        targetImage.imageHeight(),
+                        image.imageWidth(),
+                        image.imageHeight()
+                    )
+                    .copyRect(
+                        0,
+                        0,
+                        min(targetImage.imageWidth(), image.imageWidth()),
+                        min(targetImage.imageHeight(), image.imageHeight()),
+                        0,
+                        0,
+                        min(targetImage.imageWidth(), image.imageWidth()),
+                        min(targetImage.imageHeight(), image.imageHeight()),
+                    )
+                    .build()
+                    .apply(targetImage, image)
+            } catch (_: Throwable) {}
         }
         image
     } else if (targetTexture == null) error("Either 'size' and 'targetTexture' are null")

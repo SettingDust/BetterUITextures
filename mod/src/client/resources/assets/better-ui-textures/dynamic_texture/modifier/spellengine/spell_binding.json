@@ -37,7 +37,7 @@
       "targetRect": {
         "x": 0,
         "y": 83,
-        "width": 177,
+        "width": 176,
         "height": 83
       }
     },
@@ -67,7 +67,7 @@
               "targetRect": {
                 "x": 0,
                 "y": 0,
-                "width": 177,
+                "width": 176,
                 "height": 83
               }
             }
@@ -155,6 +155,16 @@
         "y": 166,
         "width": 108,
         "height": 57
+      }
+    },
+    {
+      "type": "better-ui-textures:copy_rect",
+      "sourceTexture": "better-ui-textures:dynamic_texture/defined/slot/abreast",
+      "targetRect": {
+        "x": 12,
+        "y": 43,
+        "width": 42,
+        "height": 23
       }
     }
   ]
