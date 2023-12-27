@@ -33,6 +33,8 @@ dependencies {
     runtimeOnly(project(":mod")) { isTransitive = false }
 }
 
+afterEvaluate { sourceSets { configureEach { compileClasspath = objects.fileCollection() } } }
+
 tasks {
     withType<AbstractRunTask> { dependsOn(":mod:remapJar") }
 

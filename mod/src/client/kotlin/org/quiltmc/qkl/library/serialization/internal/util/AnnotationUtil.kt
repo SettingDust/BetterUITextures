@@ -43,10 +43,10 @@ internal val SerialDescriptor.classDiscriminator: String?
     get() = codecPolymorphicAnnotation?.classDiscriminator?.takeIf { it.isNotEmpty() }
 
 internal val SerialDescriptor.useInlineWrapper: Boolean?
-    get() = codecAnnotation?.useInlineWrapper?.toBoolean()
+    get() = codecAnnotation?.useInlineWrapper?.get()
 
 internal val SerialDescriptor.encodeDefaults: Boolean?
-    get() = codecAnnotation?.encodeDefaults?.toBoolean()
+    get() = codecAnnotation?.encodeDefaults?.get()
 
 internal val SerialDescriptor.flattenPolymorphic: Boolean?
-    get() = codecPolymorphicAnnotation?.flatten?.toBoolean()
+    get() = codecPolymorphicAnnotation?.flatten?.get()

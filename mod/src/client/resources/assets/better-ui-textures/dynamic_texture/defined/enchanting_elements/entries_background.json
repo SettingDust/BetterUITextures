@@ -1,0 +1,20 @@
+{
+  "type": "better_ui_textures:nine_patch",
+  "source": "minecraft:gui/container/enchanting_table",
+  "border": {
+    "first": {
+      "width": 1,
+      "height": 1
+    },
+    "second": {
+      "width": 1,
+      "height": 1
+    }
+  },
+  "sourceRect": {
+    "x": 59,
+    "y": 13,
+    "width": 110,
+    "height": 59
+  }
+}

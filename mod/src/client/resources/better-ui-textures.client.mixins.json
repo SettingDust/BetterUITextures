@@ -5,6 +5,7 @@
   "refmap": "${id}.client.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ForwardingDynamicOpsAccessor"
   ],
   "client": [
   ],

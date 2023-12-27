@@ -129,6 +129,28 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
                 .build()
                 .apply(entryStatuses, transformed)
 
+            // Book icon
+            val book = TextureImage.open(manager, Identifier("item/book"))
+            book.toGrayscale()
+            val overlay = TextureImage.createNew(book.imageWidth(), book.imageHeight(), null)
+            overlay.image.fillRect(
+                0,
+                0,
+                overlay.imageWidth(),
+                overlay.imageHeight(),
+                0xFFFFFFFF.toUInt().toInt()
+            )
+            book.applyOverlayOnExisting(overlay)
+            ImageTransformer.builder(
+                    book.imageWidth(),
+                    book.imageHeight(),
+                    transformed.imageWidth(),
+                    transformed.imageHeight()
+                )
+                .apply { copyRect(0, 0, book.imageWidth(), book.imageHeight(), 240, 0) }
+                .build()
+                .apply(book, transformed)
+
             return transformed
         }
     }

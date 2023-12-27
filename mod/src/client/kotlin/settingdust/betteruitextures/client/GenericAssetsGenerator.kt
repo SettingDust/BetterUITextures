@@ -1,20 +1,18 @@
 package settingdust.betteruitextures.client
 
+import com.google.gson.JsonParser
+import com.mojang.serialization.JsonOps
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.fabricmc.loader.api.FabricLoader
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynClientResourcesGenerator
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
+import net.minecraft.resource.ResourceFinder
 import net.minecraft.resource.ResourceManager
 import net.minecraft.resource.ResourcePackProfile
 import net.minecraft.util.Identifier
 import settingdust.betteruitextures.BetterUITextures
-
-data class Point(val x: Int, val y: Int)
-
-data class Size(val width: Int, val height: Int)
-
-data class NinePatch(val first: Point, val second: Point)
 
 object GenericAssetsGenerator :
     DynClientResourcesGenerator(
@@ -44,31 +42,77 @@ object GenericAssetsGenerator :
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
+        val textures = Object2ObjectOpenHashMap<Identifier, DynamicTexture>()
+
+        val finder = ResourceFinder.json("dynamic_texture/modifier")
+        val codec = codecFactory.create<DynamicTexture>()
+        for ((id, resource) in finder.findResources(manager)) {
+            BetterUITextures.logger.debug("Loading {} from resource", id)
+            val json = resource.reader.use { JsonParser.parseReader(it) }
+            val texture = codec.parse(JsonOps.INSTANCE, json)
+            texture.error().ifPresent {
+                BetterUITextures.logger.error(
+                    "Loading {} from resource failed: {}",
+                    id,
+                    it.message()
+                )
+            }
+            texture.result().ifPresent { textures[id] = it }
+        }
+
         StandaloneWindow.regenerateDynamicAssets(manager, dynamicPack)
         InventoryWindow.regenerateDynamicAssets(manager, dynamicPack)
         EnchantingElements.regenerateDynamicAssets(manager, dynamicPack)
 
+        val book = TextureImage.open(manager, Identifier("item/book"))
+        book.toGrayscale()
+        val overlay = TextureImage.createNew(book.imageWidth(), book.imageHeight(), null)
+        overlay.image.fillRect(
+            0,
+            0,
+            overlay.imageWidth(),
+            overlay.imageHeight(),
+            0x99FFFFFF.toUInt().toInt()
+        )
+        book.applyOverlayOnExisting(overlay)
+        dynamicPack.addAndCloseTexture(Identifier(BetterUITextures.NAMESPACE, "icons/book"), book)
+
         for (generator in generators) {
             generator.regenerateDynamicAssets(manager, dynamicPack)
+        }
+
+        PredefinedTextureLoader.reload(manager)
+        for ((id, texture) in PredefinedTextureLoader.predefined) {
+            dynamicPack.addAndCloseTexture(id, texture.generate(manager))
+        }
+
+        for ((_, texture) in textures) {
+            if (texture.modId != null && !FabricLoader.getInstance().isModLoaded(texture.modId))
+                continue
+            val textureImage = TextureImage.open(manager, texture.targetTexture)
+            for (modifier in texture.modifiers) {
+                modifier.apply(manager, textureImage)
+            }
+            dynamicPack.addAndCloseTexture(texture.targetTexture, textureImage)
         }
     }
 
     fun TextureImage.removeElementBackground(
         width: Int,
         height: Int,
-        ninePatch: NinePatch,
+        ninePatch: Border,
         offsetX: Int = 0,
         offsetY: Int = 0,
         color: Int = -0x39393A,
     ) {
-        val rightX = width - ninePatch.second.x
-        val bottomY = height - ninePatch.second.y
+        val rightX = width - ninePatch.second.width
+        val bottomY = height - ninePatch.second.height
         for (x in 0 until width) {
             for (y in 0 until height) {
-                if (x < ninePatch.first.x || x > rightX) {
+                if (x < ninePatch.first.width || x > rightX) {
                     setFramePixel(0, x + offsetX, y + offsetY, 0)
                 } else {
-                    if (y < ninePatch.first.y || y > bottomY) {
+                    if (y < ninePatch.first.height || y > bottomY) {
                         setFramePixel(0, x + offsetX, y + offsetY, 0)
                     } else {
                         val originalColor = getFramePixel(0, x + offsetX, y + offsetY)
@@ -81,7 +125,7 @@ object GenericAssetsGenerator :
 
     data object StandaloneWindow : DynamicAssetsGenerator() {
         private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_background")
-        val NINE_PATCH = NinePatch(Point(4, 17), Point(7, 6))
+        val NINE_PATCH = Border(Size(4, 17), Size(7, 6))
         private val SIZE = Size(195, 136)
 
         override fun regenerateDynamicAssets(
@@ -171,7 +215,7 @@ object GenericAssetsGenerator :
         }
 
         private object Top {
-            val NINE_PATCH = NinePatch(Point(7, 17), Point(7, 14))
+            val NINE_PATCH = Border(Size(7, 17), Size(7, 14))
             private val SIZE = Size(176, 139)
 
             fun generate(manager: ResourceManager) =
@@ -200,7 +244,7 @@ object GenericAssetsGenerator :
         object EntriesBackground {
             const val WIDTH = 110
             const val HEIGHT = 59
-            val NINE_PATCH = NinePatch(Point(1, 1), Point(1, 1))
+            val NINE_PATCH = Border(Size(1, 1), Size(1, 1))
 
             internal fun generate(manager: ResourceManager) =
                 TextureImage.open(manager, Identifier("gui/container/enchanting_table"))
@@ -215,7 +259,7 @@ object GenericAssetsGenerator :
         object EntryStatuses {
             const val WIDTH = 108
             const val HEIGHT = 57
-            val NINE_PATCH = NinePatch(Point(2, 2), Point(2, 2))
+            val NINE_PATCH = Border(Size(2, 2), Size(2, 2))
 
             internal fun generate(manager: ResourceManager) =
                 TextureImage.open(manager, Identifier("gui/container/enchanting_table"))

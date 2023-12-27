@@ -70,3 +70,5 @@ dependencies {
     runtimeOnly(catalog.fabric.kotlin) { isTransitive = false }
     runtimeOnly(project(":mod")) { isTransitive = false }
 }
+
+afterEvaluate { sourceSets { configureEach { compileClasspath = objects.fileCollection() } } }

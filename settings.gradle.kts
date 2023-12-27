@@ -149,6 +149,9 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
 
     // https://modrinth.com/mod/pack-it-up/versions
     library("pack-it-up", "maven.modrinth", "pack-it-up").version("0.3.1+$minecraft")
+
+    // https://github.com/pearxteam/kasechange
+    library("kasechange", "net.pearx.kasechange", "kasechange").version("1.4.1")
 }
 
 plugins {

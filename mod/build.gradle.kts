@@ -55,6 +55,9 @@ dependencies {
     modImplementation(catalog.fabric.waystones)
     modImplementation(catalog.owo)
 
+    include(catalog.kasechange)
+    implementation(catalog.kasechange)
+
     modNeedCopy(catalog.spell.engine)
     modNeedCopy(catalog.trinkets)
     modNeedCopy(catalog.spell.power)

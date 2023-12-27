@@ -4,53 +4,65 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.client.texture.NativeImage
 
-fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureImage {
-    val doubleCornerWidth: Int = ninePatch.first.x + ninePatch.second.x
-    val doubleCornerHeight: Int = ninePatch.first.y + ninePatch.second.y
+fun TextureImage.resizeNinePatch(ninePatch: Border, target: Size): TextureImage {
+    val doubleCornerWidth: Int = ninePatch.first.width + ninePatch.second.width
+    val doubleCornerHeight: Int = ninePatch.first.height + ninePatch.second.height
 
-    val originalRightX = imageWidth() - ninePatch.second.x
-    val targetRightX = target.width - ninePatch.second.x
+    val originalRightX = imageWidth() - ninePatch.second.width
+    val targetRightX = target.width - ninePatch.second.width
 
-    val originalBottomY = imageHeight() - ninePatch.second.y
-    val targetBottomY = target.height - ninePatch.second.y
+    val originalBottomY = imageHeight() - ninePatch.second.height
+    val targetBottomY = target.height - ninePatch.second.height
 
     val centerSize = Size(imageWidth() - doubleCornerWidth, imageHeight() - doubleCornerHeight)
     val targetCenterSize =
         Size(target.width - doubleCornerWidth, target.height - doubleCornerHeight)
 
     val leftEdge =
-        NativeImage(ninePatch.first.x, targetCenterSize.height, true).also {
-            image.resizeSubRectTo(0, ninePatch.first.y, ninePatch.first.x, centerSize.height, it)
+        NativeImage(ninePatch.first.width, targetCenterSize.height, true).also {
+            image.resizeSubRectTo(
+                0,
+                ninePatch.first.height,
+                ninePatch.first.width,
+                centerSize.height,
+                it
+            )
         }
     val rightEdge =
-        NativeImage(ninePatch.second.x, targetCenterSize.height, true).also {
+        NativeImage(ninePatch.second.width, targetCenterSize.height, true).also {
             image.resizeSubRectTo(
                 originalRightX,
-                ninePatch.first.y,
-                ninePatch.second.x,
+                ninePatch.first.height,
+                ninePatch.second.width,
                 centerSize.height,
                 it
             )
         }
     val topEdge =
-        NativeImage(targetCenterSize.width, ninePatch.first.y, true).also {
-            image.resizeSubRectTo(ninePatch.first.x, 0, centerSize.width, ninePatch.first.y, it)
+        NativeImage(targetCenterSize.width, ninePatch.first.height, true).also {
+            image.resizeSubRectTo(
+                ninePatch.first.width,
+                0,
+                centerSize.width,
+                ninePatch.first.height,
+                it
+            )
         }
     val bottomEdge =
-        NativeImage(targetCenterSize.width, ninePatch.second.y, true).also {
+        NativeImage(targetCenterSize.width, ninePatch.second.height, true).also {
             image.resizeSubRectTo(
-                ninePatch.first.x,
+                ninePatch.first.width,
                 originalBottomY,
                 centerSize.width,
-                ninePatch.second.y,
+                ninePatch.second.height,
                 it
             )
         }
     val center =
         NativeImage(targetCenterSize.width, targetCenterSize.height, true).also {
             image.resizeSubRectTo(
-                ninePatch.first.x,
-                ninePatch.first.y,
+                ninePatch.first.width,
+                ninePatch.first.height,
                 centerSize.width,
                 centerSize.height,
                 it
@@ -60,15 +72,25 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
     return TextureImage.of(
         NativeImage(target.width, target.height, true).also {
             // Corners
-            image.copyRect(it, 0, 0, 0, 0, ninePatch.first.x, ninePatch.first.y, false, false)
+            image.copyRect(
+                it,
+                0,
+                0,
+                0,
+                0,
+                ninePatch.first.width,
+                ninePatch.first.height,
+                false,
+                false
+            )
             image.copyRect(
                 it,
                 originalRightX,
                 0,
                 targetRightX,
                 0,
-                ninePatch.second.x,
-                ninePatch.first.y,
+                ninePatch.second.width,
+                ninePatch.first.height,
                 false,
                 false
             )
@@ -78,8 +100,8 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 originalBottomY,
                 0,
                 targetBottomY,
-                ninePatch.first.x,
-                ninePatch.second.y,
+                ninePatch.first.width,
+                ninePatch.second.height,
                 false,
                 false
             )
@@ -89,8 +111,8 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 originalBottomY,
                 targetRightX,
                 targetBottomY,
-                ninePatch.second.x,
-                ninePatch.second.y,
+                ninePatch.second.width,
+                ninePatch.second.height,
                 false,
                 false
             )
@@ -100,7 +122,7 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 0,
                 0,
                 0,
-                ninePatch.first.y,
+                ninePatch.first.height,
                 leftEdge.width,
                 leftEdge.height,
                 false,
@@ -111,7 +133,7 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 0,
                 0,
                 targetRightX,
-                ninePatch.first.y,
+                ninePatch.first.height,
                 rightEdge.width,
                 rightEdge.height,
                 false,
@@ -121,7 +143,7 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 it,
                 0,
                 0,
-                ninePatch.first.x,
+                ninePatch.first.width,
                 0,
                 topEdge.width,
                 topEdge.height,
@@ -132,7 +154,7 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 it,
                 0,
                 0,
-                ninePatch.first.x,
+                ninePatch.first.width,
                 targetBottomY,
                 bottomEdge.width,
                 bottomEdge.height,
@@ -143,8 +165,8 @@ fun TextureImage.resizeNinePatch(ninePatch: NinePatch, target: Size): TextureIma
                 it,
                 0,
                 0,
-                ninePatch.first.x,
-                ninePatch.first.y,
+                ninePatch.first.width,
+                ninePatch.first.height,
                 center.width,
                 center.height,
                 false,

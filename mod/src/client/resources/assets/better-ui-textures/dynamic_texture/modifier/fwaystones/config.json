@@ -1,0 +1,15 @@
+{
+  "modId": "fwaystones",
+  "targetTexture": "fwaystones:gui/waystone_config",
+  "modifiers": [
+    {
+      "type": "better_ui_textures:remove_rect",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 20,
+        "height": 20
+      }
+    }
+  ]
+}

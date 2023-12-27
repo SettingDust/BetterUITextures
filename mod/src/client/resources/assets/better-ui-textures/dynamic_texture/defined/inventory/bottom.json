@@ -1,0 +1,10 @@
+{
+  "type": "better_ui_textures:fixed",
+  "source": "gui/container/generic_54",
+  "sourceRect": {
+    "x": 0,
+    "y": 139,
+    "width": 176,
+    "height": 83
+  }
+}
