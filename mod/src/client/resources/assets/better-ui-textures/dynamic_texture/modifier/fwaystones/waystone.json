@@ -32,7 +32,8 @@
       "color": "FFC6C6C6"
     },
     {
-      "type": "better-ui-textures:blend",
+      "type": "better-ui-textures:overlay",
+      "invert": true,
       "sourceTextures": [
         {
           "size": {

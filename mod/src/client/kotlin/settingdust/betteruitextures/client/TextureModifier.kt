@@ -20,8 +20,8 @@ object TextureModifierTypes {
     @JvmStatic val REMOVE_COLOR = register<RemoveColor>()
     @JvmStatic val REMOVE_RECT = register<RemoveRect>()
     @JvmStatic val REMOVE_BORDER = register<RemoveBorder>()
-    @JvmStatic val COPY_RECT = register<CopyRect>()
-    @JvmStatic val BLEND = register<Blend>()
+    @JvmStatic val OVERLAY = register<CopyRect>()
+    @JvmStatic val BLEND = register<Overlay>()
     @JvmStatic val EXPAND_CANVAS = register<ExpandCanvas>()
     @JvmStatic val COPY_NINE_PATCH = register<CopyNinePatch>()
 
@@ -112,13 +112,15 @@ data class RemoveBorder(val rect: Rect, val border: Border) : TextureModifier {
 @CodecSerializable
 data class CopyRect(
     val sourceTexture: @Contextual Identifier,
-    val fromRect: Rect,
+    var fromRect: Rect = Rect.INVALID,
     val targetRect: Rect
 ) : TextureModifier {
-    @Transient override val type = TextureModifierTypes.COPY_RECT
+    @Transient override val type = TextureModifierTypes.OVERLAY
 
     override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {
         val sourceImage = TextureImage.open(manager, sourceTexture)
+        if (fromRect == Rect.INVALID)
+            fromRect = Rect(0, 0, sourceImage.imageWidth(), sourceImage.imageHeight())
         ImageTransformer.builder(
                 sourceImage.imageWidth(),
                 sourceImage.imageHeight(),
@@ -142,7 +144,13 @@ data class CopyRect(
 }
 
 @CodecSerializable
-data class Blend(val sourceTextures: Set<DynamicTexture>) : TextureModifier {
+data class Overlay(
+    val sourceTextures: Set<DynamicTexture>,
+    /** Only blend the pixel alpha not 0 */
+    val onExisting: Boolean = false,
+    /** If false, source texture on base texture. If true, base texture on source texture. */
+    val invert: Boolean = false
+) : TextureModifier {
     @Transient override val type = TextureModifierTypes.BLEND
 
     override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {
@@ -153,8 +161,14 @@ data class Blend(val sourceTextures: Set<DynamicTexture>) : TextureModifier {
                 for (modifier in it.modifiers) textureImage = modifier.apply(manager, textureImage)
                 textureImage
             }) {
-            sourceTexture.applyOverlay(finalTexture)
-            finalTexture = sourceTexture
+            if (!invert) {
+                if (onExisting) finalTexture.applyOverlayOnExisting(sourceTexture)
+                else finalTexture.applyOverlay(sourceTexture)
+            } else {
+                if (onExisting) sourceTexture.applyOverlayOnExisting(finalTexture)
+                else sourceTexture.applyOverlay(finalTexture)
+                finalTexture = sourceTexture
+            }
         }
         return finalTexture
     }
@@ -181,7 +195,6 @@ data class CopyNinePatch(
         val sourceImage = TextureImage.open(manager, sourceTexture)
         if (sourceRect == Rect.INVALID)
             sourceRect = Rect(0, 0, sourceImage.imageWidth(), sourceImage.imageHeight())
-        if (targetRect == Rect.INVALID) targetRect = sourceRect
         val extractedImage = TextureImage.createNew(sourceRect.width, sourceRect.height, null)
         ImageTransformer.builder(
                 sourceImage.imageWidth(),
