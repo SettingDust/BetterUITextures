@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier
 import net.pearx.kasechange.toSnakeCase
 import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
 import settingdust.betteruitextures.BetterUITextures
+import settingdust.betteruitextures.serialization.UIntHexSerializer
 
 object TextureModifierTypes {
     @JvmStatic val REMOVE_COLOR = register<RemoveColor>()
@@ -21,7 +22,8 @@ object TextureModifierTypes {
     @JvmStatic val REMOVE_BORDER = register<RemoveBorder>()
     @JvmStatic val COPY_RECT = register<CopyRect>()
     @JvmStatic val BLEND = register<Blend>()
-    @JvmStatic val COPY_PREDEFINED = register<CopyPredefined>()
+    @JvmStatic val EXPAND_CANVAS = register<ExpandCanvas>()
+    @JvmStatic val COPY_NINE_PATCH = register<CopyNinePatch>()
 
     private inline fun <reified T : TextureModifier> register() =
         Registry.register(
@@ -41,7 +43,7 @@ class TextureModifierType<T : TextureModifier>(type: KType) {
 interface TextureModifier {
     val type: TextureModifierType<*>
 
-    fun apply(manager: ResourceManager, baseTexture: TextureImage)
+    fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage
 
     object Serializer :
         DispatchedCodecSerializer<TextureModifier, TextureModifierType<*>>(
@@ -53,7 +55,10 @@ interface TextureModifier {
 }
 
 @CodecSerializable
-data class RemoveColor(val rect: Rect, val color: UInt) : TextureModifier {
+data class RemoveColor(
+    val rect: Rect,
+    val color: @Serializable(with = UIntHexSerializer::class) UInt
+) : TextureModifier {
     @Transient override val type = TextureModifierTypes.REMOVE_COLOR
 
     override fun apply(manager: ResourceManager, baseTexture: TextureImage) =
@@ -64,6 +69,7 @@ data class RemoveColor(val rect: Rect, val color: UInt) : TextureModifier {
                     if (originalColor == color) setFramePixel(0, x + rect.x, y + rect.y, 0)
                 }
             }
+            baseTexture
         }
 }
 
@@ -78,6 +84,7 @@ data class RemoveRect(val rect: Rect) : TextureModifier {
                     setFramePixel(0, x + rect.x, y + rect.y, 0)
                 }
             }
+            baseTexture
         }
 }
 
@@ -98,6 +105,7 @@ data class RemoveBorder(val rect: Rect, val border: Border) : TextureModifier {
                     }
                 }
             }
+            baseTexture
         }
 }
 
@@ -109,7 +117,7 @@ data class CopyRect(
 ) : TextureModifier {
     @Transient override val type = TextureModifierTypes.COPY_RECT
 
-    override fun apply(manager: ResourceManager, baseTexture: TextureImage) {
+    override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {
         val sourceImage = TextureImage.open(manager, sourceTexture)
         ImageTransformer.builder(
                 sourceImage.imageWidth(),
@@ -129,46 +137,93 @@ data class CopyRect(
             )
             .build()
             .apply(sourceImage, baseTexture)
+        return baseTexture
     }
 }
 
 @CodecSerializable
-data class Blend(val sourceTextures: Set<@Contextual Identifier>) : TextureModifier {
+data class Blend(val sourceTextures: Set<DynamicTexture>) : TextureModifier {
     @Transient override val type = TextureModifierTypes.BLEND
 
-    override fun apply(manager: ResourceManager, baseTexture: TextureImage) {
-        baseTexture.applyOverlay(
-            *sourceTextures.map { TextureImage.open(manager, it) }.toTypedArray(),
-        )
+    override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {
+        var finalTexture = baseTexture
+        for (sourceTexture in
+            sourceTextures.map {
+                var textureImage = it.targetTexture(manager)
+                for (modifier in it.modifiers) {
+                    textureImage = modifier.apply(manager, textureImage)
+                }
+                textureImage
+            }) {
+            sourceTexture.applyOverlay(finalTexture)
+            finalTexture = sourceTexture
+        }
+        return finalTexture
     }
 }
 
 @CodecSerializable
-data class CopyPredefined(val sourceTexture: @Contextual Identifier, val targetRect: Rect) :
-    TextureModifier {
-    @Transient override val type = TextureModifierTypes.COPY_PREDEFINED
+data class ExpandCanvas(val rect: Rect) : TextureModifier {
+    @Transient override val type = TextureModifierTypes.EXPAND_CANVAS
 
-    override fun apply(manager: ResourceManager, baseTexture: TextureImage) {
-        val sourceImage =
-            PredefinedTextureLoader.predefined[PredefinedTextureLoader.wrapId(sourceTexture)]!!
-                .generate(manager)
+    override fun apply(manager: ResourceManager, baseTexture: TextureImage) =
+        baseTexture.expandCanvas(rect)
+}
+
+@CodecSerializable
+data class CopyNinePatch(
+    val sourceTexture: @Contextual Identifier,
+    val border: Border,
+    var sourceRect: Rect = Rect.INVALID,
+    var targetRect: Rect
+) : TextureModifier {
+    @Transient override val type = TextureModifierTypes.COPY_NINE_PATCH
+
+    override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {
+        val sourceImage = TextureImage.open(manager, sourceTexture)
+        if (sourceRect == Rect.INVALID)
+            sourceRect = Rect(0, 0, sourceImage.imageWidth(), sourceImage.imageHeight())
+        if (targetRect == Rect.INVALID) targetRect = sourceRect
+        val extractedImage = TextureImage.createNew(sourceRect.width, sourceRect.height, null)
         ImageTransformer.builder(
                 sourceImage.imageWidth(),
                 sourceImage.imageHeight(),
-                baseTexture.imageWidth(),
-                baseTexture.imageHeight()
+                sourceRect.width,
+                sourceRect.height
+            )
+            .copyRect(
+                sourceRect.x,
+                sourceRect.y,
+                sourceRect.width,
+                sourceRect.height,
+                0,
+                0,
+                sourceRect.width,
+                sourceRect.height
+            )
+            .build()
+            .apply(sourceImage, extractedImage)
+        val resized =
+            extractedImage.resizeNinePatch(border, Size(targetRect.width, targetRect.height))
+        ImageTransformer.builder(
+                targetRect.width,
+                targetRect.height,
+                targetRect.width,
+                targetRect.height
             )
             .copyRect(
                 0,
                 0,
-                sourceImage.imageWidth(),
-                sourceImage.imageHeight(),
+                targetRect.width,
+                targetRect.height,
                 targetRect.x,
                 targetRect.y,
                 targetRect.width,
                 targetRect.height
             )
             .build()
-            .apply(sourceImage, baseTexture)
+            .apply(resized, baseTexture)
+
+        return baseTexture
     }
 }

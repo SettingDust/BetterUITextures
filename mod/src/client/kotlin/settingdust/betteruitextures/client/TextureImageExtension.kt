@@ -5,6 +5,7 @@ import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.client.texture.NativeImage
 
 fun TextureImage.resizeNinePatch(ninePatch: Border, target: Size): TextureImage {
+    if (imageWidth() == target.width && imageHeight() == target.height) return this
     val doubleCornerWidth: Int = ninePatch.first.width + ninePatch.second.width
     val doubleCornerHeight: Int = ninePatch.first.height + ninePatch.second.height
 
@@ -177,10 +178,10 @@ fun TextureImage.resizeNinePatch(ninePatch: Border, target: Size): TextureImage 
     )
 }
 
-fun TextureImage.expandCanvas(targetSize: Size, offset: Point = Point(0, 0)) =
-    TextureImage.createNew(targetSize.width, targetSize.height, metadata).also {
-        ImageTransformer.builder(imageWidth(), imageHeight(), targetSize.width, targetSize.height)
-            .copyRect(0, 0, imageWidth(), imageHeight(), offset.x, offset.y)
+fun TextureImage.expandCanvas(targetRect: Rect): TextureImage =
+    TextureImage.createNew(targetRect.width, targetRect.height, metadata).also {
+        ImageTransformer.builder(imageWidth(), imageHeight(), targetRect.width, targetRect.height)
+            .copyRect(0, 0, imageWidth(), imageHeight(), targetRect.x, targetRect.y)
             .build()
             .apply(this, it)
     }

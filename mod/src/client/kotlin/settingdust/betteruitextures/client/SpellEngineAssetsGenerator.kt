@@ -43,13 +43,12 @@ data object SpellEngineAssetsGenerator : DynamicAssetsGenerator() {
 
             val transformed =
                 GenericAssetsGenerator.InventoryWindow.generateBackground(
-                        manager,
-                        Size(
-                            GenericAssetsGenerator.InventoryWindow.WIDTH,
-                            WINDOW_HEIGHT - GenericAssetsGenerator.InventoryWindow.BOTTOM_HEIGHT
-                        )
+                    manager,
+                    Size(
+                        GenericAssetsGenerator.InventoryWindow.WIDTH,
+                        WINDOW_HEIGHT - GenericAssetsGenerator.InventoryWindow.BOTTOM_HEIGHT
                     )
-                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
+                )
 
             transformed.applyOverlay(image)
 

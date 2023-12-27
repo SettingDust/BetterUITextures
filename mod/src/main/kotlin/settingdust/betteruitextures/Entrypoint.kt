@@ -7,11 +7,10 @@ fun init() {}
 
 object BetterUITextures {
     const val ID = "better-ui-textures"
-    const val NAMESPACE = "better_ui_textures"
 
     val logger = LogManager.getLogger()!!
 
     fun identifier(name: String): Identifier {
-        return Identifier(NAMESPACE, name)
+        return Identifier(ID, name)
     }
 }

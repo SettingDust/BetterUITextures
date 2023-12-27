@@ -24,17 +24,11 @@ object GenericAssetsGenerator :
         ),
     ) {
 
-    private val generators =
-        DynamicAssetsGenerator::class
-            .sealedSubclasses
-            .map {
-                it.objectInstance ?: throw IllegalStateException("Generators have to be object")
-            }
-            .sortedBy { it.modId }
-            .filter { it.modId != null && FabricLoader.getInstance().isModLoaded(it.modId) }
-
     init {
-        generators.map { it.modId }.forEach(dynamicPack::addNamespaces)
+        FabricLoader.getInstance()
+            .allMods
+            .map { it.metadata.id }
+            .forEach { dynamicPack.addNamespaces(it) }
     }
 
     override fun getLogger() = BetterUITextures.logger
@@ -42,14 +36,14 @@ object GenericAssetsGenerator :
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
-        val textures = Object2ObjectOpenHashMap<Identifier, DynamicTexture>()
+        val dynamicTextures = Object2ObjectOpenHashMap<Identifier, DynamicTexture>()
 
-        val finder = ResourceFinder.json("dynamic_texture/modifier")
-        val codec = codecFactory.create<DynamicTexture>()
-        for ((id, resource) in finder.findResources(manager)) {
+        val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/modifier").findResources(manager)) {
             BetterUITextures.logger.debug("Loading {} from resource", id)
             val json = resource.reader.use { JsonParser.parseReader(it) }
-            val texture = codec.parse(JsonOps.INSTANCE, json)
+            val texture = dynamicTexturesCodec.parse(JsonOps.INSTANCE, json)
             texture.error().ifPresent {
                 BetterUITextures.logger.error(
                     "Loading {} from resource failed: {}",
@@ -57,12 +51,32 @@ object GenericAssetsGenerator :
                     it.message()
                 )
             }
-            texture.result().ifPresent { textures[id] = it }
+            texture.result().ifPresent { dynamicTextures[id] = it }
         }
 
-        StandaloneWindow.regenerateDynamicAssets(manager, dynamicPack)
-        InventoryWindow.regenerateDynamicAssets(manager, dynamicPack)
-        EnchantingElements.regenerateDynamicAssets(manager, dynamicPack)
+        val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()
+        val predefinedCodec = codecFactory.create<PredefinedTexture>()
+
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/defined").findResources(manager)) {
+            BetterUITextures.logger.debug("Loading {} from resource", id)
+            val json = resource.reader.use { JsonParser.parseReader(it) }
+            val texture = predefinedCodec.parse(JsonOps.INSTANCE, json)
+            texture.error().ifPresent {
+                BetterUITextures.logger.error(
+                    "Loading {} from resource failed: {}",
+                    id,
+                    it.message(),
+                )
+            }
+            texture.result().ifPresent {
+                predefined[
+                    Identifier(
+                        id.namespace,
+                        id.path.removePrefix("textures").removeSuffix(".json")
+                    )] = it
+            }
+        }
 
         val book = TextureImage.open(manager, Identifier("item/book"))
         book.toGrayscale()
@@ -75,24 +89,21 @@ object GenericAssetsGenerator :
             0x99FFFFFF.toUInt().toInt()
         )
         book.applyOverlayOnExisting(overlay)
-        dynamicPack.addAndCloseTexture(Identifier(BetterUITextures.NAMESPACE, "icons/book"), book)
+        dynamicPack.addAndCloseTexture(Identifier(BetterUITextures.ID, "icons/book"), book)
 
-        for (generator in generators) {
-            generator.regenerateDynamicAssets(manager, dynamicPack)
-        }
-
-        PredefinedTextureLoader.reload(manager)
-        for ((id, texture) in PredefinedTextureLoader.predefined) {
+        for ((id, texture) in predefined) {
             dynamicPack.addAndCloseTexture(id, texture.generate(manager))
         }
 
-        for ((_, texture) in textures) {
+        for ((_, texture) in dynamicTextures) {
             if (texture.modId != null && !FabricLoader.getInstance().isModLoaded(texture.modId))
                 continue
-            val textureImage = TextureImage.open(manager, texture.targetTexture)
+            var textureImage = texture.targetTexture(manager)
+
             for (modifier in texture.modifiers) {
-                modifier.apply(manager, textureImage)
+                textureImage = modifier.apply(manager, textureImage)
             }
+
             dynamicPack.addAndCloseTexture(texture.targetTexture, textureImage)
         }
     }
@@ -124,7 +135,7 @@ object GenericAssetsGenerator :
     }
 
     data object StandaloneWindow : DynamicAssetsGenerator() {
-        private val BACKGROUND = Identifier(BetterUITextures.NAMESPACE, "gui/standalone_background")
+        private val BACKGROUND = Identifier(BetterUITextures.ID, "gui/standalone_background")
         val NINE_PATCH = Border(Size(4, 17), Size(7, 6))
         private val SIZE = Size(195, 136)
 
@@ -152,8 +163,8 @@ object GenericAssetsGenerator :
     }
 
     data object InventoryWindow : DynamicAssetsGenerator() {
-        private val TOP = Identifier(BetterUITextures.NAMESPACE, "gui/inventory/top")
-        private val BOTTOM = Identifier(BetterUITextures.NAMESPACE, "gui/inventory/bottom")
+        private val TOP = Identifier(BetterUITextures.ID, "gui/inventory/top")
+        private val BOTTOM = Identifier(BetterUITextures.ID, "gui/inventory/bottom")
 
         const val WIDTH = 176
         const val BOTTOM_HEIGHT = 83
@@ -226,8 +237,8 @@ object GenericAssetsGenerator :
 
     data object EnchantingElements : DynamicAssetsGenerator() {
         val ENTRIES_BACKGROUND =
-            Identifier(BetterUITextures.NAMESPACE, "gui/enchanting/entries_background")
-        val ENTRY_STATUSES = Identifier(BetterUITextures.NAMESPACE, "gui/enchanting/entry_statuses")
+            Identifier(BetterUITextures.ID, "gui/enchanting/entries_background")
+        val ENTRY_STATUSES = Identifier(BetterUITextures.ID, "gui/enchanting/entry_statuses")
 
         override fun regenerateDynamicAssets(
             manager: ResourceManager,

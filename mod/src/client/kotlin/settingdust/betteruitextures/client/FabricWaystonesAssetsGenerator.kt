@@ -41,10 +41,9 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
 
             val background =
                 GenericAssetsGenerator.StandaloneWindow.generateBackground(
-                        manager,
-                        Size(WINDOW_WIDTH, WINDOW_HEIGHT)
-                    )
-                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
+                    manager,
+                    Size(WINDOW_WIDTH, WINDOW_HEIGHT)
+                )
 
             background.applyOverlay(image)
 
@@ -69,10 +68,9 @@ data object FabricWaystonesAssetsGenerator : DynamicAssetsGenerator() {
 
             val transformed =
                 GenericAssetsGenerator.StandaloneWindow.generateBackground(
-                        manager,
-                        Size(WINDOW_WIDTH, WINDOW_HEIGHT)
-                    )
-                    .expandCanvas(Size(TEXTURE_SIZE, TEXTURE_SIZE))
+                    manager,
+                    Size(WINDOW_WIDTH, WINDOW_HEIGHT)
+                )
 
             transformed.applyOverlay(image)
 

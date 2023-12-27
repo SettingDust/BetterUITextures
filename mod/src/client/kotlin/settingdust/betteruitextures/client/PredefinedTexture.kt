@@ -1,61 +1,19 @@
 package settingdust.betteruitextures.client
 
-import com.google.gson.JsonParser
 import com.mojang.serialization.Codec
-import com.mojang.serialization.JsonOps
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.registry.Registry
-import net.minecraft.resource.ResourceFinder
 import net.minecraft.resource.ResourceManager
-import net.minecraft.resource.SynchronousResourceReloader
 import net.minecraft.util.Identifier
 import net.pearx.kasechange.toSnakeCase
 import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
 import settingdust.betteruitextures.BetterUITextures
-
-object PredefinedTextureLoader : IdentifiableResourceReloadListener, SynchronousResourceReloader {
-    private const val TYPE = "dynamic_texture/defined"
-    val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()
-
-    override fun getFabricId() = BetterUITextures.identifier(TYPE)
-
-    override fun reload(manager: ResourceManager) {
-        predefined.clear()
-        val finder = ResourceFinder.json(TYPE)
-        val codec = codecFactory.create<PredefinedTexture>()
-
-        for ((id, resource) in finder.findResources(manager)) {
-            BetterUITextures.logger.debug("Loading {} from resource", id)
-            val json = resource.reader.use { JsonParser.parseReader(it) }
-            val texture = codec.parse(JsonOps.INSTANCE, json)
-            texture.error().ifPresent {
-                BetterUITextures.logger.error(
-                    "Loading {} from resource failed: {}",
-                    id,
-                    it.message(),
-                )
-            }
-            texture.result().ifPresent { predefined[id] = it }
-        }
-    }
-
-    fun wrapId(identifier: Identifier) =
-        Identifier(
-            identifier.getNamespace(),
-            String.format(
-                "dynamic_texture/defined/%s.json",
-                identifier.getPath(),
-            ),
-        )
-}
 
 object PredefinedTextureTypes {
     @JvmStatic val NINE_PATCH = register<NinePatch>()
