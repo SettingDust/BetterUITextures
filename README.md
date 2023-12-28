@@ -36,3 +36,17 @@ Lazy
 Lazy
 
 </details>
+
+<details>
+<summary>Pack It Up</summary>
+
+Lazy
+
+</details>
+
+<details>
+<summary>Illager Invasion</summary>
+
+Lazy
+
+</details>

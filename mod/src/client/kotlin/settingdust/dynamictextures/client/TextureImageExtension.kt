@@ -13,6 +13,7 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
             while (true) {
                 val width =
                     (targetSize.width - widthCursor).coerceAtMost(sourceRect.width).coerceAtLeast(0)
+                if (width <= 0) break
                 copyRect(
                     it,
                     sourceRect.x,
@@ -25,7 +26,7 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
                     false
                 )
                 widthCursor += width
-                if (widthCursor >= it.width) break
+                if (widthCursor >= it.width || width == 0) break
             }
             var heightCursor = 0
             while (true) {
@@ -33,16 +34,8 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
                     (targetSize.height - heightCursor)
                         .coerceAtMost(sourceRect.height)
                         .coerceAtLeast(0)
-                it.copyRect(
-                    sourceRect.x,
-                    sourceRect.y,
-                    0,
-                    heightCursor,
-                    targetSize.width,
-                    sourceRect.height,
-                    false,
-                    false
-                )
+                if (height <= 0) break
+                it.copyRect(0, 0, 0, heightCursor, targetSize.width, height, false, false)
                 heightCursor += height
                 if (heightCursor >= it.height) break
             }

@@ -1,0 +1,91 @@
+{
+  "modId": "pack_it_up",
+  "targetTexture": "pack_it_up:gui/pack_screen",
+  "modifiers": [
+    {
+      "type": "dynamic-textures:remove_border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 176,
+        "height": 240
+      },
+      "border": {
+        "first": {
+          "width": 6,
+          "height": 17
+        },
+        "second": {
+          "width": 6,
+          "height": 6
+        }
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 176,
+        "height": 240
+      },
+      "color": "FFC6C6C6"
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/bottom",
+      "targetRect": {
+        "x": 0,
+        "y": 157,
+        "width": 176,
+        "height": 83
+      }
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
+              "repeat": true,
+              "border": {
+                "first": {
+                  "width": 7,
+                  "height": 17
+                },
+                "second": {
+                  "width": 7,
+                  "height": 14
+                }
+              },
+              "targetRect": {
+                "x": 0,
+                "y": 0,
+                "width": 176,
+                "height": 157
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+      "repeat": true,
+      "targetRect": {
+        "x": 7,
+        "y": 17,
+        "width": 162,
+        "height": 126
+      }
+    }
+  ]
+}
