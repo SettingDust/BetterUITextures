@@ -1,6 +1,5 @@
 package settingdust.dynamictextures.client
 
-import kotlin.math.min
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.client.texture.NativeImage
@@ -11,9 +10,9 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
             resizeSubRectTo(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, it)
         else {
             var widthCursor = 0
-            while (widthCursor < targetSize.width) {
-                val width = min(targetSize.width - widthCursor, sourceRect.width)
-                widthCursor += width
+            while (true) {
+                val width =
+                    (targetSize.width - widthCursor).coerceAtMost(sourceRect.width).coerceAtLeast(0)
                 copyRect(
                     it,
                     sourceRect.x,
@@ -25,11 +24,15 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
                     false,
                     false
                 )
+                widthCursor += width
+                if (widthCursor >= it.width) break
             }
             var heightCursor = 0
-            while (heightCursor < targetSize.height) {
-                val height = min(targetSize.height - heightCursor, sourceRect.height)
-                heightCursor += height
+            while (true) {
+                val height =
+                    (targetSize.height - heightCursor)
+                        .coerceAtMost(sourceRect.height)
+                        .coerceAtLeast(0)
                 it.copyRect(
                     sourceRect.x,
                     sourceRect.y,
@@ -40,6 +43,8 @@ fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = fal
                     false,
                     false
                 )
+                heightCursor += height
+                if (heightCursor >= it.height) break
             }
         }
     }

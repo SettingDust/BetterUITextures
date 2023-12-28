@@ -1,0 +1,25 @@
+{
+  "targetTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+  "size": {
+    "width": 18,
+    "height": 18
+  },
+  "modifiers": [
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "gui/container/generic_54",
+      "fromRect": {
+        "x": 25,
+        "y": 35,
+        "width": 18,
+        "height": 18
+      },
+      "targetRect": {
+        "x": 0,
+        "y": 0,
+        "width": 18,
+        "height": 18
+      }
+    }
+  ]
+}

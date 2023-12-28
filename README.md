@@ -31,7 +31,7 @@ Lazy
 </details>
 
 <details>
-<summary>Runes</summary>
+<summary>Farmer's Delight</summary>
 
 Lazy
 

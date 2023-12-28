@@ -133,8 +133,8 @@ data class CopyRect(
                 null
             )
         ImageTransformer.builder(
-                sourceImage.imageWidth(),
-                sourceImage.imageHeight(),
+                targetRect.width,
+                targetRect.height,
                 baseTexture.imageWidth(),
                 baseTexture.imageHeight(),
             )
