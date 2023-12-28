@@ -22,3 +22,17 @@ For JSON example: https://github.com/SettingDust/DynamicTextures/tree/main/mod/s
 
 
 </details>
+
+<details>
+<summary>Runes</summary>
+
+Lazy
+
+</details>
+
+<details>
+<summary>Runes</summary>
+
+Lazy
+
+</details>
