@@ -114,7 +114,8 @@ data class RemoveBorder(val rect: Rect, val border: Border) : TextureModifier {
 data class CopyRect(
     val sourceTexture: @Contextual Identifier,
     var fromRect: Rect = Rect.INVALID,
-    val targetRect: Rect
+    val targetRect: Rect,
+    val repeat: Boolean = false
 ) : TextureModifier {
     @Transient override val type = TextureModifierTypes.OVERLAY
 
@@ -122,6 +123,15 @@ data class CopyRect(
         val sourceImage = TextureImage.open(manager, sourceTexture)
         if (fromRect == Rect.INVALID)
             fromRect = Rect(0, 0, sourceImage.imageWidth(), sourceImage.imageHeight())
+        val resized =
+            TextureImage.of(
+                sourceImage.image.resize(
+                    fromRect,
+                    Size(targetRect.width, targetRect.height),
+                    repeat
+                ),
+                null
+            )
         ImageTransformer.builder(
                 sourceImage.imageWidth(),
                 sourceImage.imageHeight(),
@@ -129,17 +139,17 @@ data class CopyRect(
                 baseTexture.imageHeight(),
             )
             .copyRect(
-                fromRect.x,
-                fromRect.y,
-                fromRect.width,
-                fromRect.height,
+                0,
+                0,
+                targetRect.width,
+                targetRect.height,
                 targetRect.x,
                 targetRect.y,
                 targetRect.width,
                 targetRect.height,
             )
             .build()
-            .apply(sourceImage, baseTexture)
+            .apply(resized, baseTexture)
         return baseTexture
     }
 }
@@ -188,7 +198,8 @@ data class CopyNinePatch(
     val sourceTexture: @Contextual Identifier,
     val border: Border,
     var sourceRect: Rect = Rect.INVALID,
-    var targetRect: Rect
+    var targetRect: Rect,
+    val repeat: Boolean = false
 ) : TextureModifier {
     @Transient override val type = TextureModifierTypes.COPY_NINE_PATCH
 
@@ -216,7 +227,11 @@ data class CopyNinePatch(
             .build()
             .apply(sourceImage, extractedImage)
         val resized =
-            extractedImage.resizeNinePatch(border, Size(targetRect.width, targetRect.height))
+            extractedImage.resizeNinePatch(
+                border,
+                Size(targetRect.width, targetRect.height),
+                repeat
+            )
         ImageTransformer.builder(
                 targetRect.width,
                 targetRect.height,
