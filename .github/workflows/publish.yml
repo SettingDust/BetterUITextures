@@ -47,14 +47,12 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
-            build/libs/!(*-@(dev|sources|javadoc)).jar
+            mod/build/libs/!(*-@(dev|sources|javadoc)).jar
 
           version: ${{ github.ref_name }}
 
           loaders: |
             fabric
-            forge
-            quilt
 
           game-versions: |
             [1.19.4, 1.20.2)

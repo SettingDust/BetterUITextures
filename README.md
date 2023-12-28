@@ -1,2 +1,3 @@
 ## Feature
-Using reusable textures for mod ui elements instead of hardcoded one.
+Using reusable textures for mods instead of hardcoded one.
+

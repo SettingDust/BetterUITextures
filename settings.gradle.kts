@@ -111,7 +111,9 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     // https://github.com/wisp-forest/owo-lib/releases/
     library("owo", "io.wispforest", "owo-lib").version("0.11.2+1.20")
     // https://modrinth.com/mod/moonlight/versions
-    library("moonlight", "maven.modrinth", "moonlight").version("fabric_1.20-2.8.71")
+    val moonlight = "1.20-2.8.71"
+    library("moonlight-fabric", "maven.modrinth", "moonlight").version("fabric_$moonlight")
+    library("moonlight-forge", "maven.modrinth", "moonlight").version("forge_$moonlight")
     // https://modrinth.com/mod/spell-engine/versions
     library("spell-engine", "maven.modrinth", "spell-engine").version("0.12.4+$minecraft")
     // https://modrinth.com/mod/trinkets/versions
@@ -151,7 +153,7 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     library("pack-it-up", "maven.modrinth", "pack-it-up").version("0.3.1+$minecraft")
 
     // https://github.com/pearxteam/kasechange
-    library("kasechange", "net.pearx.kasechange", "kasechange").version("1.4.1")
+    library("kasechange", "net.pearx.kasechange", "kasechange-jvm").version("1.4.1")
 }
 
 plugins {

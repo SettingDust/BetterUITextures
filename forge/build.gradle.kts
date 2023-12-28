@@ -6,6 +6,7 @@ plugins {
 }
 
 val id: String by rootProject.properties
+val name: String by rootProject.properties
 
 minecraft {
     mappings("official", catalog.versions.minecraft.get())
@@ -40,10 +41,10 @@ minecraft {
             configureEach { property("connector.clean.path", cleanArtifactJar) }
         }
 
-        create("client") { ideaModule = "BetterUITextures.forge.main" }
+        create("client") { ideaModule = "$name.forge.main" }
 
         create("server") {
-            ideaModule = "BetterUITextures.forge.main"
+            ideaModule = "$name.forge.main"
             args("--nogui")
         }
     }
@@ -67,8 +68,11 @@ dependencies {
     runtimeOnly(fg.deobf(catalog.connector.asProvider().get()))
     runtimeOnly(fg.deobf(catalog.connector.extras.get()))
     runtimeOnly(fg.deobf(catalog.forgified.fabric.api.get()))
+
     runtimeOnly(catalog.fabric.kotlin) { isTransitive = false }
     runtimeOnly(project(":mod")) { isTransitive = false }
+
+    runtimeOnly(catalog.moonlight.forge)
 }
 
 afterEvaluate { sourceSets { configureEach { compileClasspath = objects.fileCollection() } } }

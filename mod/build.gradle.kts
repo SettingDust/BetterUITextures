@@ -1,3 +1,6 @@
+import net.fabricmc.loom.task.AbstractRunTask
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     alias(catalog.plugins.fabric.loom)
 
@@ -10,10 +13,19 @@ val name: String by rootProject.properties
 val author: String by rootProject.properties
 val description: String by rootProject.properties
 
+archivesName = name
+
 loom {
     splitEnvironmentSourceSets()
 
     accessWidenerPath = file("src/main/resources/$id.accesswidener")
+
+    mixin {
+        defaultRefmapName = "$id.refmap.json"
+
+        add("main", "$id.refmap.json")
+        add("client", "$id.client.refmap.json")
+    }
 
     mods {
         register(id) {
@@ -37,8 +49,6 @@ val modClientNeedCopy by
         isTransitive = false
     }
 
-configurations { create("mod") }
-
 dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
@@ -50,7 +60,7 @@ dependencies {
     val modClientImplementation by configurations
     modClientImplementation(catalog.modmenu)
 
-    modImplementation(catalog.moonlight)
+    modImplementation(catalog.moonlight.fabric)
 
     modNeedCopy(catalog.fabric.waystones)
     modNeedCopy(catalog.owo)
@@ -97,7 +107,7 @@ val metadata =
         "name" to name,
         "version" to version,
         "description" to description,
-        "source" to "https://github.com/SettingDust/BetterUITextures",
+        "source" to "https://github.com/SettingDust/$name",
         "minecraft" to "~1.20",
         "fabric_loader" to ">=0.12",
         "fabric_kotlin" to ">=1.10",
@@ -107,9 +117,9 @@ val metadata =
     )
 
 tasks {
-    processResources {
+    withType<ProcessResources> {
         inputs.properties(metadata)
-        filesMatching("fabric.mod.json") { expand(metadata) }
+        filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(metadata) }
     }
 
     jar { from("LICENSE") }
@@ -123,4 +133,6 @@ tasks {
         }
 
     classes { dependsOn(copyClientMods) }
+
+    withType<AbstractRunTask> { enableAssertions = false }
 }

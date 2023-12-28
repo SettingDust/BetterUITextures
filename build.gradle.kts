@@ -10,7 +10,7 @@ plugins {
     alias(catalog.plugins.semver)
 }
 
-group = "settingdust.betteruitextures"
+group = "settingdust.dynamictextures"
 
 version = semver.semVersion.toString()
 

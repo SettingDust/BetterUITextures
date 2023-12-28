@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ForwardingDynamicOps.class)
 public interface ForwardingDynamicOpsAccessor<T> {
-    @Accessor
+    @Accessor("delegate")
     DynamicOps<T> getDelegate();
 }

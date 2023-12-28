@@ -24,19 +24,26 @@ dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
 
+    runtimeOnly(project(":mod", configuration = "namedElements")) { isTransitive = false }
+
     modRuntimeOnly(catalog.quilt.loader)
     modRuntimeOnly(catalog.quilt.fabric.api)
     modRuntimeOnly(catalog.fabric.kotlin) { exclude(module = "fabric-loader") }
 
     modRuntimeOnly(catalog.modmenu) { exclude(module = "fabric-loader") }
 
-    runtimeOnly(project(":mod")) { isTransitive = false }
+    modRuntimeOnly(catalog.moonlight.fabric)
+
+    runtimeOnly(catalog.kasechange)
 }
 
 afterEvaluate { sourceSets { configureEach { compileClasspath = objects.fileCollection() } } }
 
 tasks {
-    withType<AbstractRunTask> { dependsOn(":mod:remapJar") }
+    withType<AbstractRunTask> {
+        dependsOn(":mod:remapJar")
+        jvmArgs("-da")
+    }
 
     ideaSyncTask { enabled = true }
 }
