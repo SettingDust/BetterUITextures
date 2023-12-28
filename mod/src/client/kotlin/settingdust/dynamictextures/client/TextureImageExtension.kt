@@ -1,10 +1,54 @@
 package settingdust.dynamictextures.client
 
+import kotlin.math.min
 import net.mehvahdjukaar.moonlight.api.resources.textures.ImageTransformer
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
 import net.minecraft.client.texture.NativeImage
 
-fun TextureImage.resizeNinePatch(ninePatch: Border, target: Size): TextureImage {
+fun NativeImage.resize(sourceRect: Rect, targetSize: Size, repeat: Boolean = false) =
+    NativeImage(targetSize.width, targetSize.height, true).also {
+        if (!repeat)
+            resizeSubRectTo(sourceRect.x, sourceRect.y, sourceRect.width, sourceRect.height, it)
+        else {
+            var widthCursor = 0
+            while (widthCursor < targetSize.width) {
+                val width = min(targetSize.width - widthCursor, sourceRect.width)
+                widthCursor += width
+                copyRect(
+                    it,
+                    sourceRect.x,
+                    sourceRect.y,
+                    widthCursor,
+                    0,
+                    width,
+                    sourceRect.height,
+                    false,
+                    false
+                )
+            }
+            var heightCursor = 0
+            while (heightCursor < targetSize.height) {
+                val height = min(targetSize.height - heightCursor, sourceRect.height)
+                heightCursor += height
+                it.copyRect(
+                    sourceRect.x,
+                    sourceRect.y,
+                    0,
+                    heightCursor,
+                    targetSize.width,
+                    sourceRect.height,
+                    false,
+                    false
+                )
+            }
+        }
+    }
+
+fun TextureImage.resizeNinePatch(
+    ninePatch: Border,
+    target: Size,
+    repeat: Boolean = false
+): TextureImage {
     if (imageWidth() == target.width && imageHeight() == target.height) return this
     val doubleCornerWidth: Int = ninePatch.first.width + ninePatch.second.width
     val doubleCornerHeight: Int = ninePatch.first.height + ninePatch.second.height
@@ -20,55 +64,55 @@ fun TextureImage.resizeNinePatch(ninePatch: Border, target: Size): TextureImage 
         Size(target.width - doubleCornerWidth, target.height - doubleCornerHeight)
 
     val leftEdge =
-        NativeImage(ninePatch.first.width, targetCenterSize.height, true).also {
-            image.resizeSubRectTo(
-                0,
-                ninePatch.first.height,
-                ninePatch.first.width,
-                centerSize.height,
-                it
-            )
-        }
+        image.resize(
+            Rect(0, ninePatch.first.height, ninePatch.first.width, centerSize.height),
+            Size(ninePatch.first.width, targetCenterSize.height),
+            repeat
+        )
     val rightEdge =
-        NativeImage(ninePatch.second.width, targetCenterSize.height, true).also {
-            image.resizeSubRectTo(
+        image.resize(
+            Rect(
                 originalRightX,
                 ninePatch.first.height,
                 ninePatch.second.width,
                 centerSize.height,
-                it
-            )
-        }
+            ),
+            Size(ninePatch.second.width, targetCenterSize.height),
+            repeat
+        )
     val topEdge =
-        NativeImage(targetCenterSize.width, ninePatch.first.height, true).also {
-            image.resizeSubRectTo(
+        image.resize(
+            Rect(
                 ninePatch.first.width,
                 0,
                 centerSize.width,
                 ninePatch.first.height,
-                it
-            )
-        }
+            ),
+            Size(targetCenterSize.width, ninePatch.first.height),
+            repeat
+        )
     val bottomEdge =
-        NativeImage(targetCenterSize.width, ninePatch.second.height, true).also {
-            image.resizeSubRectTo(
+        image.resize(
+            Rect(
                 ninePatch.first.width,
                 originalBottomY,
                 centerSize.width,
                 ninePatch.second.height,
-                it
-            )
-        }
+            ),
+            Size(targetCenterSize.width, ninePatch.second.height),
+            repeat
+        )
     val center =
-        NativeImage(targetCenterSize.width, targetCenterSize.height, true).also {
-            image.resizeSubRectTo(
+        image.resize(
+            Rect(
                 ninePatch.first.width,
                 ninePatch.first.height,
                 centerSize.width,
                 centerSize.height,
-                it
-            )
-        }
+            ),
+            Size(targetCenterSize.width, targetCenterSize.height),
+            repeat
+        )
 
     return TextureImage.of(
         NativeImage(target.width, target.height, true).also {

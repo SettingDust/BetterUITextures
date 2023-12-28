@@ -44,34 +44,6 @@ object GenericAssetsGenerator :
         }
         textureIds.clear()
 
-        val dynamicTextures = sortedMapOf<Identifier, DynamicTexture>()
-
-        val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
-
-        fun loadModifiers(id: Identifier?, resource: Resource) {
-            BetterUITextures.logger.debug("Loading {} from resource", id)
-            val json = resource.reader.use { JsonParser.parseReader(it) }
-            val texture = dynamicTexturesCodec.parse(JsonOps.INSTANCE, json)
-            texture.error().ifPresent {
-                BetterUITextures.logger.error(
-                    "Loading {} from resource failed: {}",
-                    id,
-                    it.message(),
-                )
-            }
-            texture.result().ifPresent { dynamicTextures[id] = it }
-        }
-
-        for ((id, resource) in
-            ResourceFinder.json("dynamic_texture/generic_modifier").findResources(manager)) {
-            loadModifiers(id, resource)
-        }
-
-        for ((id, resource) in
-            ResourceFinder.json("dynamic_texture/modifier").findResources(manager)) {
-            loadModifiers(id, resource)
-        }
-
         val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()
         val predefinedCodec = codecFactory.create<PredefinedTexture>()
 
@@ -98,6 +70,34 @@ object GenericAssetsGenerator :
 
         for ((id, texture) in predefined) {
             dynamicPack.addAndCloseTexture(id, texture.generate(manager), false)
+        }
+
+        val dynamicTextures = sortedMapOf<Identifier, DynamicTexture>()
+
+        val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
+
+        fun loadModifiers(id: Identifier?, resource: Resource) {
+            BetterUITextures.logger.debug("Loading {} from resource", id)
+            val json = resource.reader.use { JsonParser.parseReader(it) }
+            val texture = dynamicTexturesCodec.parse(JsonOps.INSTANCE, json)
+            texture.error().ifPresent {
+                BetterUITextures.logger.error(
+                    "Loading {} from resource failed: {}",
+                    id,
+                    it.message(),
+                )
+            }
+            texture.result().ifPresent { dynamicTextures[id] = it }
+        }
+
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/generic_modifier").findResources(manager)) {
+            loadModifiers(id, resource)
+        }
+
+        for ((id, resource) in
+            ResourceFinder.json("dynamic_texture/modifier").findResources(manager)) {
+            loadModifiers(id, resource)
         }
 
         for ((id, texture) in dynamicTextures) {

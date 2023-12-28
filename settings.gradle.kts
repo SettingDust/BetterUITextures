@@ -99,7 +99,7 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     plugin("mixin-gradle", "org.spongepowered.mixin").version("0.7-SNAPSHOT")
 
     // https://modrinth.com/mod/connector/versions
-    library("connector", "dev.su5ed.sinytra", "Connector").version("1.0.0-beta.31+$minecraft")
+    library("connector", "dev.su5ed.sinytra", "Connector").version("1.0.0-beta.32+$minecraft")
     // https://modrinth.com/mod/forgified-fabric-api/versions
     library("forgified-fabric-api", "dev.su5ed.sinytra.fabric-api", "fabric-api")
         .version("$fabricApi+1.10.3+$minecraft")
@@ -111,8 +111,8 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     // https://github.com/wisp-forest/owo-lib/releases/
     library("owo", "io.wispforest", "owo-lib").version("0.11.2+1.20")
     // https://modrinth.com/mod/moonlight/versions
-    val moonlight = "1.20-2.8.74"
-    library("moonlight-fabric", "maven.modrinth", "moonlight").version("fabric_$moonlight")
+    val moonlight = "1.20-2.8.72"
+    library("moonlight-fabric", "maven.modrinth", "moonlight").version("fabric_1.20-2.8.71")
     library("moonlight-forge", "maven.modrinth", "moonlight").version("forge_$moonlight")
     // https://modrinth.com/mod/spell-engine/versions
     library("spell-engine", "maven.modrinth", "spell-engine").version("0.12.4+$minecraft")
