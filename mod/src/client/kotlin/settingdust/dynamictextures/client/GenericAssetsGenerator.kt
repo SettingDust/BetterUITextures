@@ -96,19 +96,6 @@ object GenericAssetsGenerator :
             }
         }
 
-        val book = TextureImage.open(manager, Identifier("item/book"))
-        book.toGrayscale()
-        val overlay = TextureImage.createNew(book.imageWidth(), book.imageHeight(), null)
-        overlay.image.fillRect(
-            0,
-            0,
-            overlay.imageWidth(),
-            overlay.imageHeight(),
-            0x99FFFFFF.toUInt().toInt()
-        )
-        book.applyOverlayOnExisting(overlay)
-        dynamicPack.addAndCloseTexture(Identifier(BetterUITextures.ID, "icons/book"), book)
-
         for ((id, texture) in predefined) {
             dynamicPack.addAndCloseTexture(id, texture.generate(manager), false)
         }
