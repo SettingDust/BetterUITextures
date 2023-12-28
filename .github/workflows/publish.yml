@@ -48,6 +48,7 @@ jobs:
 
           files: |
             mod/build/libs/!(*-@(dev|sources|javadoc)).jar
+            mod/build/libs/*-@(dev|sources|javadoc).jar
 
           version: ${{ github.ref_name }}
 
