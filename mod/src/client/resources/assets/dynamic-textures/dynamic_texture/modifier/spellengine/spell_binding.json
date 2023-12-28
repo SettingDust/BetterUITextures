@@ -76,6 +76,68 @@
       ]
     },
     {
+      "type": "dynamic-textures:remove_border",
+      "rect": {
+        "x": 34,
+        "y": 46,
+        "width": 18,
+        "height": 18
+      },
+      "border": {
+        "first": {
+          "width": 2,
+          "height": 2
+        },
+        "second": {
+          "width": 2,
+          "height": 2
+        }
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "rect": {
+        "x": 34,
+        "y": 46,
+        "width": 18,
+        "height": 18
+      },
+      "color": "FF8B8B8B"
+    },
+    {
+      "type": "dynamic-textures:remove_rect",
+      "rect": {
+        "x": 14,
+        "y": 46,
+        "width": 18,
+        "height": 18
+      }
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "size": {
+            "width": 256,
+            "height": 256
+          },
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_rect",
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/abreast",
+              "targetRect": {
+                "x": 12,
+                "y": 43,
+                "width": 42,
+                "height": 23
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "type": "dynamic-textures:copy_rect",
       "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entries_background",
       "targetRect": {
@@ -155,16 +217,6 @@
         "y": 166,
         "width": 108,
         "height": 57
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/abreast",
-      "targetRect": {
-        "x": 12,
-        "y": 43,
-        "width": 42,
-        "height": 23
       }
     }
   ]
