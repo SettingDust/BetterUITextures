@@ -78,19 +78,19 @@
     {
       "type": "dynamic-textures:remove_border",
       "rect": {
-        "x": 34,
-        "y": 46,
-        "width": 18,
-        "height": 18
+        "x": 32,
+        "y": 43,
+        "width": 22,
+        "height": 23
       },
       "border": {
         "first": {
-          "width": 2,
-          "height": 2
+          "width": 3,
+          "height": 4
         },
         "second": {
-          "width": 2,
-          "height": 2
+          "width": 3,
+          "height": 3
         }
       }
     },
@@ -107,10 +107,10 @@
     {
       "type": "dynamic-textures:remove_rect",
       "rect": {
-        "x": 14,
-        "y": 46,
-        "width": 18,
-        "height": 18
+        "x": 12,
+        "y": 43,
+        "width": 22,
+        "height": 23
       }
     },
     {
