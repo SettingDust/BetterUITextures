@@ -1,4 +1,21 @@
 
+## [0.2.0] - 2023-12-29
+### :sparkles: New Features
+- [`7934dbd`](https://github.com/SettingDust/DynamicTextures/commit/7934dbd17495cb8334954c22661e3da791b66d0e) - **modifiers**: add runes crafting altar *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`fecca22`](https://github.com/SettingDust/DynamicTextures/commit/fecca221f51b64df882ef585d2c1e3bf44cdb77f) - **modifiers**: spell engine shows the slot icon *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`972dc22`](https://github.com/SettingDust/DynamicTextures/commit/972dc228f4b386b1cf279eee894b3172b9920262) - support repeat resize *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`ea0fae6`](https://github.com/SettingDust/DynamicTextures/commit/ea0fae6203e45711bdaa1e78e0175b0d619a521a) - add repeat to `CopyNinePatch` and `CopyRect` *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`34d4993`](https://github.com/SettingDust/DynamicTextures/commit/34d4993038705c8ccc4504fd81b57f1ae496658f) - **modifiers**: add farmers delight cooking pot *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`e81898e`](https://github.com/SettingDust/DynamicTextures/commit/e81898ec20373c0ffffde1e8807da126ebba1425) - **modifiers**: add illagerinvasion imbuing_table *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`cdb7a78`](https://github.com/SettingDust/DynamicTextures/commit/cdb7a78736bb825b082f4562665148ec011e8c50) - **modifiers**: add pack it up *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`f9de280`](https://github.com/SettingDust/DynamicTextures/commit/f9de28068391d708dd12d2957df12c7ccb8e5093) - **deps**: bump moonlight version *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`4563f63`](https://github.com/SettingDust/DynamicTextures/commit/4563f636bf42945ed22caa5356c5292beb9aab7f) - **deps**: bump moonlight for running on quilt *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`f5df9d7`](https://github.com/SettingDust/DynamicTextures/commit/f5df9d7633bc99d1d686b0ec39fb83565ce80419) - using `expandCanvas` for generate dynamic texture target texture *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`21a2134`](https://github.com/SettingDust/DynamicTextures/commit/21a2134a60694c26d3b2ec995dea69a4f8408852) - merge origin/main to main *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.1.0] - 2023-12-28
 ### :sparkles: New Features
 - [`3596a67`](https://github.com/SettingDust/DynamicTextures/commit/3596a6740d4dd82363c1c6ed5db8b2b7355e069b) - **fwaystones**: replace background complete *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -38,3 +55,4 @@
 
 
 [0.1.0]: https://github.com/SettingDust/DynamicTextures/compare/0.0.0...0.1.0
+[0.2.0]: https://github.com/SettingDust/DynamicTextures/compare/0.1.0...0.2.0
