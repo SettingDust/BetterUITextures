@@ -76,16 +76,25 @@
       ]
     },
     {
+      "type": "dynamic-textures:remove_rect",
+      "rect": {
+        "x": 12,
+        "y": 43,
+        "width": 21,
+        "height": 23
+      }
+    },
+    {
       "type": "dynamic-textures:remove_border",
       "rect": {
-        "x": 32,
+        "x": 33,
         "y": 43,
-        "width": 22,
+        "width": 21,
         "height": 23
       },
       "border": {
         "first": {
-          "width": 3,
+          "width": 2,
           "height": 4
         },
         "second": {
@@ -103,15 +112,6 @@
         "height": 18
       },
       "color": "FF8B8B8B"
-    },
-    {
-      "type": "dynamic-textures:remove_rect",
-      "rect": {
-        "x": 12,
-        "y": 43,
-        "width": 22,
-        "height": 23
-      }
     },
     {
       "type": "dynamic-textures:overlay",
@@ -160,6 +160,7 @@
             {
               "type": "dynamic-textures:copy_rect",
               "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
+              "repeat": true,
               "fromRect": {
                 "x": 0,
                 "y": 19,
@@ -170,39 +171,7 @@
                 "x": 60,
                 "y": 14,
                 "width": 108,
-                "height": 19
-              }
-            },
-            {
-              "type": "dynamic-textures:copy_rect",
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
-              "fromRect": {
-                "x": 0,
-                "y": 19,
-                "width": 108,
-                "height": 19
-              },
-              "targetRect": {
-                "x": 60,
-                "y": 33,
-                "width": 108,
-                "height": 19
-              }
-            },
-            {
-              "type": "dynamic-textures:copy_rect",
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
-              "fromRect": {
-                "x": 0,
-                "y": 19,
-                "width": 108,
-                "height": 19
-              },
-              "targetRect": {
-                "x": 60,
-                "y": 52,
-                "width": 108,
-                "height": 19
+                "height": 57
               }
             }
           ]
