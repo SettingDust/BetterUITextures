@@ -4,7 +4,6 @@ import com.google.gson.JsonParser
 import com.mojang.serialization.JsonOps
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.fabricmc.loader.api.FabricLoader
-import net.mehvahdjukaar.moonlight.api.resources.ResType
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynClientResourcesGenerator
 import net.mehvahdjukaar.moonlight.api.resources.pack.DynamicTexturePack
 import net.mehvahdjukaar.moonlight.api.resources.textures.TextureImage
@@ -32,18 +31,11 @@ object GenericAssetsGenerator :
             .forEach { dynamicPack.addNamespaces(it) }
     }
 
-    val textureIds = mutableSetOf<Identifier>()
-
     override fun getLogger() = BetterUITextures.logger
 
     override fun dependsOnLoadedPacks() = true
 
     override fun regenerateDynamicAssets(manager: ResourceManager) {
-        for (id in textureIds) {
-            dynamicPack.removeResource(ResType.TEXTURES.getPath(id))
-        }
-        textureIds.clear()
-
         val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()
         val predefinedCodec = codecFactory.create<PredefinedTexture>()
 
@@ -117,8 +109,7 @@ object GenericAssetsGenerator :
         }
     }
 
-    fun addTexture(identifier: Identifier, image: TextureImage) {
-        textureIds += identifier
+    private fun addTexture(identifier: Identifier, image: TextureImage) {
         dynamicPack.addAndCloseTexture(identifier, image, false)
     }
 
