@@ -16,6 +16,8 @@ fun init() {
 object ModMenuEntrypoint : ModMenuApi
 
 internal val codecFactory = CodecFactory {
+    ignoreUnknownKeys = true
+    printErrorStackTraces = true
     polymorphism { flatten = true }
     codecs {
         unnamed(Identifier.CODEC)
