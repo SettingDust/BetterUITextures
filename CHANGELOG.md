@@ -1,4 +1,16 @@
 
+## [0.2.1] - 2023-12-29
+### :sparkles: New Features
+- [`875663c`](https://github.com/SettingDust/DynamicTextures/commit/875663c610a55ff579743ebfd1b7370230a8557b) - bump moonlight for fix for clear resources before regenerate and don't clear at early load *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`d241b9c`](https://github.com/SettingDust/DynamicTextures/commit/d241b9ca2d5003b27e5b0b0bd9edbaa1bda3565a) - ignore unknown key for serializers to allow comment in objects *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :bug: Bug Fixes
+- [`cb595f9`](https://github.com/SettingDust/DynamicTextures/commit/cb595f9a823e3eae4c866202ac8c6f66caeee842) - remove border not inclusive *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`54382bb`](https://github.com/SettingDust/DynamicTextures/commit/54382bbaa9797bf39ec855bccddba8fd56d2da7f) - merge origin/main to main *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.0] - 2023-12-29
 ### :sparkles: New Features
 - [`7934dbd`](https://github.com/SettingDust/DynamicTextures/commit/7934dbd17495cb8334954c22661e3da791b66d0e) - **modifiers**: add runes crafting altar *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -56,3 +68,4 @@
 
 [0.1.0]: https://github.com/SettingDust/DynamicTextures/compare/0.0.0...0.1.0
 [0.2.0]: https://github.com/SettingDust/DynamicTextures/compare/0.1.0...0.2.0
+[0.2.1]: https://github.com/SettingDust/DynamicTextures/compare/0.2.0...0.2.1
