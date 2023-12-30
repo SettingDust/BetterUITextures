@@ -1,0 +1,25 @@
+{
+  "modifiers": [
+    {
+      "type": "dynamic-textures:copy_rect",
+      "fromRect": {
+        "height": 18,
+        "width": 18,
+        "x": 25,
+        "y": 35
+      },
+      "sourceTexture": "minecraft:gui/container/generic_54",
+      "targetRect": {
+        "height": 18,
+        "width": 18,
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "size": {
+    "height": 18,
+    "width": 18
+  },
+  "targetTexture": "dynamic-textures:dynamic_texture/defined/slot/raw"
+}

@@ -36,10 +36,21 @@ loom {
 
     runs {
         configureEach { ideConfigGenerated(true) }
-        named("client") { name("Fabric Client") }
-        named("server") { name("Fabric Server") }
+        val client by this.named("client") { name("Fabric Client") }
+        val server by this.named("server") { name("Fabric Server") }
+        create("datagen") {
+            inherit(client)
+            name("Data Generation")
+            vmArg("-Dfabric-api.datagen")
+            vmArg("-Dfabric-api.datagen.output-dir=${file("src/main/generated")}")
+            vmArg("-Dfabric-api.datagen.modid=${id}")
+
+            runDir("build/datagen")
+        }
     }
 }
+
+sourceSets { main { resources { srcDirs(file("src/main/generated")) } } }
 
 val modNeedCopy by configurations.creating { isTransitive = false }
 

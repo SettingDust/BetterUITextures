@@ -13,7 +13,7 @@ import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import net.pearx.kasechange.toSnakeCase
 import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
-import settingdust.dynamictextures.BetterUITextures
+import settingdust.dynamictextures.DynamicTextures
 import settingdust.dynamictextures.serialization.UIntHexSerializer
 
 object TextureModifierTypes {
@@ -29,7 +29,7 @@ object TextureModifierTypes {
     private inline fun <reified T : TextureModifier> register() =
         Registry.register(
             Registries.TEXTURE_MODIFIERS as Registry<TextureModifierType<T>>,
-            BetterUITextures.identifier(T::class.simpleName!!.toSnakeCase()),
+            DynamicTextures.identifier(T::class.simpleName!!.toSnakeCase()),
             TextureModifierType(),
         )!!
 }

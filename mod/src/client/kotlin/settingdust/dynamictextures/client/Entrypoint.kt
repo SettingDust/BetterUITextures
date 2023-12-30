@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder
 import net.minecraft.registry.RegistryKey
 import net.minecraft.util.Identifier
 import org.quiltmc.qkl.library.serialization.CodecFactory
-import settingdust.dynamictextures.BetterUITextures
+import settingdust.dynamictextures.DynamicTextures
 
 fun init() {
     PredefinedTextureTypes
@@ -30,13 +30,13 @@ object RegistryKeys {
     @JvmStatic
     val PREDEFINED_TEXTURE =
         RegistryKey.ofRegistry<PredefinedTextureType<out PredefinedTexture>>(
-            BetterUITextures.identifier("predefined_texture")
+            DynamicTextures.identifier("predefined_texture")
         )!!
 
     @JvmStatic
     val TEXTURE_MODIFIERS =
         RegistryKey.ofRegistry<TextureModifierType<out TextureModifier>>(
-            BetterUITextures.identifier("texture_modifiers")
+            DynamicTextures.identifier("texture_modifiers")
         )!!
 }
 

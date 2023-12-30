@@ -1,0 +1,28 @@
+{
+  "type": "dynamic-textures:nine_patch",
+  "border": {
+    "first": {
+      "height": 17,
+      "width": 4
+    },
+    "second": {
+      "height": 6,
+      "width": 7
+    }
+  },
+  "centerColorPoint": {
+    "x": 6,
+    "y": 18
+  },
+  "source": "minecraft:gui/container/creative_inventory/tab_items",
+  "sourceRect": {
+    "height": 136,
+    "width": 195,
+    "x": 0,
+    "y": 0
+  },
+  "targetSize": {
+    "height": 83,
+    "width": 176
+  }
+}

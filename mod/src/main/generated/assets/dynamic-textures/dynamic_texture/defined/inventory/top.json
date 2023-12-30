@@ -1,0 +1,28 @@
+{
+  "type": "dynamic-textures:nine_patch",
+  "border": {
+    "first": {
+      "height": 17,
+      "width": 7
+    },
+    "second": {
+      "height": 14,
+      "width": 7
+    }
+  },
+  "centerColorPoint": {
+    "x": 5,
+    "y": 7
+  },
+  "source": "minecraft:gui/container/generic_54",
+  "sourceRect": {
+    "height": 139,
+    "width": 176,
+    "x": 0,
+    "y": 0
+  },
+  "targetSize": {
+    "height": 83,
+    "width": 176
+  }
+}

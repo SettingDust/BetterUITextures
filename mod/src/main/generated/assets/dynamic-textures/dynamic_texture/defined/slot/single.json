@@ -1,0 +1,10 @@
+{
+  "type": "dynamic-textures:fixed",
+  "source": "minecraft:gui/container/beacon",
+  "sourceRect": {
+    "height": 23,
+    "width": 22,
+    "x": 133,
+    "y": 106
+  }
+}

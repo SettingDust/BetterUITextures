@@ -1,0 +1,69 @@
+{
+  "modId": "fwaystones",
+  "modifiers": [
+    {
+      "type": "dynamic-textures:remove_border",
+      "border": {
+        "first": {
+          "height": 17,
+          "width": 4
+        },
+        "second": {
+          "height": 6,
+          "width": 7
+        }
+      },
+      "rect": {
+        "height": 176,
+        "width": 177,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "color": "ffc6c6c6",
+      "rect": {
+        "height": 176,
+        "width": 177,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "border": {
+                "first": {
+                  "height": 17,
+                  "width": 4
+                },
+                "second": {
+                  "height": 6,
+                  "width": 7
+                }
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/standalone_window",
+              "targetRect": {
+                "height": 176,
+                "width": 177,
+                "x": 0,
+                "y": 0
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
+    }
+  ],
+  "targetTexture": "fwaystones:gui/waystone"
+}

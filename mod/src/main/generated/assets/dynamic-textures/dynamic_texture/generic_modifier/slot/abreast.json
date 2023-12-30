@@ -1,0 +1,41 @@
+{
+  "modifiers": [
+    {
+      "type": "dynamic-textures:copy_rect",
+      "fromRect": {
+        "height": 23,
+        "width": 21,
+        "x": 0,
+        "y": 0
+      },
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 21,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "fromRect": {
+        "height": 23,
+        "width": 21,
+        "x": 1,
+        "y": 0
+      },
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 21,
+        "x": 21,
+        "y": 0
+      }
+    }
+  ],
+  "size": {
+    "height": 23,
+    "width": 42
+  },
+  "targetTexture": "dynamic-textures:dynamic_texture/defined/slot/abreast"
+}

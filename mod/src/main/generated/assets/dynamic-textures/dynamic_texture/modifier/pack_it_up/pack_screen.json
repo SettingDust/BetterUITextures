@@ -1,0 +1,90 @@
+{
+  "modId": "pack_it_up",
+  "modifiers": [
+    {
+      "type": "dynamic-textures:remove_border",
+      "border": {
+        "first": {
+          "height": 6,
+          "width": 6
+        },
+        "second": {
+          "height": 6,
+          "width": 6
+        }
+      },
+      "rect": {
+        "height": 240,
+        "width": 176,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "color": "ffc6c6c6",
+      "rect": {
+        "height": 240,
+        "width": 176,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/bottom",
+      "targetRect": {
+        "height": 83,
+        "width": 176,
+        "x": 0,
+        "y": 157
+      }
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "border": {
+                "first": {
+                  "height": 17,
+                  "width": 7
+                },
+                "second": {
+                  "height": 14,
+                  "width": 7
+                }
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
+              "targetRect": {
+                "height": 157,
+                "width": 176,
+                "x": 0,
+                "y": 0
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "repeat": true,
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+      "targetRect": {
+        "height": 126,
+        "width": 162,
+        "x": 7,
+        "y": 17
+      }
+    }
+  ],
+  "targetTexture": "pack_it_up:gui/pack_screen"
+}

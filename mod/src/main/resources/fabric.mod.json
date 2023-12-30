@@ -16,6 +16,12 @@
   "icon": "assets/${id}/icon.png",
   "environment": "*",
   "entrypoints": {
+    "fabric-datagen": [
+      {
+        "adapter": "kotlin",
+        "value": "${group}.client.datagen.EntrypointKt::init"
+      }
+    ],
     "main": [
       {
         "adapter": "kotlin",

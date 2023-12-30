@@ -13,7 +13,7 @@ import net.minecraft.resource.ResourceManager
 import net.minecraft.util.Identifier
 import net.pearx.kasechange.toSnakeCase
 import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
-import settingdust.dynamictextures.BetterUITextures
+import settingdust.dynamictextures.DynamicTextures
 
 object PredefinedTextureTypes {
     @JvmStatic val NINE_PATCH = register<NinePatch>()
@@ -22,7 +22,7 @@ object PredefinedTextureTypes {
     private inline fun <reified T : PredefinedTexture> register() =
         Registry.register(
             Registries.PREDEFINED_TEXTURE as Registry<PredefinedTextureType<T>>,
-            BetterUITextures.identifier(T::class.simpleName!!.toSnakeCase()),
+            DynamicTextures.identifier(T::class.simpleName!!.toSnakeCase()),
             PredefinedTextureType(),
         )!!
 }

@@ -12,12 +12,12 @@ import net.minecraft.resource.ResourceFinder
 import net.minecraft.resource.ResourceManager
 import net.minecraft.resource.ResourcePackProfile
 import net.minecraft.util.Identifier
-import settingdust.dynamictextures.BetterUITextures
+import settingdust.dynamictextures.DynamicTextures
 
 object GenericAssetsGenerator :
     DynClientResourcesGenerator(
         DynamicTexturePack(
-            BetterUITextures.identifier("generic"),
+            DynamicTextures.identifier("generic"),
             ResourcePackProfile.InsertionPosition.BOTTOM,
             false,
             false,
@@ -31,7 +31,7 @@ object GenericAssetsGenerator :
             .forEach { dynamicPack.addNamespaces(it) }
     }
 
-    override fun getLogger() = BetterUITextures.logger
+    override fun getLogger() = DynamicTextures.logger
 
     override fun dependsOnLoadedPacks() = true
 
@@ -41,11 +41,11 @@ object GenericAssetsGenerator :
 
         for ((id, resource) in
             ResourceFinder.json("dynamic_texture/defined").findResources(manager)) {
-            BetterUITextures.logger.debug("Loading {} from resource", id)
+            DynamicTextures.logger.debug("Loading {} from resource", id)
             val json = resource.reader.use { JsonParser.parseReader(it) }
             val texture = predefinedCodec.parse(JsonOps.INSTANCE, json)
             texture.error().ifPresent {
-                BetterUITextures.logger.error(
+                DynamicTextures.logger.error(
                     "Loading {} from resource failed: {}",
                     id,
                     it.message(),
@@ -69,11 +69,11 @@ object GenericAssetsGenerator :
         val dynamicTexturesCodec = codecFactory.create<DynamicTexture>()
 
         fun loadModifiers(id: Identifier?, resource: Resource) {
-            BetterUITextures.logger.debug("Loading {} from resource", id)
+            DynamicTextures.logger.debug("Loading {} from resource", id)
             val json = resource.reader.use { JsonParser.parseReader(it) }
             val texture = dynamicTexturesCodec.parse(JsonOps.INSTANCE, json)
             texture.error().ifPresent {
-                BetterUITextures.logger.error(
+                DynamicTextures.logger.error(
                     "Loading {} from resource failed: {}",
                     id,
                     it.message(),

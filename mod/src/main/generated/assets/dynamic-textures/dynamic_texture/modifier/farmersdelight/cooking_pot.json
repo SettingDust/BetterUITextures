@@ -1,0 +1,110 @@
+{
+  "modId": "farmersdelight",
+  "targetTexture": "farmersdelight:gui/cooking_pot",
+  "modifiers": [
+    {
+      "type": "dynamic-textures:remove_border",
+      "border": {
+        "first": {
+          "height": 6,
+          "width": 6
+        },
+        "second": {
+          "height": 6,
+          "width": 6
+        }
+      },
+      "rect": {
+        "height": 166,
+        "width": 176,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "color": "ffc6c6c6",
+      "rect": {
+        "height": 166,
+        "width": 176,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/bottom",
+      "targetRect": {
+        "height": 83,
+        "width": 176,
+        "x": 0,
+        "y": 83
+      }
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "border": {
+                "first": {
+                  "height": 17,
+                  "width": 7
+                },
+                "second": {
+                  "height": 14,
+                  "width": 7
+                }
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
+              "targetRect": {
+                "height": 83,
+                "width": 176,
+                "x": 0,
+                "y": 0
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 89,
+        "y": 51
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 121,
+        "y": 51
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "repeat": true,
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+      "targetRect": {
+        "height": 36,
+        "width": 54,
+        "x": 29,
+        "y": 16
+      }
+    }
+  ]
+}

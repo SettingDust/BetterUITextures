@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager
 
 fun init() {}
 
-object BetterUITextures {
+object DynamicTextures {
     const val ID = "dynamic-textures"
 
     val logger = LogManager.getLogger()!!

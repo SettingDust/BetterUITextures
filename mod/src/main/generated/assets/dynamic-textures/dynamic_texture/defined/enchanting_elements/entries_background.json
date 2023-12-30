@@ -1,0 +1,20 @@
+{
+  "type": "dynamic-textures:nine_patch",
+  "border": {
+    "first": {
+      "height": 1,
+      "width": 1
+    },
+    "second": {
+      "height": 1,
+      "width": 1
+    }
+  },
+  "source": "minecraft:gui/container/enchanting_table",
+  "sourceRect": {
+    "height": 59,
+    "width": 110,
+    "x": 59,
+    "y": 13
+  }
+}
