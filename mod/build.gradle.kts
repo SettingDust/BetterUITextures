@@ -6,6 +6,8 @@ plugins {
 
     alias(catalog.plugins.kotlin.jvm)
     alias(catalog.plugins.kotlin.plugin.serialization)
+
+    alias(catalog.plugins.explosion)
 }
 
 val id: String by rootProject.properties
