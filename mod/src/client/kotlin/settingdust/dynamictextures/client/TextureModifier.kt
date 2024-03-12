@@ -162,6 +162,12 @@ data class Overlay(
     /** If false, source texture on base texture. If true, base texture on source texture. */
     val invert: Boolean = false
 ) : TextureModifier {
+    constructor(
+        sourceTextures: DynamicTexture,
+        onExisting: Boolean = false,
+        invert: Boolean = false
+    ) : this(setOf(sourceTextures), onExisting, invert)
+
     @Transient override val type = TextureModifierTypes.BLEND
 
     override fun apply(manager: ResourceManager, baseTexture: TextureImage): TextureImage {

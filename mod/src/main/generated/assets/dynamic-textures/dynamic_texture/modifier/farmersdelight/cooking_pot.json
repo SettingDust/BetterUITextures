@@ -1,6 +1,5 @@
 {
   "modId": "farmersdelight",
-  "targetTexture": "farmersdelight:gui/cooking_pot",
   "modifiers": [
     {
       "type": "dynamic-textures:remove_border",
@@ -42,6 +41,37 @@
       }
     },
     {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 89,
+        "y": 51
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 121,
+        "y": 51
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "repeat": true,
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+      "targetRect": {
+        "height": 36,
+        "width": 54,
+        "x": 29,
+        "y": 16
+      }
+    },
+    {
       "type": "dynamic-textures:overlay",
       "invert": true,
       "sourceTextures": [
@@ -74,37 +104,7 @@
           }
         }
       ]
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 89,
-        "y": 51
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 121,
-        "y": 51
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "repeat": true,
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
-      "targetRect": {
-        "height": 36,
-        "width": 54,
-        "x": 29,
-        "y": 16
-      }
     }
-  ]
+  ],
+  "targetTexture": "farmersdelight:gui/cooking_pot"
 }

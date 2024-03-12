@@ -13,7 +13,14 @@ data class DynamicTexture(
     val targetTexture: @Contextual Identifier? = null,
     val size: Size? = null,
     val modifiers: Set<TextureModifier> = setOf()
-)
+) {
+    constructor(
+        modId: String? = null,
+        targetTexture: @Contextual Identifier? = null,
+        size: Size? = null,
+        modifiers: TextureModifier
+    ) : this(modId, targetTexture, size, setOf(modifiers))
+}
 
 fun DynamicTexture.targetTexture(manager: ResourceManager): TextureImage {
     if (size != null) {

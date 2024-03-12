@@ -41,69 +41,6 @@
       }
     },
     {
-      "type": "dynamic-textures:overlay",
-      "invert": true,
-      "sourceTextures": [
-        {
-          "modifiers": [
-            {
-              "type": "dynamic-textures:copy_nine_patch",
-              "border": {
-                "first": {
-                  "height": 17,
-                  "width": 7
-                },
-                "second": {
-                  "height": 14,
-                  "width": 7
-                }
-              },
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
-              "targetRect": {
-                "height": 83,
-                "width": 176,
-                "x": 0,
-                "y": 0
-              }
-            }
-          ],
-          "size": {
-            "height": 256,
-            "width": 256
-          }
-        }
-      ]
-    },
-    {
-      "type": "dynamic-textures:remove_border",
-      "border": {
-        "first": {
-          "height": 4,
-          "width": 2
-        },
-        "second": {
-          "height": 3,
-          "width": 3
-        }
-      },
-      "rect": {
-        "height": 23,
-        "width": 22,
-        "x": 23,
-        "y": 50
-      }
-    },
-    {
-      "type": "dynamic-textures:remove_color",
-      "color": "ff8b8b8b",
-      "rect": {
-        "height": 23,
-        "width": 22,
-        "x": 23,
-        "y": 50
-      }
-    },
-    {
       "type": "dynamic-textures:copy_rect",
       "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
       "targetRect": {
@@ -127,19 +64,48 @@
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 4,
+          "height": 2,
           "width": 2
         },
         "second": {
-          "height": 3,
-          "width": 3
+          "height": 2,
+          "width": 2
         }
       },
       "rect": {
-        "height": 23,
-        "width": 22,
-        "x": 131,
-        "y": 50
+        "height": 18,
+        "width": 18,
+        "x": 25,
+        "y": 53
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "color": "ff8b8b8b",
+      "rect": {
+        "height": 18,
+        "width": 18,
+        "x": 25,
+        "y": 53
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_border",
+      "border": {
+        "first": {
+          "height": 2,
+          "width": 2
+        },
+        "second": {
+          "height": 2,
+          "width": 2
+        }
+      },
+      "rect": {
+        "height": 18,
+        "width": 18,
+        "x": 133,
+        "y": 53
       }
     },
     {
@@ -176,6 +142,40 @@
                 "width": 22,
                 "x": 131,
                 "y": 50
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "border": {
+                "first": {
+                  "height": 17,
+                  "width": 7
+                },
+                "second": {
+                  "height": 14,
+                  "width": 7
+                }
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
+              "targetRect": {
+                "height": 83,
+                "width": 176,
+                "x": 0,
+                "y": 0
               }
             }
           ],

@@ -21,6 +21,7 @@ import settingdust.dynamictextures.client.RemoveBorder
 import settingdust.dynamictextures.client.RemoveColor
 import settingdust.dynamictextures.client.RemoveRect
 import settingdust.dynamictextures.client.Size
+import settingdust.dynamictextures.client.TextureModifier
 import settingdust.dynamictextures.client.codecFactory
 
 fun init(generator: FabricDataGenerator) {
@@ -29,6 +30,8 @@ fun init(generator: FabricDataGenerator) {
     pack.addProvider(::GenericDynamicTextureProvider)
     pack.addProvider(::DynamicTextureProvider)
 }
+
+private const val i = 176
 
 private class PredefinedTextureProvider(dataOutput: FabricDataOutput) :
     FabricCodecDataProvider<PredefinedTexture>(
@@ -93,6 +96,23 @@ private class PredefinedTextureProvider(dataOutput: FabricDataOutput) :
     }
 }
 
+private val SLOT_BG_COLOR = "FF8B8B8B".toUInt(16)
+private val BG_COLOR = "FFC6C6C6".toUInt(16)
+
+private const val INVENTORY_BOTTOM = "dynamic_texture/defined/inventory/bottom"
+private const val INVENTORY_TOP = "dynamic_texture/defined/inventory/top"
+
+private const val SLOT_RAW = "dynamic_texture/defined/slot/raw"
+private const val SLOT_SINGLE = "dynamic_texture/defined/slot/single"
+private const val SLOT_ABREAST = "dynamic_texture/defined/slot/abreast"
+
+private const val ENCHANTING_ENTRIES_BG =
+    "dynamic_texture/defined/enchanting_elements/entries_background"
+private const val ENCHANTING_ENTRIES_STATUSES =
+    "dynamic_texture/defined/enchanting_elements/entry_statuses"
+
+private const val STANDALONE_WINDOW = "dynamic_texture/defined/standalone_window"
+
 private class GenericDynamicTextureProvider(dataOutput: FabricDataOutput) :
     FabricCodecDataProvider<DynamicTexture>(
         dataOutput,
@@ -106,34 +126,30 @@ private class GenericDynamicTextureProvider(dataOutput: FabricDataOutput) :
         provider.accept(
             DynamicTextures.identifier("slot/raw"),
             DynamicTexture(
-                targetTexture = DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                targetTexture = DynamicTextures.identifier(SLOT_RAW),
                 size = Size(18, 18),
                 modifiers =
-                    setOf(
-                        CopyRect(
-                            sourceTexture = Identifier("gui/container/generic_54"),
-                            fromRect = Rect(25, 35, 18, 18),
-                            targetRect = Rect(0, 0, 18, 18)
-                        )
+                    CopyRect(
+                        sourceTexture = Identifier("gui/container/generic_54"),
+                        fromRect = Rect(25, 35, 18, 18),
+                        targetRect = Rect(0, 0, 18, 18)
                     )
             )
         )
         provider.accept(
             DynamicTextures.identifier("slot/abreast"),
             DynamicTexture(
-                targetTexture = DynamicTextures.identifier("dynamic_texture/defined/slot/abreast"),
+                targetTexture = DynamicTextures.identifier(SLOT_ABREAST),
                 size = Size(42, 23),
                 modifiers =
                     setOf(
                         CopyRect(
-                            sourceTexture =
-                                DynamicTextures.identifier("dynamic_texture/defined/slot/single"),
+                            sourceTexture = DynamicTextures.identifier(SLOT_SINGLE),
                             fromRect = Rect(0, 0, 21, 23),
                             targetRect = Rect(0, 0, 21, 23)
                         ),
                         CopyRect(
-                            sourceTexture =
-                                DynamicTextures.identifier("dynamic_texture/defined/slot/single"),
+                            sourceTexture = DynamicTextures.identifier(SLOT_SINGLE),
                             fromRect = Rect(1, 0, 21, 23),
                             targetRect = Rect(21, 0, 21, 23)
                         ),
@@ -143,6 +159,11 @@ private class GenericDynamicTextureProvider(dataOutput: FabricDataOutput) :
     }
 }
 
+val inventoryBottom = DynamicTextures.identifier(INVENTORY_BOTTOM)
+
+val slotSingle = DynamicTextures.identifier(SLOT_SINGLE)
+val slotRaw = DynamicTextures.identifier(SLOT_RAW)
+
 private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
     FabricCodecDataProvider<DynamicTexture>(
         dataOutput,
@@ -151,8 +172,54 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
         codecFactory.create()
     ) {
     companion object {
-        val SLOT_BG_COLOR = "FF8B8B8B".toUInt(16)
-        val BG_COLOR = "FFC6C6C6".toUInt(16)
+        fun MutableSet<TextureModifier>.removeBorderAndBackground(width: Int, height: Int) {
+            this +=
+                RemoveBorder(
+                    rect = Rect(0, 0, width, height),
+                    border = Border(Size(6, 6), Size(6, 6))
+                )
+
+            this += RemoveColor(rect = Rect(0, 0, width, height), color = BG_COLOR)
+        }
+
+        fun MutableSet<TextureModifier>.removeSlotBackground(targetRect: Rect) {
+            this += RemoveBorder(rect = targetRect, border = Border(Size(2, 2), Size(2, 2)))
+            this += RemoveColor(rect = targetRect, color = SLOT_BG_COLOR)
+        }
+
+        fun MutableSet<TextureModifier>.inventoryTopOverlay(targetRect: Rect) =
+            add(
+                Overlay(
+                    invert = true,
+                    sourceTextures =
+                        DynamicTexture(
+                            size = Size(256, 256),
+                            modifiers =
+                                CopyNinePatch(
+                                    sourceTexture = DynamicTextures.identifier(INVENTORY_TOP),
+                                    border = Border(Size(7, 17), Size(7, 14)),
+                                    targetRect = targetRect
+                                )
+                        )
+                )
+            )
+
+        fun MutableSet<TextureModifier>.windowOverlay(targetRect: Rect) =
+            add(
+                Overlay(
+                    invert = true,
+                    sourceTextures =
+                        DynamicTexture(
+                            size = Size(256, 256),
+                            modifiers =
+                                CopyNinePatch(
+                                    sourceTexture = DynamicTextures.identifier(STANDALONE_WINDOW),
+                                    border = Border(Size(4, 17), Size(7, 6)),
+                                    targetRect = targetRect
+                                )
+                        )
+                )
+            )
     }
 
     override fun getName() = "Dynamic Textures Modifiers"
@@ -176,94 +243,50 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "farmersdelight",
                     targetTexture = Identifier("farmersdelight:gui/cooking_pot"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(89, 51, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(121, 51, 22, 23)
-                            ),
-                            CopyRect(
-                                repeat = true,
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(29, 16, 54, 36)
-                            )
-                        )
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(89, 51, 22, 23)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(121, 51, 22, 23)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    repeat = true,
+                                    sourceTexture = slotRaw,
+                                    targetRect = Rect(29, 16, 54, 36)
+                                )
+
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                        }
                 )
             )
         })
 
     data object FWaystones :
         DynamicTextureProvider({
-            val waystoneScreenModifiers =
-                setOf(
-                    RemoveBorder(
-                        rect = Rect(0, 0, 177, 176),
-                        border = Border(Size(4, 17), Size(7, 6))
-                    ),
-                    RemoveColor(rect = Rect(0, 0, 177, 176), color = BG_COLOR),
-                    Overlay(
-                        invert = true,
-                        sourceTextures =
-                            setOf(
-                                DynamicTexture(
-                                    size = Size(256, 256),
-                                    modifiers =
-                                        setOf(
-                                            CopyNinePatch(
-                                                sourceTexture =
-                                                    DynamicTextures.identifier(
-                                                        "dynamic_texture/defined/standalone_window"
-                                                    ),
-                                                border = Border(Size(4, 17), Size(7, 6)),
-                                                targetRect = Rect(0, 0, 177, 176)
-                                            )
-                                        )
-                                )
-                            )
-                    ),
-                )
+            val waystoneScreenModifiers = buildSet {
+                val width = 176
+                val height = 176
+                removeBorderAndBackground(width, height)
+                windowOverlay(Rect(0, 0, width, height))
+            }
             it.accept(
                 DynamicTextures.identifier("fwaystones/waystone_config"),
                 DynamicTexture(
@@ -290,88 +313,50 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "illagerinvasion",
                     targetTexture = Identifier("illagerinvasion:gui/container/imbuing_table"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            RemoveBorder(
-                                rect = Rect(23, 50, 22, 23),
-                                border = Border(Size(2, 4), Size(3, 3))
-                            ),
-                            RemoveColor(rect = Rect(23, 50, 22, 23), color = SLOT_BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(77, 50, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(77, 10, 22, 23)
-                            ),
-                            RemoveBorder(
-                                rect = Rect(131, 50, 22, 23),
-                                border = Border(Size(2, 4), Size(3, 3))
-                            ),
-                            RemoveColor(rect = Rect(133, 53, 18, 18), color = SLOT_BG_COLOR),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(77, 50, 22, 23)
+                                )
+
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(77, 10, 22, 23))
+
+                            removeSlotBackground(Rect(25, 53, 18, 18))
+                            removeSlotBackground(Rect(133, 53, 18, 18))
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
                                                 setOf(
                                                     CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/single"
-                                                            ),
+                                                        sourceTexture = slotSingle,
                                                         targetRect = Rect(23, 50, 22, 23)
                                                     ),
                                                     CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/single"
-                                                            ),
+                                                        sourceTexture = slotSingle,
                                                         targetRect = Rect(131, 50, 22, 23)
                                                     )
                                                 )
                                         )
-                                    )
-                            ),
-                        )
+                                )
+
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                        }
                 )
             )
         })
@@ -384,83 +369,47 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "pack_it_up",
                     targetTexture = Identifier("pack_it_up:gui/pack_bench"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            RemoveBorder(
-                                rect = Rect(24, 43, 22, 23),
-                                border = Border(Size(3, 4), Size(3, 3))
-                            ),
-                            RemoveColor(rect = Rect(26, 46, 18, 18), color = SLOT_BG_COLOR),
-                            RemoveBorder(
-                                rect = Rect(73, 43, 22, 23),
-                                border = Border(Size(3, 4), Size(3, 3))
-                            ),
-                            RemoveColor(rect = Rect(75, 46, 18, 18), color = SLOT_BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(131, 43, 22, 23)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            removeSlotBackground(Rect(26, 46, 18, 18))
+                            removeSlotBackground(Rect(75, 46, 18, 18))
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(131, 43, 22, 23)
+                                )
+
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
                                                 setOf(
                                                     CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/single"
-                                                            ),
+                                                        sourceTexture = slotSingle,
                                                         targetRect = Rect(24, 43, 22, 23)
                                                     ),
                                                     CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/single"
-                                                            ),
+                                                        sourceTexture = slotSingle,
                                                         targetRect = Rect(73, 43, 22, 23)
                                                     )
                                                 )
                                         )
-                                    )
-                            ),
-                        )
+                                )
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                        }
                 )
             )
             it.accept(
@@ -469,46 +418,26 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "pack_it_up",
                     targetTexture = Identifier("pack_it_up:gui/pack_screen"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 240),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 240), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 157, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 157)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                repeat = true,
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(7, 17, 162, 126)
-                            )
-                        )
+                        buildSet {
+                            val width = 176
+                            val height = 240
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, 157, width, halfHeight)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    repeat = true,
+                                    sourceTexture = slotRaw,
+                                    targetRect = Rect(7, 17, 162, 126)
+                                )
+
+                            inventoryTopOverlay(Rect(0, 0, width, 157))
+                        }
                 )
             )
         })
@@ -521,61 +450,37 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "runes",
                     targetTexture = Identifier("runes:gui/crafting_altar"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(24, 44, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(73, 44, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(131, 44, 22, 23)
-                            ),
-                        )
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(24, 43, 22, 23)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(73, 43, 22, 23)
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(131, 43, 22, 23)
+                                )
+
+                            inventoryTopOverlay(Rect(0, 0, width, 157))
+                        }
                 )
             )
         })
@@ -588,99 +493,64 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     modId = "spell_engine",
                     targetTexture = Identifier("spell_engine:gui/spell_binding"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(4, 17), Size(7, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this += RemoveRect(rect = Rect(12, 43, 21, 23))
+                            removeSlotBackground(Rect(34, 46, 18, 18))
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
+                                                CopyRect(
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(SLOT_ABREAST),
+                                                    targetRect = Rect(12, 43, 42, 23)
+                                                ),
                                         )
-                                    )
-                            ),
-                            RemoveRect(rect = Rect(12, 43, 21, 23)),
-                            RemoveBorder(
-                                rect = Rect(33, 43, 21, 23),
-                                border = Border(Size(2, 4), Size(3, 3))
-                            ),
-                            RemoveColor(rect = Rect(34, 46, 18, 18), color = SLOT_BG_COLOR),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_BG),
+                                    targetRect = Rect(59, 13, 110, 59)
+                                )
+                            this +=
+                                Overlay(
+                                    onExisting = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
-                                                setOf(
-                                                    CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/abreast"
-                                                            ),
-                                                        targetRect = Rect(12, 43, 42, 23)
-                                                    ),
-                                                )
+                                                CopyRect(
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(
+                                                            ENCHANTING_ENTRIES_STATUSES
+                                                        ),
+                                                    fromRect = Rect(0, 19, 108, 19),
+                                                    targetRect = Rect(60, 14, 108, 57)
+                                                ),
                                         )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/enchanting_elements/entries_background"
-                                    ),
-                                targetRect = Rect(59, 13, 110, 59)
-                            ),
-                            Overlay(
-                                onExisting = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/enchanting_elements/entry_statuses"
-                                                            ),
-                                                        fromRect = Rect(0, 19, 108, 19),
-                                                        targetRect = Rect(60, 14, 108, 57)
-                                                    ),
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/enchanting_elements/entry_statuses"
-                                    ),
-                                targetRect = Rect(0, 166, 108, 57)
-                            ),
-                        )
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    targetRect = Rect(0, 166, 108, 57)
+                                )
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                        }
                 )
             )
         })
@@ -694,81 +564,56 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     targetTexture =
                         Identifier("amethyst_imbuement:gui/container/crystal_altar_gui"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 176, 166),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                targetRect = Rect(0, 83, 176, 83)
-                            ),
-                            RemoveColor(rect = Rect(30, 43, 58, 23), color = SLOT_BG_COLOR),
-                            RemoveBorder(
-                                rect = Rect(32, 46, 18, 18),
-                                border = Border(Size(2, 2), Size(2, 2))
-                            ),
-                            RemoveBorder(
-                                rect = Rect(50, 46, 18, 18),
-                                border = Border(Size(2, 2), Size(2, 2))
-                            ),
-                            RemoveBorder(
-                                rect = Rect(68, 46, 18, 18),
-                                border = Border(Size(2, 2), Size(2, 2))
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+                            this += RemoveColor(rect = Rect(30, 43, 58, 23), color = SLOT_BG_COLOR)
+                            this +=
+                                RemoveBorder(
+                                    rect = Rect(32, 46, 18, 18),
+                                    border = Border(Size(2, 2), Size(2, 2))
+                                )
+                            this +=
+                                RemoveBorder(
+                                    rect = Rect(50, 46, 18, 18),
+                                    border = Border(Size(2, 2), Size(2, 2))
+                                )
+                            this +=
+                                RemoveBorder(
+                                    rect = Rect(68, 46, 18, 18),
+                                    border = Border(Size(2, 2), Size(2, 2))
+                                )
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/single"
-                                                            ),
-                                                        border = Border(Size(2, 3), Size(2, 2)),
-                                                        targetRect = Rect(30, 43, 58, 23),
-                                                        repeat = true
-                                                    )
+                                                CopyNinePatch(
+                                                    sourceTexture = slotSingle,
+                                                    border = Border(Size(2, 3), Size(2, 2)),
+                                                    targetRect = Rect(30, 43, 58, 23),
+                                                    repeat = true
                                                 )
                                         )
-                                    )
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/inventory/top"
-                                                            ),
-                                                        border = Border(Size(7, 17), Size(7, 14)),
-                                                        targetRect = Rect(0, 0, 176, 83)
-                                                    )
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(124, 43, 22, 23)
-                            ),
-                        )
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(124, 43, 22, 23)
+                                )
+
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                        }
                 )
             )
 
@@ -779,167 +624,115 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                     targetTexture =
                         Identifier("amethyst_imbuement:gui/container/imbuing_table_gui"),
                     modifiers =
-                        setOf(
-                            RemoveBorder(
-                                rect = Rect(0, 0, 234, 174),
-                                border = Border(Size(6, 6), Size(6, 6))
-                            ),
-                            RemoveColor(rect = Rect(0, 0, 234, 174), color = BG_COLOR),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/inventory/bottom"
-                                    ),
-                                fromRect = Rect(4, 0, 168, 81),
-                                targetRect = Rect(34, 91, 168, 81)
-                            ),
-                            RemoveColor(rect = Rect(71, 37, 18, 18), color = SLOT_BG_COLOR),
-                            RemoveBorder(
-                                rect = Rect(71, 37, 18, 18),
-                                border = Border(Size(2, 2), Size(2, 2))
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                        buildSet {
+                            val width = 234
+                            val height = 174
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    fromRect = Rect(4, 0, 168, 81),
+                                    targetRect = Rect(34, 91, 168, 81)
+                                )
+
+                            removeSlotBackground(Rect(71, 37, 18, 18))
+
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
-                                                setOf(
-                                                    CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/slot/raw"
-                                                            ),
-                                                        targetRect = Rect(71, 37, 18, 18)
-                                                    )
+                                                CopyRect(
+                                                    sourceTexture = slotRaw,
+                                                    targetRect = Rect(71, 37, 18, 18)
                                                 )
                                         )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(5, 9, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(5, 59, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(92, 9, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/slot/single"
-                                    ),
-                                targetRect = Rect(92, 59, 22, 23)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(29, 16, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(50, 16, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(71, 16, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(29, 37, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(49, 36, 20, 20)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(29, 58, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(50, 58, 18, 18)
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
-                                targetRect = Rect(71, 58, 18, 18)
-                            ),
-                            Overlay(
-                                invert = true,
-                                sourceTextures =
-                                    setOf(
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(5, 9, 22, 23)
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(5, 59, 22, 23)
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(92, 9, 22, 23)
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture = slotSingle,
+                                    targetRect = Rect(92, 59, 22, 23)
+                                )
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(29, 16, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(50, 16, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(71, 16, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(29, 37, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(49, 36, 20, 20))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(29, 58, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(50, 58, 18, 18))
+                            this +=
+                                CopyRect(sourceTexture = slotRaw, targetRect = Rect(71, 58, 18, 18))
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
+                                        (DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                CopyNinePatch(
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(
+                                                            STANDALONE_WINDOW
+                                                        ),
+                                                    border = Border(Size(4, 17), Size(7, 6)),
+                                                    targetRect = Rect(0, 0, 234, 174)
+                                                )
+                                        ))
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_BG),
+                                    targetRect = Rect(117, 17, 110, 59)
+                                )
+                            this +=
+                                Overlay(
+                                    onExisting = true,
+                                    sourceTextures =
                                         DynamicTexture(
                                             size = Size(256, 256),
                                             modifiers =
-                                                setOf(
-                                                    CopyNinePatch(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/standalone_window"
-                                                            ),
-                                                        border = Border(Size(4, 17), Size(7, 6)),
-                                                        targetRect = Rect(0, 0, 234, 174)
-                                                    )
-                                                )
+                                                CopyRect(
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(
+                                                            ENCHANTING_ENTRIES_STATUSES
+                                                        ),
+                                                    fromRect = Rect(0, 19, 108, 19),
+                                                    targetRect = Rect(118, 18, 108, 57)
+                                                ),
                                         )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/enchanting_elements/entries_background"
-                                    ),
-                                targetRect = Rect(117, 17, 110, 59)
-                            ),
-                            Overlay(
-                                onExisting = true,
-                                sourceTextures =
-                                    setOf(
-                                        DynamicTexture(
-                                            size = Size(256, 256),
-                                            modifiers =
-                                                setOf(
-                                                    CopyRect(
-                                                        sourceTexture =
-                                                            DynamicTextures.identifier(
-                                                                "dynamic_texture/defined/enchanting_elements/entry_statuses"
-                                                            ),
-                                                        fromRect = Rect(0, 19, 108, 19),
-                                                        targetRect = Rect(118, 18, 108, 57)
-                                                    ),
-                                                )
-                                        )
-                                    )
-                            ),
-                            CopyRect(
-                                sourceTexture =
-                                    DynamicTextures.identifier(
-                                        "dynamic_texture/defined/enchanting_elements/entry_statuses"
-                                    ),
-                                targetRect = Rect(0, 174, 108, 57)
-                            ),
-                        )
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    targetRect = Rect(0, 174, 108, 57)
+                                )
+                        }
                 )
             )
         })

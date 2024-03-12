@@ -5,17 +5,17 @@
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 17,
-          "width": 4
+          "height": 6,
+          "width": 6
         },
         "second": {
           "height": 6,
-          "width": 7
+          "width": 6
         }
       },
       "rect": {
         "height": 176,
-        "width": 177,
+        "width": 176,
         "x": 0,
         "y": 0
       }
@@ -25,7 +25,7 @@
       "color": "ffc6c6c6",
       "rect": {
         "height": 176,
-        "width": 177,
+        "width": 176,
         "x": 0,
         "y": 0
       }
@@ -51,7 +51,7 @@
               "sourceTexture": "dynamic-textures:dynamic_texture/defined/standalone_window",
               "targetRect": {
                 "height": 176,
-                "width": 177,
+                "width": 176,
                 "x": 0,
                 "y": 0
               }

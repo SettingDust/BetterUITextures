@@ -41,56 +41,22 @@
       }
     },
     {
-      "type": "dynamic-textures:overlay",
-      "invert": true,
-      "sourceTextures": [
-        {
-          "modifiers": [
-            {
-              "type": "dynamic-textures:copy_nine_patch",
-              "border": {
-                "first": {
-                  "height": 17,
-                  "width": 7
-                },
-                "second": {
-                  "height": 14,
-                  "width": 7
-                }
-              },
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
-              "targetRect": {
-                "height": 83,
-                "width": 176,
-                "x": 0,
-                "y": 0
-              }
-            }
-          ],
-          "size": {
-            "height": 256,
-            "width": 256
-          }
-        }
-      ]
-    },
-    {
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 4,
-          "width": 3
+          "height": 2,
+          "width": 2
         },
         "second": {
-          "height": 3,
-          "width": 3
+          "height": 2,
+          "width": 2
         }
       },
       "rect": {
-        "height": 23,
-        "width": 22,
-        "x": 24,
-        "y": 43
+        "height": 18,
+        "width": 18,
+        "x": 26,
+        "y": 46
       }
     },
     {
@@ -107,19 +73,19 @@
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 4,
-          "width": 3
+          "height": 2,
+          "width": 2
         },
         "second": {
-          "height": 3,
-          "width": 3
+          "height": 2,
+          "width": 2
         }
       },
       "rect": {
-        "height": 23,
-        "width": 22,
-        "x": 73,
-        "y": 43
+        "height": 18,
+        "width": 18,
+        "x": 75,
+        "y": 46
       }
     },
     {
@@ -166,6 +132,40 @@
                 "width": 22,
                 "x": 73,
                 "y": 43
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "invert": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_nine_patch",
+              "border": {
+                "first": {
+                  "height": 17,
+                  "width": 7
+                },
+                "second": {
+                  "height": 14,
+                  "width": 7
+                }
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
+              "targetRect": {
+                "height": 83,
+                "width": 176,
+                "x": 0,
+                "y": 0
               }
             }
           ],

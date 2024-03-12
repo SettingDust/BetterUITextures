@@ -34,10 +34,21 @@
       "type": "dynamic-textures:copy_rect",
       "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/bottom",
       "targetRect": {
-        "height": 83,
+        "height": 120,
         "width": 176,
         "x": 0,
         "y": 157
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "repeat": true,
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
+      "targetRect": {
+        "height": 126,
+        "width": 162,
+        "x": 7,
+        "y": 17
       }
     },
     {
@@ -73,17 +84,6 @@
           }
         }
       ]
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "repeat": true,
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/raw",
-      "targetRect": {
-        "height": 126,
-        "width": 162,
-        "x": 7,
-        "y": 17
-      }
     }
   ],
   "targetTexture": "pack_it_up:gui/pack_screen"

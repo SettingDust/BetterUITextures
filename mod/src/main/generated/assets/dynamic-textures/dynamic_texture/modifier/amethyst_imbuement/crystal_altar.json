@@ -143,6 +143,16 @@
       ]
     },
     {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 124,
+        "y": 43
+      }
+    },
+    {
       "type": "dynamic-textures:overlay",
       "invert": true,
       "sourceTextures": [
@@ -175,16 +185,6 @@
           }
         }
       ]
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 124,
-        "y": 43
-      }
     }
   ],
   "targetTexture": "amethyst_imbuement:gui/container/crystal_altar_gui"

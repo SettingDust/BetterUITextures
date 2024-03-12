@@ -47,16 +47,6 @@
       }
     },
     {
-      "type": "dynamic-textures:remove_color",
-      "color": "ff8b8b8b",
-      "rect": {
-        "height": 18,
-        "width": 18,
-        "x": 71,
-        "y": 37
-      }
-    },
-    {
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
@@ -68,6 +58,16 @@
           "width": 2
         }
       },
+      "rect": {
+        "height": 18,
+        "width": 18,
+        "x": 71,
+        "y": 37
+      }
+    },
+    {
+      "type": "dynamic-textures:remove_color",
+      "color": "ff8b8b8b",
       "rect": {
         "height": 18,
         "width": 18,

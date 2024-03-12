@@ -41,6 +41,36 @@
       }
     },
     {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 24,
+        "y": 43
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 73,
+        "y": 43
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+      "targetRect": {
+        "height": 23,
+        "width": 22,
+        "x": 131,
+        "y": 43
+      }
+    },
+    {
       "type": "dynamic-textures:overlay",
       "invert": true,
       "sourceTextures": [
@@ -60,7 +90,7 @@
               },
               "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/top",
               "targetRect": {
-                "height": 83,
+                "height": 157,
                 "width": 176,
                 "x": 0,
                 "y": 0
@@ -73,36 +103,6 @@
           }
         }
       ]
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 24,
-        "y": 44
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 73,
-        "y": 44
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 131,
-        "y": 44
-      }
     }
   ],
   "targetTexture": "runes:gui/crafting_altar"
