@@ -34,15 +34,15 @@
       "type": "dynamic-textures:copy_rect",
       "fromRect": {
         "height": 81,
-        "width": 168,
-        "x": 4,
+        "width": 164,
+        "x": 6,
         "y": 0
       },
       "sourceTexture": "dynamic-textures:dynamic_texture/defined/inventory/bottom",
       "targetRect": {
         "height": 81,
-        "width": 168,
-        "x": 34,
+        "width": 164,
+        "x": 36,
         "y": 91
       }
     },

@@ -633,8 +633,8 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                             this +=
                                 CopyRect(
                                     sourceTexture = inventoryBottom,
-                                    fromRect = Rect(4, 0, 168, 81),
-                                    targetRect = Rect(34, 91, 168, 81)
+                                    fromRect = Rect(6, 0, 164, 81),
+                                    targetRect = Rect(36, 91, 164, 81)
                                 )
 
                             removeSlotBackground(Rect(71, 37, 18, 18))
