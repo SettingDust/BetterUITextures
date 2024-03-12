@@ -88,7 +88,7 @@ dependencies {
     include(catalog.kasechange)
     implementation(catalog.kasechange)
 
-    modRuntimeOnly(catalog.spell.engine)
+    modRuntimeOnly(explosion.fabric(catalog.spell.engine))
     modRuntimeOnly(catalog.trinkets)
     modRuntimeOnly(catalog.spell.power)
     modRuntimeOnly(catalog.cloth.config.fabric)

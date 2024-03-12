@@ -150,6 +150,11 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
         "dynamic_texture/modifier",
         codecFactory.create()
     ) {
+    companion object {
+        val SLOT_BG_COLOR = "FF8B8B8B".toUInt(16)
+        val BG_COLOR = "FFC6C6C6".toUInt(16)
+    }
+
     override fun getName() = "Dynamic Textures Modifiers"
 
     override fun configure(provider: BiConsumer<Identifier, DynamicTexture>) {
@@ -176,7 +181,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 166),
                                 border = Border(Size(6, 6), Size(6, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -237,7 +242,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                         rect = Rect(0, 0, 177, 176),
                         border = Border(Size(4, 17), Size(7, 6))
                     ),
-                    RemoveColor(rect = Rect(0, 0, 177, 176), color = "FFC6C6C6".toUInt(16)),
+                    RemoveColor(rect = Rect(0, 0, 177, 176), color = BG_COLOR),
                     Overlay(
                         invert = true,
                         sourceTextures =
@@ -290,7 +295,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 166),
                                 border = Border(Size(6, 6), Size(6, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -322,7 +327,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(23, 50, 22, 23),
                                 border = Border(Size(2, 4), Size(3, 3))
                             ),
-                            RemoveColor(rect = Rect(23, 50, 22, 23), color = "FF8B8B8B".toUInt(16)),
+                            RemoveColor(rect = Rect(23, 50, 22, 23), color = SLOT_BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -339,10 +344,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(131, 50, 22, 23),
                                 border = Border(Size(2, 4), Size(3, 3))
                             ),
-                            RemoveColor(
-                                rect = Rect(133, 53, 18, 18),
-                                color = "FF8B8B8B".toUInt(16)
-                            ),
+                            RemoveColor(rect = Rect(133, 53, 18, 18), color = SLOT_BG_COLOR),
                             Overlay(
                                 invert = true,
                                 sourceTextures =
@@ -387,7 +389,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 166),
                                 border = Border(Size(6, 6), Size(6, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -419,12 +421,12 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(24, 43, 22, 23),
                                 border = Border(Size(3, 4), Size(3, 3))
                             ),
-                            RemoveColor(rect = Rect(26, 46, 18, 18), color = "FF8B8B8B".toUInt(16)),
+                            RemoveColor(rect = Rect(26, 46, 18, 18), color = SLOT_BG_COLOR),
                             RemoveBorder(
                                 rect = Rect(73, 43, 22, 23),
                                 border = Border(Size(3, 4), Size(3, 3))
                             ),
-                            RemoveColor(rect = Rect(75, 46, 18, 18), color = "FF8B8B8B".toUInt(16)),
+                            RemoveColor(rect = Rect(75, 46, 18, 18), color = SLOT_BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -472,7 +474,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 240),
                                 border = Border(Size(6, 6), Size(6, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 240), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 240), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -524,7 +526,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 166),
                                 border = Border(Size(6, 6), Size(6, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -591,7 +593,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(0, 0, 176, 166),
                                 border = Border(Size(4, 17), Size(7, 6))
                             ),
-                            RemoveColor(rect = Rect(0, 0, 176, 166), color = "FFC6C6C6".toUInt(16)),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
                             CopyRect(
                                 sourceTexture =
                                     DynamicTextures.identifier(
@@ -624,7 +626,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                 rect = Rect(33, 43, 21, 23),
                                 border = Border(Size(2, 4), Size(3, 3))
                             ),
-                            RemoveColor(rect = Rect(34, 46, 18, 18), color = "FF8B8B8B".toUInt(16)),
+                            RemoveColor(rect = Rect(34, 46, 18, 18), color = SLOT_BG_COLOR),
                             Overlay(
                                 invert = true,
                                 sourceTextures =
@@ -677,6 +679,94 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                         "dynamic_texture/defined/enchanting_elements/entry_statuses"
                                     ),
                                 targetRect = Rect(0, 166, 108, 57)
+                            ),
+                        )
+                )
+            )
+        })
+
+    data object AmethystImbuement :
+        DynamicTextureProvider({
+            it.accept(
+                DynamicTextures.identifier("amethyst_imbuement/crystal_altar"),
+                DynamicTexture(
+                    modId = "amethyst_imbuement",
+                    targetTexture =
+                        Identifier("amethyst_imbuement:gui/container/crystal_altar_gui"),
+                    modifiers =
+                        setOf(
+                            RemoveBorder(
+                                rect = Rect(0, 0, 176, 166),
+                                border = Border(Size(6, 6), Size(6, 6))
+                            ),
+                            RemoveColor(rect = Rect(0, 0, 176, 166), color = BG_COLOR),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/inventory/bottom"
+                                    ),
+                                targetRect = Rect(0, 83, 176, 83)
+                            ),
+                            RemoveColor(rect = Rect(30, 43, 58, 23), color = SLOT_BG_COLOR),
+                            RemoveBorder(
+                                rect = Rect(32, 46, 18, 18),
+                                border = Border(Size(2, 2), Size(2, 2))
+                            ),
+                            RemoveBorder(
+                                rect = Rect(50, 46, 18, 18),
+                                border = Border(Size(2, 2), Size(2, 2))
+                            ),
+                            RemoveBorder(
+                                rect = Rect(68, 46, 18, 18),
+                                border = Border(Size(2, 2), Size(2, 2))
+                            ),
+                            Overlay(
+                                invert = true,
+                                sourceTextures =
+                                    setOf(
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                "dynamic_texture/defined/slot/single"
+                                                            ),
+                                                        border = Border(Size(2, 3), Size(2, 2)),
+                                                        targetRect = Rect(30, 43, 58, 23),
+                                                        repeat = true
+                                                    )
+                                                )
+                                        )
+                                    )
+                            ),
+                            Overlay(
+                                invert = true,
+                                sourceTextures =
+                                    setOf(
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                "dynamic_texture/defined/inventory/top"
+                                                            ),
+                                                        border = Border(Size(7, 17), Size(7, 14)),
+                                                        targetRect = Rect(0, 0, 176, 83)
+                                                    )
+                                                )
+                                        )
+                                    )
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/slot/single"
+                                    ),
+                                targetRect = Rect(124, 43, 22, 23)
                             ),
                         )
                 )
