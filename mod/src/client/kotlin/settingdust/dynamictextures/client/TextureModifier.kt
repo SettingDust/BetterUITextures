@@ -99,9 +99,9 @@ data class RemoveBorder(val rect: Rect, val border: Border) : TextureModifier {
             val bottomY = rect.height - border.second.height
             for (x in 0 until rect.width) {
                 for (y in 0 until rect.height) {
-                    if (x <= border.first.width || x >= rightX) {
+                    if (x < border.first.width || x > rightX) {
                         setFramePixel(0, x + rect.x, y + rect.y, 0)
-                    } else if (y <= border.first.height || y >= bottomY) {
+                    } else if (y < border.first.height || y > bottomY) {
                         setFramePixel(0, x + rect.x, y + rect.y, 0)
                     }
                 }
