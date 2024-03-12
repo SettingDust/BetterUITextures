@@ -24,7 +24,7 @@ dependencyResolutionManagement.versionCatalogs.named("catalog") {
     // https://github.com/wisp-forest/owo-lib/releases/
     library("owo", "io.wispforest", "owo-lib").version("0.11.2+1.20")
     // https://modrinth.com/mod/moonlight/versions
-    val moonlight = "1.20-2.8.78"
+    val moonlight = "1.20-2.11.2"
     library("moonlight-fabric", "maven.modrinth", "moonlight").version("fabric_$moonlight")
     library("moonlight-forge", "maven.modrinth", "moonlight").version("forge_$moonlight")
     // https://modrinth.com/mod/spell-engine/versions

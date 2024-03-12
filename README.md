@@ -5,7 +5,7 @@ So, you can modify the textures generated with the resource pack.
 Also, add compatibility to any mod with any resource packs.  
 For JSON example: https://github.com/SettingDust/DynamicTextures/tree/main/mod/src/client/resources/assets/dynamic-textures/dynamic_texture/modifier
 
-## Screenshots
+## Supported
 <details>
 <summary>Fabric Waystones</summary>
 

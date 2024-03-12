@@ -35,6 +35,11 @@ object GenericAssetsGenerator :
 
     override fun dependsOnLoadedPacks() = true
 
+    override fun onNormalReload(manager: ResourceManager) {
+        super.onNormalReload(manager)
+        regenerateDynamicAssets(manager)
+    }
+
     override fun regenerateDynamicAssets(manager: ResourceManager) {
         val predefined = Object2ObjectOpenHashMap<Identifier, PredefinedTexture>()
         val predefinedCodec = codecFactory.create<PredefinedTexture>()

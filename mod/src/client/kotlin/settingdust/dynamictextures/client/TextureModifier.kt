@@ -207,25 +207,28 @@ data class CopyNinePatch(
         val sourceImage = TextureImage.open(manager, sourceTexture)
         if (sourceRect == Rect.INVALID)
             sourceRect = Rect(0, 0, sourceImage.imageWidth(), sourceImage.imageHeight())
-        val extractedImage = TextureImage.createNew(sourceRect.width, sourceRect.height, null)
-        ImageTransformer.builder(
-                sourceImage.imageWidth(),
-                sourceImage.imageHeight(),
-                sourceRect.width,
-                sourceRect.height
-            )
-            .copyRect(
-                sourceRect.x,
-                sourceRect.y,
-                sourceRect.width,
-                sourceRect.height,
-                0,
-                0,
-                sourceRect.width,
-                sourceRect.height
-            )
-            .build()
-            .apply(sourceImage, extractedImage)
+        val extractedImage =
+            TextureImage.createNew(sourceRect.width, sourceRect.height, null).also {
+                ImageTransformer.builder(
+                        sourceImage.imageWidth(),
+                        sourceImage.imageHeight(),
+                        sourceRect.width,
+                        sourceRect.height
+                    )
+                    .copyRect(
+                        sourceRect.x,
+                        sourceRect.y,
+                        sourceRect.width,
+                        sourceRect.height,
+                        0,
+                        0,
+                        sourceRect.width,
+                        sourceRect.height
+                    )
+                    .build()
+                    .apply(sourceImage, it)
+            }
+
         val resized =
             extractedImage.resizeNinePatch(
                 border,
@@ -235,8 +238,8 @@ data class CopyNinePatch(
         ImageTransformer.builder(
                 targetRect.width,
                 targetRect.height,
-                targetRect.width,
-                targetRect.height
+                baseTexture.imageWidth(),
+                baseTexture.imageHeight()
             )
             .copyRect(
                 0,
