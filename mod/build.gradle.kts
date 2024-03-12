@@ -1,3 +1,4 @@
+import lol.bai.explosion.ExplosionExt
 import net.fabricmc.loom.task.AbstractRunTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 
@@ -52,6 +53,8 @@ loom {
     }
 }
 
+kotlin { jvmToolchain(17) }
+
 sourceSets { main { resources { srcDirs(file("src/main/generated")) } } }
 
 val modNeedCopy by configurations.creating { isTransitive = false }
@@ -62,6 +65,9 @@ val modClientNeedCopy by
         isTransitive = false
     }
 
+fun <T : Dependency> ExplosionExt.fabric(dependency: Provider<T>) =
+    fabric(dependency.get().toString())
+
 dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
@@ -71,39 +77,38 @@ dependencies {
     modImplementation(catalog.fabric.kotlin)
 
     val modClientImplementation by configurations
+    val modClientRuntimeOnly by configurations
     modClientImplementation(catalog.modmenu)
 
     modImplementation(catalog.moonlight.fabric)
 
-    modNeedCopy(catalog.fabric.waystones)
-    modNeedCopy(catalog.owo)
+    modRuntimeOnly(catalog.fabric.waystones)
+    modRuntimeOnly(catalog.owo)
 
     include(catalog.kasechange)
     implementation(catalog.kasechange)
 
-    modNeedCopy(catalog.spell.engine)
-    modNeedCopy(catalog.trinkets)
-    modNeedCopy(catalog.spell.power)
-    modClientNeedCopy(catalog.cloth.config.fabric)
-    modNeedCopy(catalog.playeranimator.fabric)
+    modRuntimeOnly(catalog.spell.engine)
+    modRuntimeOnly(catalog.trinkets)
+    modRuntimeOnly(catalog.spell.power)
+    modRuntimeOnly(catalog.cloth.config.fabric)
+    modRuntimeOnly(catalog.playeranimator.fabric)
 
-    modNeedCopy(catalog.runes)
+    modRuntimeOnly(catalog.runes)
 
-    //    modNeedCopy(catalog.amethyst.imbuement)
-    //    modNeedCopy(catalog.amethyst.core)
-    //    modNeedCopy(catalog.fzzy.core)
-    //    modNeedCopy(catalog.patchouli)
+    modRuntimeOnly(explosion.fabric(catalog.amethyst.imbuement))
+    modRuntimeOnly(explosion.fabric(catalog.amethyst.core))
+    modRuntimeOnly(catalog.fzzy.core)
+    modRuntimeOnly(explosion.fabric(catalog.patchouli))
 
-    modNeedCopy(catalog.farmers.delight.fabric)
+    modRuntimeOnly(catalog.farmers.delight.fabric)
 
-    modNeedCopy(catalog.illager.invasion)
-    modNeedCopy(catalog.puzzleslib.fabric)
-    modNeedCopy(catalog.forgeconfigapiport.fabric)
+    modRuntimeOnly(explosion.fabric(catalog.illager.invasion))
+    modRuntimeOnly(catalog.puzzleslib.fabric)
+    modRuntimeOnly(catalog.forgeconfigapiport.fabric)
 
-    modNeedCopy(catalog.pack.it.up)
+    modRuntimeOnly(catalog.pack.it.up)
 }
-
-kotlin { jvmToolchain(17) }
 
 java {
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
