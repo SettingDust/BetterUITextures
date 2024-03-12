@@ -87,7 +87,7 @@ private class PredefinedTextureProvider(dataOutput: FabricDataOutput) :
                 border = Border(Size(4, 17), Size(7, 6)),
                 sourceRect = Rect(0, 0, 195, 136),
                 targetSize = Size(176, 83),
-                centerColorPoint = Point(6, 18)
+                centerColorPoint = Point(6, 106)
             )
         )
     }
@@ -767,6 +767,177 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                         "dynamic_texture/defined/slot/single"
                                     ),
                                 targetRect = Rect(124, 43, 22, 23)
+                            ),
+                        )
+                )
+            )
+
+            it.accept(
+                DynamicTextures.identifier("amethyst_imbuement/imbuing_table"),
+                DynamicTexture(
+                    modId = "amethyst_imbuement",
+                    targetTexture =
+                        Identifier("amethyst_imbuement:gui/container/imbuing_table_gui"),
+                    modifiers =
+                        setOf(
+                            RemoveBorder(
+                                rect = Rect(0, 0, 234, 174),
+                                border = Border(Size(6, 6), Size(6, 6))
+                            ),
+                            RemoveColor(rect = Rect(0, 0, 234, 174), color = BG_COLOR),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/inventory/bottom"
+                                    ),
+                                fromRect = Rect(4, 0, 168, 81),
+                                targetRect = Rect(34, 91, 168, 81)
+                            ),
+                            RemoveColor(rect = Rect(71, 37, 18, 18), color = SLOT_BG_COLOR),
+                            RemoveBorder(
+                                rect = Rect(71, 37, 18, 18),
+                                border = Border(Size(2, 2), Size(2, 2))
+                            ),
+                            Overlay(
+                                invert = true,
+                                sourceTextures =
+                                    setOf(
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyRect(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                "dynamic_texture/defined/slot/raw"
+                                                            ),
+                                                        targetRect = Rect(71, 37, 18, 18)
+                                                    )
+                                                )
+                                        )
+                                    )
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/slot/single"
+                                    ),
+                                targetRect = Rect(5, 9, 22, 23)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/slot/single"
+                                    ),
+                                targetRect = Rect(5, 59, 22, 23)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/slot/single"
+                                    ),
+                                targetRect = Rect(92, 9, 22, 23)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/slot/single"
+                                    ),
+                                targetRect = Rect(92, 59, 22, 23)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(29, 16, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(50, 16, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(71, 16, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(29, 37, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(49, 36, 20, 20)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(29, 58, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(50, 58, 18, 18)
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier("dynamic_texture/defined/slot/raw"),
+                                targetRect = Rect(71, 58, 18, 18)
+                            ),
+                            Overlay(
+                                invert = true,
+                                sourceTextures =
+                                    setOf(
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                "dynamic_texture/defined/standalone_window"
+                                                            ),
+                                                        border = Border(Size(4, 17), Size(7, 6)),
+                                                        targetRect = Rect(0, 0, 234, 174)
+                                                    )
+                                                )
+                                        )
+                                    )
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/enchanting_elements/entries_background"
+                                    ),
+                                targetRect = Rect(117, 17, 110, 59)
+                            ),
+                            Overlay(
+                                onExisting = true,
+                                sourceTextures =
+                                    setOf(
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyRect(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                "dynamic_texture/defined/enchanting_elements/entry_statuses"
+                                                            ),
+                                                        fromRect = Rect(0, 19, 108, 19),
+                                                        targetRect = Rect(118, 18, 108, 57)
+                                                    ),
+                                                )
+                                        )
+                                    )
+                            ),
+                            CopyRect(
+                                sourceTexture =
+                                    DynamicTextures.identifier(
+                                        "dynamic_texture/defined/enchanting_elements/entry_statuses"
+                                    ),
+                                targetRect = Rect(0, 174, 108, 57)
                             ),
                         )
                 )

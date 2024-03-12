@@ -50,3 +50,11 @@ Lazy
 Lazy
 
 </details>
+
+<details>
+<summary>Amethyst Imbuement</summary>
+
+![amethyst_imbuement_0](https://raw.githubusercontent.com/SettingDust/DynamicTextures/main/docs/amethyst_imbuement_0.png) ![amethyst_imbuement_1](https://raw.githubusercontent.com/SettingDust/DynamicTextures/main/docs/amethyst_imbuement_1.png)
+
+
+</details>

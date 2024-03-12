@@ -12,7 +12,7 @@
   },
   "centerColorPoint": {
     "x": 6,
-    "y": 18
+    "y": 106
   },
   "source": "minecraft:gui/container/creative_inventory/tab_items",
   "sourceRect": {
