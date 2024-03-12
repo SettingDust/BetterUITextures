@@ -808,5 +808,107 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                         }
                 )
             )
+
+            it.accept(
+                DynamicTextures.identifier("amethyst_imbuement/altar_of_experience"),
+                DynamicTexture(
+                    modId = "amethyst_imbuement",
+                    targetTexture =
+                        Identifier("amethyst_imbuement:gui/container/altar_of_experience_gui"),
+                    modifiers =
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this +=
+                                CopyNinePatch(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_BG),
+                                    border = Border(Size(1, 1), Size(1, 1)),
+                                    targetRect = Rect(25, 32, 126, 46)
+                                )
+
+                            this +=
+                                CopyNinePatch(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    border = Border(Size(1, 1), Size(1, 1)),
+                                    sourceRect = Rect(0, 0, 108, 19),
+                                    targetRect = Rect(0, 166, 124, 11)
+                                )
+                            this +=
+                                CopyNinePatch(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    border = Border(Size(1, 1), Size(1, 1)),
+                                    sourceRect = Rect(0, 19, 108, 19),
+                                    targetRect = Rect(0, 177, 124, 11)
+                                )
+                            this +=
+                                CopyNinePatch(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    border = Border(Size(1, 1), Size(1, 1)),
+                                    sourceRect = Rect(0, 38, 108, 19),
+                                    targetRect = Rect(0, 188, 124, 11)
+                                )
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                            this +=
+                                Overlay(
+                                    onExisting = true,
+                                    sourceTextures =
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                setOf(
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                ENCHANTING_ENTRIES_STATUSES
+                                                            ),
+                                                        border = Border(Size(1, 1), Size(1, 1)),
+                                                        sourceRect = Rect(0, 19, 108, 19),
+                                                        targetRect = Rect(25, 33, 124, 11)
+                                                    ),
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                ENCHANTING_ENTRIES_STATUSES
+                                                            ),
+                                                        border = Border(Size(1, 1), Size(1, 1)),
+                                                        sourceRect = Rect(0, 19, 108, 19),
+                                                        targetRect = Rect(25, 44, 124, 11)
+                                                    ),
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                ENCHANTING_ENTRIES_STATUSES
+                                                            ),
+                                                        border = Border(Size(1, 1), Size(1, 1)),
+                                                        sourceRect = Rect(0, 19, 108, 19),
+                                                        targetRect = Rect(25, 55, 124, 11)
+                                                    ),
+                                                    CopyNinePatch(
+                                                        sourceTexture =
+                                                            DynamicTextures.identifier(
+                                                                ENCHANTING_ENTRIES_STATUSES
+                                                            ),
+                                                        border = Border(Size(1, 1), Size(1, 1)),
+                                                        sourceRect = Rect(0, 19, 108, 19),
+                                                        targetRect = Rect(25, 66, 124, 11)
+                                                    )
+                                                ),
+                                        )
+                                )
+                        }
+                )
+            )
         })
 }

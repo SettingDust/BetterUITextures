@@ -170,6 +170,7 @@
                 "x": 0,
                 "y": 19
               },
+              "repeat": true,
               "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
               "targetRect": {
                 "height": 57,
