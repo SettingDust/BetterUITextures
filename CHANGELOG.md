@@ -1,4 +1,27 @@
 
+## [0.3.0] - 2024-03-12
+### :sparkles: New Features
+- [`b20a5ca`](https://github.com/SettingDust/DynamicTextures/commit/b20a5cae6db75c4d1cef1eeed8dfccf570b9750a) - **amethystimbuement**: add `amethyst_imbuement:gui/container/crystal_altar_gui` *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`29374a7`](https://github.com/SettingDust/DynamicTextures/commit/29374a774c318d3b1e44277ed845556529c4a306) - **amethystimbuement**: add `amethyst_imbuement/imbuing_table` *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`c3ee3f3`](https://github.com/SettingDust/DynamicTextures/commit/c3ee3f35ef6185d6642c767ebf2eabb01b098e62) - **amethystimbuement**: add `amethyst_imbuement/disenchanting_table` *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`c5cdfa4`](https://github.com/SettingDust/DynamicTextures/commit/c5cdfa4a5d3a7a84fa27a8b0014af216306e696e) - **amethystimbuement**: add `amethyst_imbuement/altar_of_experience` *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :bug: Bug Fixes
+- [`2912eda`](https://github.com/SettingDust/DynamicTextures/commit/2912eda763ef2e2b5b7d23d4091f69f604611376) - correct the nine patch *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`10c1220`](https://github.com/SettingDust/DynamicTextures/commit/10c1220ede41daf9d75af4f51ab53925fc51e6ec) - **modifiers**: remove border will larger than expected *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`4a78ef0`](https://github.com/SettingDust/DynamicTextures/commit/4a78ef0f9fde565c42923c5662a0f95fb67bb1e4) - **amethystimbuement**: fix `amethyst_imbuement/imbuing_table` in some resource pack *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :recycle: Refactors
+- [`7c84ed4`](https://github.com/SettingDust/DynamicTextures/commit/7c84ed4f67ac5a8f4985429f4c4ecdd319420787) - **datagen**: using functions for simplify *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`89264eb`](https://github.com/SettingDust/DynamicTextures/commit/89264ebb0df925f99dfe0f785d817508c02cfa58) - switch to data generation for builtin resource pack *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`8b1eb01`](https://github.com/SettingDust/DynamicTextures/commit/8b1eb01cf529d6db33fafad3647fb968afb42cfc) - merge origin/main to main *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`b094eba`](https://github.com/SettingDust/DynamicTextures/commit/b094eba28a99ffaf22ca94a1c3e35674b72c3e8e) - **deps**: bump org.danilopianini.gradle-pre-commit-git-hooks *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c895cd9`](https://github.com/SettingDust/DynamicTextures/commit/c895cd996d073ed7fda08fa44f4e4ebd9e02cd94) - **deps**: bump dependencies *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`9ec0b8a`](https://github.com/SettingDust/DynamicTextures/commit/9ec0b8a1077645a6500df871d8ab23046e9da5e4) - **deps**: use explosion for mods *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.1] - 2023-12-29
 ### :sparkles: New Features
 - [`875663c`](https://github.com/SettingDust/DynamicTextures/commit/875663c610a55ff579743ebfd1b7370230a8557b) - bump moonlight for fix for clear resources before regenerate and don't clear at early load *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -69,3 +92,4 @@
 [0.1.0]: https://github.com/SettingDust/DynamicTextures/compare/0.0.0...0.1.0
 [0.2.0]: https://github.com/SettingDust/DynamicTextures/compare/0.1.0...0.2.0
 [0.2.1]: https://github.com/SettingDust/DynamicTextures/compare/0.2.0...0.2.1
+[0.3.0]: https://github.com/SettingDust/DynamicTextures/compare/0.2.1...0.3.0
