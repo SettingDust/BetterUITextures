@@ -1,5 +1,5 @@
 {
-  "modId": "pack_it_up",
+  "modId": "amethyst_imbuement",
   "modifiers": [
     {
       "type": "dynamic-textures:remove_border",
@@ -41,31 +41,11 @@
       }
     },
     {
-      "type": "dynamic-textures:remove_border",
-      "border": {
-        "first": {
-          "height": 1,
-          "width": 1
-        },
-        "second": {
-          "height": 2,
-          "width": 2
-        }
-      },
+      "type": "dynamic-textures:remove_rect",
       "rect": {
         "height": 18,
         "width": 18,
-        "x": 26,
-        "y": 46
-      }
-    },
-    {
-      "type": "dynamic-textures:remove_color",
-      "color": "ff8b8b8b",
-      "rect": {
-        "height": 18,
-        "width": 18,
-        "x": 26,
+        "x": 14,
         "y": 46
       }
     },
@@ -84,7 +64,7 @@
       "rect": {
         "height": 18,
         "width": 18,
-        "x": 75,
+        "x": 34,
         "y": 46
       }
     },
@@ -94,18 +74,8 @@
       "rect": {
         "height": 18,
         "width": 18,
-        "x": 75,
+        "x": 34,
         "y": 46
-      }
-    },
-    {
-      "type": "dynamic-textures:copy_rect",
-      "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-      "targetRect": {
-        "height": 23,
-        "width": 22,
-        "x": 131,
-        "y": 43
       }
     },
     {
@@ -116,21 +86,11 @@
           "modifiers": [
             {
               "type": "dynamic-textures:copy_rect",
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/abreast",
               "targetRect": {
                 "height": 23,
-                "width": 22,
-                "x": 24,
-                "y": 43
-              }
-            },
-            {
-              "type": "dynamic-textures:copy_rect",
-              "sourceTexture": "dynamic-textures:dynamic_texture/defined/slot/single",
-              "targetRect": {
-                "height": 23,
-                "width": 22,
-                "x": 73,
+                "width": 42,
+                "x": 12,
                 "y": 43
               }
             }
@@ -141,6 +101,26 @@
           }
         }
       ]
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entries_background",
+      "targetRect": {
+        "height": 59,
+        "width": 110,
+        "x": 59,
+        "y": 13
+      }
+    },
+    {
+      "type": "dynamic-textures:copy_rect",
+      "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
+      "targetRect": {
+        "height": 57,
+        "width": 108,
+        "x": 0,
+        "y": 166
+      }
     },
     {
       "type": "dynamic-textures:overlay",
@@ -175,7 +155,37 @@
           }
         }
       ]
+    },
+    {
+      "type": "dynamic-textures:overlay",
+      "onExisting": true,
+      "sourceTextures": [
+        {
+          "modifiers": [
+            {
+              "type": "dynamic-textures:copy_rect",
+              "fromRect": {
+                "height": 19,
+                "width": 108,
+                "x": 0,
+                "y": 19
+              },
+              "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
+              "targetRect": {
+                "height": 57,
+                "width": 108,
+                "x": 60,
+                "y": 14
+              }
+            }
+          ],
+          "size": {
+            "height": 256,
+            "width": 256
+          }
+        }
+      ]
     }
   ],
-  "targetTexture": "pack_it_up:gui/pack_bench"
+  "targetTexture": "amethyst_imbuement:gui/container/disenchanting_table_gui"
 }

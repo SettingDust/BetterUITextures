@@ -183,7 +183,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
         }
 
         fun MutableSet<TextureModifier>.removeSlotBackground(targetRect: Rect) {
-            this += RemoveBorder(rect = targetRect, border = Border(Size(2, 2), Size(2, 2)))
+            this += RemoveBorder(rect = targetRect, border = Border(Size(1, 1), Size(2, 2)))
             this += RemoveColor(rect = targetRect, color = SLOT_BG_COLOR)
         }
 
@@ -504,7 +504,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                     targetRect = Rect(0, halfHeight, width, halfHeight)
                                 )
 
-                            this += RemoveRect(rect = Rect(12, 43, 21, 23))
+                            this += RemoveRect(rect = Rect(14, 46, 18, 18))
                             removeSlotBackground(Rect(34, 46, 18, 18))
                             this +=
                                 Overlay(
@@ -520,6 +520,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                                 ),
                                         )
                                 )
+
                             this +=
                                 CopyRect(
                                     sourceTexture =
@@ -534,6 +535,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                             size = Size(256, 256),
                                             modifiers =
                                                 CopyRect(
+                                                    repeat = true,
                                                     sourceTexture =
                                                         DynamicTextures.identifier(
                                                             ENCHANTING_ENTRIES_STATUSES
@@ -717,6 +719,7 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                             size = Size(256, 256),
                                             modifiers =
                                                 CopyRect(
+                                                    repeat = true,
                                                     sourceTexture =
                                                         DynamicTextures.identifier(
                                                             ENCHANTING_ENTRIES_STATUSES
@@ -731,6 +734,76 @@ private class DynamicTextureProvider(dataOutput: FabricDataOutput) :
                                     sourceTexture =
                                         DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
                                     targetRect = Rect(0, 174, 108, 57)
+                                )
+                        }
+                )
+            )
+
+            it.accept(
+                DynamicTextures.identifier("amethyst_imbuement/disenchanting_table"),
+                DynamicTexture(
+                    modId = "amethyst_imbuement",
+                    targetTexture =
+                        Identifier("amethyst_imbuement:gui/container/disenchanting_table_gui"),
+                    modifiers =
+                        buildSet {
+                            val width = 176
+                            val height = 166
+                            val halfHeight = height / 2
+                            removeBorderAndBackground(width, height)
+                            this +=
+                                CopyRect(
+                                    sourceTexture = inventoryBottom,
+                                    targetRect = Rect(0, halfHeight, width, halfHeight)
+                                )
+
+                            this += RemoveRect(rect = Rect(14, 46, 18, 18))
+                            removeSlotBackground(Rect(34, 46, 18, 18))
+                            this +=
+                                Overlay(
+                                    invert = true,
+                                    sourceTextures =
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                CopyRect(
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(SLOT_ABREAST),
+                                                    targetRect = Rect(12, 43, 42, 23)
+                                                ),
+                                        )
+                                )
+
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_BG),
+                                    targetRect = Rect(59, 13, 110, 59)
+                                )
+                            this +=
+                                CopyRect(
+                                    sourceTexture =
+                                        DynamicTextures.identifier(ENCHANTING_ENTRIES_STATUSES),
+                                    targetRect = Rect(0, 166, 108, 57)
+                                )
+                            inventoryTopOverlay(Rect(0, 0, width, halfHeight))
+                            this +=
+                                Overlay(
+                                    onExisting = true,
+                                    sourceTextures =
+                                        DynamicTexture(
+                                            size = Size(256, 256),
+                                            modifiers =
+                                                CopyRect(
+                                                    repeat = true,
+                                                    sourceTexture =
+                                                        DynamicTextures.identifier(
+                                                            ENCHANTING_ENTRIES_STATUSES
+                                                        ),
+                                                    fromRect = Rect(0, 19, 108, 19),
+                                                    targetRect = Rect(60, 14, 108, 57)
+                                                ),
+                                        )
                                 )
                         }
                 )

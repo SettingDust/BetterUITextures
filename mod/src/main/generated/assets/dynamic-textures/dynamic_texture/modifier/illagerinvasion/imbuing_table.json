@@ -64,8 +64,8 @@
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 2,
-          "width": 2
+          "height": 1,
+          "width": 1
         },
         "second": {
           "height": 2,
@@ -93,8 +93,8 @@
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 2,
-          "width": 2
+          "height": 1,
+          "width": 1
         },
         "second": {
           "height": 2,

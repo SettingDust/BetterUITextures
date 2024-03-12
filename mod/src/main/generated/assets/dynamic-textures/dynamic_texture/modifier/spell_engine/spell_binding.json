@@ -43,18 +43,18 @@
     {
       "type": "dynamic-textures:remove_rect",
       "rect": {
-        "height": 23,
-        "width": 21,
-        "x": 12,
-        "y": 43
+        "height": 18,
+        "width": 18,
+        "x": 14,
+        "y": 46
       }
     },
     {
       "type": "dynamic-textures:remove_border",
       "border": {
         "first": {
-          "height": 2,
-          "width": 2
+          "height": 1,
+          "width": 1
         },
         "second": {
           "height": 2,
@@ -126,6 +126,7 @@
                 "x": 0,
                 "y": 19
               },
+              "repeat": true,
               "sourceTexture": "dynamic-textures:dynamic_texture/defined/enchanting_elements/entry_statuses",
               "targetRect": {
                 "height": 57,
