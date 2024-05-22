@@ -65,6 +65,7 @@ Lazy
 ## How to support a mod by yourself?
 
 - You need a tool that can show you the sizes of elements you need on the image.
+- You can [reload the resource](https://minecraft.wiki/w/Debug_screen#More_debug_keys) to see the changes. 
 - I will explain the built-in jsons here.
 - ### https://github.com/SettingDust/DynamicTextures/blob/main/mod/src/main/generated/assets/dynamic-textures/dynamic_texture/modifier/spell_engine/spell_binding.json
     - #### `modId`
@@ -78,7 +79,8 @@ Lazy
         - The path for generated texture. Isn't required when specified `size`.
         - We need the original texture to find out what modifiers we need.
         - Open the jar of mod and find out the png file path
-          is `spell_engine-0.12.4_1.20.1.jar!\assets\spell_engine\textures\gui\spell_binding.png` ![raw_spell_binding](https://raw.githubusercontent.com/SettingDust/DynamicTextures/main/docs/raw_spell_binding.png)
+          is `spell_engine-0.12.4_1.20.1.jar!\assets\spell_engine\textures\gui\spell_binding.png`
+        - ![raw_spell_binding](https://raw.githubusercontent.com/SettingDust/DynamicTextures/main/docs/raw_spell_binding.png)
         - So we know the texture's [resource location](https://minecraft.wiki/w/Resource_location)
           is `spell_engine:gui/spell_binding`. It's the location of the `targetTexture` we need.
     - #### `modifiers`
