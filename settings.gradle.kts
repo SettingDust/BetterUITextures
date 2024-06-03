@@ -72,7 +72,7 @@ dependencyResolutionManagement.versionCatalogs.named("catalog") {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
     // https://github.com/DanySK/gradle-pre-commit-git-hooks
-    id("org.danilopianini.gradle-pre-commit-git-hooks") version "2.0.3"
+    id("org.danilopianini.gradle-pre-commit-git-hooks") version "2.0.7"
 }
 
 gitHooks {
